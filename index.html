@@ -1,0 +1,1075 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MathVerse — Where Mathematics Lives</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Space+Grotesk:wght@300;400;500;600;700&family=Fira+Code:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg-deep: #050510;
+    --bg-mid: #0a0a1f;
+    --bg-card: #0d0d2b;
+    --bg-card2: #0f0f35;
+    --accent-gold: #f5c842;
+    --accent-cyan: #00e5ff;
+    --accent-purple: #b44fff;
+    --accent-pink: #ff4fa3;
+    --accent-green: #39ff85;
+    --text-primary: #e8e8ff;
+    --text-secondary: #8888bb;
+    --border-glow: rgba(0,229,255,0.25);
+    --gradient-main: linear-gradient(135deg, #050510 0%, #0a0a2e 40%, #0d0520 100%);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--gradient-main);
+    min-height: 100vh;
+    font-family: 'Space Grotesk', sans-serif;
+    color: var(--text-primary);
+    overflow-x: hidden;
+    cursor: default;
+  }
+
+  /* ── STAR CANVAS ── */
+  #starCanvas {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* ── CLICK BURST ── */
+  .burst {
+    position: fixed;
+    pointer-events: none;
+    z-index: 9999;
+  }
+  .burst-particle {
+    position: absolute;
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    animation: burst-out 0.7s ease-out forwards;
+  }
+  @keyframes burst-out {
+    0%   { transform: translate(0,0) scale(1); opacity: 1; }
+    100% { transform: translate(var(--dx), var(--dy)) scale(0); opacity: 0; }
+  }
+
+  /* ── LAYOUT ── */
+  .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0;
+    z-index: 100;
+    background: rgba(5,5,16,0.85);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(0,229,255,0.1);
+    padding: 16px 0;
+  }
+  nav .container { display: flex; align-items: center; justify-content: space-between; }
+  .nav-logo {
+    font-family: 'Orbitron', monospace;
+    font-size: 1.4rem;
+    font-weight: 900;
+    background: linear-gradient(90deg, var(--accent-cyan), var(--accent-purple));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    letter-spacing: 2px;
+  }
+  .nav-links { display: flex; gap: 32px; list-style: none; }
+  .nav-links a {
+    color: var(--text-secondary);
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 500;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    transition: color 0.3s;
+  }
+  .nav-links a:hover { color: var(--accent-cyan); }
+
+  /* ── HERO ── */
+  .hero {
+    min-height: 100vh;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    text-align: center;
+    padding: 120px 24px 80px;
+    position: relative;
+    z-index: 1;
+  }
+  .hero-eyebrow {
+    font-family: 'Fira Code', monospace;
+    font-size: 0.8rem;
+    color: var(--accent-cyan);
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.2s forwards;
+  }
+  .hero-title {
+    font-family: 'Orbitron', monospace;
+    font-size: clamp(3rem, 8vw, 7rem);
+    font-weight: 900;
+    line-height: 1.05;
+    margin-bottom: 12px;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.4s forwards;
+  }
+  .hero-title .line1 {
+    background: linear-gradient(90deg, #fff 0%, var(--accent-cyan) 60%, var(--accent-purple) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .hero-title .line2 {
+    background: linear-gradient(90deg, var(--accent-purple) 0%, var(--accent-pink) 50%, var(--accent-gold) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .hero-subtitle {
+    font-size: 1.15rem;
+    color: var(--text-secondary);
+    max-width: 600px;
+    line-height: 1.7;
+    margin: 24px auto 40px;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.6s forwards;
+  }
+  .hero-cta {
+    display: flex; gap: 16px; flex-wrap: wrap; justify-content: center;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.8s forwards;
+  }
+  .btn-primary {
+    background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
+    color: #fff;
+    border: none;
+    padding: 14px 36px;
+    border-radius: 50px;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    letter-spacing: 0.5px;
+    transition: transform 0.2s, box-shadow 0.2s;
+    text-decoration: none;
+  }
+  .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 32px rgba(0,229,255,0.35);
+  }
+  .btn-outline {
+    background: transparent;
+    color: var(--text-primary);
+    border: 1px solid rgba(255,255,255,0.2);
+    padding: 14px 36px;
+    border-radius: 50px;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: border-color 0.3s, color 0.3s;
+    text-decoration: none;
+  }
+  .btn-outline:hover { border-color: var(--accent-cyan); color: var(--accent-cyan); }
+
+  /* floating math symbols */
+  .hero-math-bg {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    overflow: hidden;
+    pointer-events: none;
+    z-index: 0;
+  }
+  .math-symbol {
+    position: absolute;
+    font-family: 'Fira Code', monospace;
+    color: rgba(0,229,255,0.07);
+    font-size: clamp(1rem, 3vw, 2.5rem);
+    animation: floatSym linear infinite;
+    user-select: none;
+  }
+  @keyframes floatSym {
+    0%   { transform: translateY(110vh) rotate(0deg);   opacity: 0; }
+    10%  { opacity: 1; }
+    90%  { opacity: 1; }
+    100% { transform: translateY(-10vh) rotate(360deg); opacity: 0; }
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ── SECTION LABEL ── */
+  .section-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'Fira Code', monospace;
+    font-size: 0.75rem;
+    color: var(--accent-cyan);
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+  .section-label::before, .section-label::after {
+    content: '';
+    width: 24px; height: 1px;
+    background: var(--accent-cyan);
+    opacity: 0.5;
+  }
+  .section-heading {
+    font-family: 'Orbitron', monospace;
+    font-size: clamp(1.8rem, 4vw, 2.8rem);
+    font-weight: 700;
+    margin-bottom: 12px;
+    background: linear-gradient(90deg, #fff, var(--text-secondary));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .section-sub {
+    color: var(--text-secondary);
+    font-size: 1rem;
+    line-height: 1.6;
+    max-width: 560px;
+  }
+
+  /* ── STATS BAR ── */
+  .stats-bar {
+    padding: 40px 0;
+    border-top: 1px solid rgba(255,255,255,0.05);
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    position: relative; z-index: 1;
+  }
+  .stats-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 24px; text-align: center; }
+  .stat-num {
+    font-family: 'Orbitron', monospace;
+    font-size: 2.2rem;
+    font-weight: 900;
+    background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .stat-label { font-size: 0.8rem; color: var(--text-secondary); letter-spacing: 1px; margin-top: 4px; }
+
+  /* ── CLASS SELECTION ── */
+  .classes-section { padding: 100px 0; position: relative; z-index: 1; }
+  .classes-section .head { text-align: center; margin-bottom: 56px; }
+  .classes-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 28px; }
+  @media(min-width:900px){ .classes-grid { grid-template-columns: repeat(4,1fr); } }
+
+  .class-card {
+    background: linear-gradient(135deg, rgba(13,13,43,0.9), rgba(15,15,53,0.9));
+    border: 1px solid rgba(0,229,255,0.12);
+    border-radius: 20px;
+    padding: 32px 20px;
+    text-align: center;
+    cursor: pointer;
+    transition: transform 0.3s, box-shadow 0.3s, border-color 0.3s;
+    position: relative;
+    overflow: hidden;
+  }
+  .class-card::before {
+    content: '';
+    position: absolute;
+    top: -50%; left: -50%;
+    width: 200%; height: 200%;
+    background: radial-gradient(circle, rgba(0,229,255,0.06) 0%, transparent 60%);
+    opacity: 0;
+    transition: opacity 0.4s;
+  }
+  .class-card:hover::before { opacity: 1; }
+  .class-card:hover {
+    transform: translateY(-6px);
+    border-color: rgba(0,229,255,0.4);
+    box-shadow: 0 20px 60px rgba(0,229,255,0.12);
+  }
+  .class-number {
+    font-family: 'Orbitron', monospace;
+    font-size: 3.5rem;
+    font-weight: 900;
+    line-height: 1;
+    margin-bottom: 8px;
+  }
+  .class-card:nth-child(1) .class-number { background: linear-gradient(135deg, #00e5ff, #4facfe); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .class-card:nth-child(2) .class-number { background: linear-gradient(135deg, #b44fff, #ff4fa3); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .class-card:nth-child(3) .class-number { background: linear-gradient(135deg, #f5c842, #ff6b35); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .class-card:nth-child(4) .class-number { background: linear-gradient(135deg, #39ff85, #00e5ff); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .class-label { font-size: 0.75rem; color: var(--text-secondary); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 20px; }
+  .class-badge {
+    display: inline-block;
+    background: rgba(0,229,255,0.1);
+    border: 1px solid rgba(0,229,255,0.2);
+    color: var(--accent-cyan);
+    font-size: 0.7rem;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-family: 'Fira Code', monospace;
+    letter-spacing: 1px;
+  }
+
+  /* ── MODAL ── */
+  .modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(5,5,16,0.92);
+    backdrop-filter: blur(12px);
+    z-index: 500;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s;
+  }
+  .modal-overlay.active { opacity: 1; pointer-events: all; }
+  .modal {
+    background: linear-gradient(135deg, #0a0a2e, #0d0520);
+    border: 1px solid rgba(0,229,255,0.2);
+    border-radius: 24px;
+    width: 100%; max-width: 720px;
+    max-height: 85vh;
+    overflow-y: auto;
+    padding: 40px;
+    position: relative;
+    transform: scale(0.95) translateY(20px);
+    transition: transform 0.3s;
+  }
+  .modal-overlay.active .modal { transform: scale(1) translateY(0); }
+  .modal-close {
+    position: absolute;
+    top: 20px; right: 20px;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    color: var(--text-secondary);
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    font-size: 1.1rem;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: background 0.2s, color 0.2s;
+  }
+  .modal-close:hover { background: rgba(255,0,80,0.15); color: var(--accent-pink); }
+  .modal-class-tag {
+    font-family: 'Fira Code', monospace;
+    font-size: 0.75rem;
+    color: var(--accent-cyan);
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+  .modal-title {
+    font-family: 'Orbitron', monospace;
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin-bottom: 8px;
+    background: linear-gradient(90deg, #fff, var(--accent-cyan));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .modal-sub { color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 32px; }
+  .topics-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px,1fr)); gap: 14px; }
+  .topic-card {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 14px;
+    padding: 18px 16px;
+    cursor: pointer;
+    transition: all 0.25s;
+    position: relative;
+    overflow: hidden;
+  }
+  .topic-card.unlocked {
+    border-color: rgba(0,229,255,0.25);
+    background: rgba(0,229,255,0.04);
+  }
+  .topic-card.unlocked:hover {
+    border-color: var(--accent-cyan);
+    transform: translateY(-3px);
+    box-shadow: 0 12px 40px rgba(0,229,255,0.12);
+  }
+  .topic-card.locked {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+  .topic-icon { font-size: 1.6rem; margin-bottom: 8px; }
+  .topic-name {
+    font-size: 0.9rem;
+    font-weight: 600;
+    margin-bottom: 4px;
+    color: var(--text-primary);
+  }
+  .topic-card.locked .topic-name { color: var(--text-secondary); }
+  .topic-pill {
+    display: inline-block;
+    font-size: 0.65rem;
+    padding: 2px 10px;
+    border-radius: 20px;
+    letter-spacing: 1px;
+    font-family: 'Fira Code', monospace;
+  }
+  .pill-available { background: rgba(0,229,255,0.15); color: var(--accent-cyan); }
+  .pill-soon { background: rgba(255,255,255,0.05); color: var(--text-secondary); }
+
+  /* ── FORMULA TICKER ── */
+  .formula-ticker {
+    padding: 20px 0;
+    background: rgba(0,0,0,0.3);
+    border-top: 1px solid rgba(0,229,255,0.08);
+    border-bottom: 1px solid rgba(0,229,255,0.08);
+    overflow: hidden;
+    position: relative; z-index: 1;
+  }
+  .ticker-track {
+    display: flex;
+    gap: 60px;
+    animation: ticker 30s linear infinite;
+    white-space: nowrap;
+  }
+  .ticker-item {
+    font-family: 'Fira Code', monospace;
+    font-size: 0.82rem;
+    color: rgba(0,229,255,0.5);
+    flex-shrink: 0;
+  }
+  @keyframes ticker {
+    from { transform: translateX(0); }
+    to   { transform: translateX(-50%); }
+  }
+
+  /* ── WHY SECTION ── */
+  .why-section { padding: 100px 0; position: relative; z-index: 1; }
+  .why-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 24px; margin-top: 56px; }
+  @media(max-width:768px){ .why-grid { grid-template-columns: 1fr; } }
+  .why-card {
+    background: linear-gradient(135deg, rgba(13,13,43,0.8), rgba(15,15,35,0.8));
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 20px;
+    padding: 36px 28px;
+    transition: border-color 0.3s, transform 0.3s;
+  }
+  .why-card:hover { border-color: rgba(180,79,255,0.3); transform: translateY(-4px); }
+  .why-icon {
+    width: 52px; height: 52px;
+    border-radius: 14px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+  }
+  .why-icon-1 { background: rgba(0,229,255,0.12); }
+  .why-icon-2 { background: rgba(180,79,255,0.12); }
+  .why-icon-3 { background: rgba(245,200,66,0.12); }
+  .why-card h3 { font-family: 'Orbitron', monospace; font-size: 1rem; margin-bottom: 10px; }
+  .why-card p { color: var(--text-secondary); font-size: 0.9rem; line-height: 1.65; }
+
+  /* ── DEVELOPER SECTION ── */
+  .dev-section { padding: 100px 0; position: relative; z-index: 1; }
+  .dev-section .head { text-align: center; margin-bottom: 60px; }
+  .dev-cards-wrap { display: flex; flex-direction: column; gap: 24px; max-width: 780px; margin: 0 auto; }
+
+  .dev-card {
+    background: linear-gradient(135deg, rgba(10,10,35,0.95), rgba(13,5,32,0.95));
+    border: 1px solid rgba(0,229,255,0.15);
+    border-radius: 24px;
+    padding: 36px 36px 32px;
+    position: relative;
+    overflow: hidden;
+  }
+  .dev-card::before {
+    content: '';
+    position: absolute;
+    top: -1px; left: 32px; right: 32px;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--accent-cyan), transparent);
+  }
+  .dev-card-lead {
+    border-color: rgba(245,200,66,0.25);
+  }
+  .dev-card-lead::before {
+    background: linear-gradient(90deg, transparent, var(--accent-gold), transparent);
+  }
+
+  .dev-role {
+    font-family: 'Fira Code', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--accent-gold);
+    margin-bottom: 8px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .dev-role .crown { font-size: 0.9rem; }
+  .dev-name {
+    font-family: 'Orbitron', monospace;
+    font-size: 2rem;
+    font-weight: 900;
+    letter-spacing: 4px;
+    background: linear-gradient(90deg, var(--accent-gold), #fff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 20px;
+  }
+  .dev-avatar {
+    width: 64px; height: 64px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--accent-gold), var(--accent-pink));
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.8rem;
+    margin-bottom: 20px;
+    box-shadow: 0 0 30px rgba(245,200,66,0.3);
+  }
+  .dev-bio {
+    font-size: 0.92rem;
+    line-height: 1.75;
+    color: var(--text-secondary);
+    margin-bottom: 20px;
+  }
+  .dev-bio strong { color: var(--text-primary); }
+  .dev-quote {
+    background: rgba(0,229,255,0.05);
+    border-left: 3px solid var(--accent-cyan);
+    padding: 14px 18px;
+    border-radius: 0 10px 10px 0;
+    font-style: italic;
+    font-size: 0.88rem;
+    color: var(--accent-cyan);
+    margin-bottom: 24px;
+  }
+  .dev-tags { display: flex; flex-wrap: wrap; gap: 10px; }
+  .dev-tag {
+    display: flex; align-items: center; gap: 6px;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 20px;
+    padding: 6px 14px;
+    font-size: 0.78rem;
+    color: var(--text-secondary);
+    transition: border-color 0.2s, color 0.2s;
+  }
+  .dev-tag:hover { border-color: var(--accent-cyan); color: var(--accent-cyan); }
+
+  .dev-card-support .dev-role { color: var(--accent-green); }
+  .dev-card-support::before {
+    background: linear-gradient(90deg, transparent, var(--accent-green), transparent);
+  }
+  .dev-name-support {
+    font-family: 'Orbitron', monospace;
+    font-size: 1.6rem;
+    font-weight: 700;
+    letter-spacing: 3px;
+    background: linear-gradient(90deg, var(--accent-green), var(--accent-cyan));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 16px;
+  }
+  .dev-avatar-support {
+    background: linear-gradient(135deg, var(--accent-green), var(--accent-cyan));
+    box-shadow: 0 0 30px rgba(57,255,133,0.2);
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    padding: 60px 0 40px;
+    border-top: 1px solid rgba(255,255,255,0.05);
+    text-align: center;
+    position: relative; z-index: 1;
+  }
+  .footer-logo {
+    font-family: 'Orbitron', monospace;
+    font-size: 1.6rem;
+    font-weight: 900;
+    background: linear-gradient(90deg, var(--accent-cyan), var(--accent-purple));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 12px;
+  }
+  .footer-tagline { color: var(--text-secondary); font-size: 0.85rem; margin-bottom: 32px; }
+  .footer-links { display: flex; gap: 24px; justify-content: center; flex-wrap: wrap; margin-bottom: 32px; }
+  .footer-links a { color: var(--text-secondary); text-decoration: none; font-size: 0.82rem; transition: color 0.2s; }
+  .footer-links a:hover { color: var(--accent-cyan); }
+  .footer-copy { color: rgba(136,136,187,0.4); font-size: 0.75rem; font-family: 'Fira Code', monospace; }
+
+  /* scrollbar */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: var(--bg-deep); }
+  ::-webkit-scrollbar-thumb { background: rgba(0,229,255,0.2); border-radius: 3px; }
+
+</style>
+</head>
+<body>
+
+<canvas id="starCanvas"></canvas>
+
+<!-- NAV -->
+<nav>
+  <div class="container">
+    <div class="nav-logo">∑ MathVerse</div>
+    <ul class="nav-links">
+      <li><a href="#classes">Classes</a></li>
+      <li><a href="#why">Why Us</a></li>
+      <li><a href="#dev">Team</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-math-bg" id="mathBg"></div>
+  <div class="hero-eyebrow">✦ The Universe of Mathematics ✦</div>
+  <h1 class="hero-title">
+    <div class="line1">MATH</div>
+    <div class="line2">VERSE</div>
+  </h1>
+  <p class="hero-subtitle">
+    Every formula. Every concept. Every proof. Crafted for curious minds — from CBSE classrooms to IIT JEE battlegrounds.
+  </p>
+  <div class="hero-cta">
+    <a href="#classes" class="btn-primary">Explore Classes →</a>
+    <a href="#why" class="btn-outline">Why MathVerse?</a>
+  </div>
+</section>
+
+<!-- STATS -->
+<div class="stats-bar">
+  <div class="container">
+    <div class="stats-grid">
+      <div>
+        <div class="stat-num" id="s1">0</div>
+        <div class="stat-label">Formulas</div>
+      </div>
+      <div>
+        <div class="stat-num" id="s2">0</div>
+        <div class="stat-label">Concepts</div>
+      </div>
+      <div>
+        <div class="stat-num" id="s3">0</div>
+        <div class="stat-label">Classes Covered</div>
+      </div>
+      <div>
+        <div class="stat-num" id="s4">0</div>
+        <div class="stat-label">Topics (Growing)</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FORMULA TICKER -->
+<div class="formula-ticker">
+  <div class="ticker-track" id="ticker"></div>
+</div>
+
+<!-- CLASSES -->
+<section class="classes-section" id="classes">
+  <div class="container">
+    <div class="head">
+      <div class="section-label">Select Your Class</div>
+      <h2 class="section-heading">Choose Your Grade</h2>
+      <p class="section-sub" style="margin:0 auto;">Structured as per CBSE syllabus — Class 9 through 12. Pick your class and dive into the topics.</p>
+    </div>
+    <div class="classes-grid">
+      <div class="class-card" onclick="openClassModal(9)">
+        <div class="class-number">IX</div>
+        <div class="class-label">Class 9</div>
+        <div class="class-badge">1 Topic Live</div>
+      </div>
+      <div class="class-card" onclick="openClassModal(10)">
+        <div class="class-number">X</div>
+        <div class="class-label">Class 10</div>
+        <div class="class-badge">1 Topic Live</div>
+      </div>
+      <div class="class-card" onclick="openClassModal(11)">
+        <div class="class-number">XI</div>
+        <div class="class-label">Class 11</div>
+        <div class="class-badge">1 Topic Live</div>
+      </div>
+      <div class="class-card" onclick="openClassModal(12)">
+        <div class="class-number">XII</div>
+        <div class="class-label">Class 12</div>
+        <div class="class-badge">1 Topic Live</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WHY -->
+<section class="why-section" id="why">
+  <div class="container">
+    <div style="text-align:center">
+      <div class="section-label">Why MathVerse</div>
+      <h2 class="section-heading">Built Different</h2>
+    </div>
+    <div class="why-grid">
+      <div class="why-card">
+        <div class="why-icon why-icon-1">🎯</div>
+        <h3>CBSE Aligned</h3>
+        <p>Every topic, formula, and concept mapped precisely to the CBSE syllabus — Class 9 to 12. No fluff, just what you need.</p>
+      </div>
+      <div class="why-card">
+        <div class="why-icon why-icon-2">⚡</div>
+        <h3>IIT JEE Ready</h3>
+        <p>Special deep-dive sections for JEE aspirants — edge cases, proof-based questions, and beyond-NCERT insights.</p>
+      </div>
+      <div class="why-card">
+        <div class="why-icon why-icon-3">🧬</div>
+        <h3>Interactive Learning</h3>
+        <p>Visualise functions, explore proofs interactively, and solve formula-puzzles that make mathematics come alive.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DEV SECTION -->
+<section class="dev-section" id="dev">
+  <div class="container">
+    <div class="head">
+      <div class="section-label">The Team Behind MathVerse</div>
+      <h2 class="section-heading">The Builders</h2>
+    </div>
+    <div class="dev-cards-wrap">
+
+      <!-- Lead Dev -->
+      <div class="dev-card dev-card-lead">
+        <div class="dev-role"><span class="crown">👑</span> Creator &amp; Lead Developer</div>
+        <div style="display:flex;align-items:center;gap:20px;flex-wrap:wrap">
+          <div class="dev-avatar">🧠</div>
+          <div class="dev-name">DEEPESH KUMAR</div>
+        </div>
+        <p class="dev-bio">
+          <strong>Deepesh Kumar</strong> — the visionary mind who built this entire platform from the ground up. Every formula, every animation, every interactive concept — all handcrafted by him. His dedication to making Mathematics beautiful and accessible — for every maths-loving student and every IIT JEE aspirant — is what makes MathVerse truly special.
+        </p>
+        <div class="dev-quote">
+          🚀 "I didn't just build a website — I built a universe for everyone who believes mathematics is the language of the cosmos."
+        </div>
+        <div class="dev-tags">
+          <span class="dev-tag">⚡ Full Stack Dev</span>
+          <span class="dev-tag">🎨 UI Designer</span>
+          <span class="dev-tag">∑ Math Enthusiast</span>
+        </div>
+      </div>
+
+      <!-- Support -->
+      <div class="dev-card dev-card-support">
+        <div class="dev-role" style="color:var(--accent-green)">🌱 Supported &amp; Guided By</div>
+        <div style="display:flex;align-items:center;gap:20px;flex-wrap:wrap">
+          <div class="dev-avatar dev-avatar-support">🌟</div>
+          <div class="dev-name-support">HALENDER KUMAR</div>
+        </div>
+        <p class="dev-bio">
+          The guiding force and backbone of this project — always there with the right words at the right time. His unwavering support and mentorship shaped MathVerse into what it is. 👍
+        </p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="container">
+    <div class="footer-logo">∑ MathVerse</div>
+    <div class="footer-tagline">Where Mathematics Lives — for every curious mind.</div>
+    <div class="footer-links">
+      <a href="#classes">Classes</a>
+      <a href="#why">About</a>
+      <a href="#dev">Team</a>
+    </div>
+    <div class="footer-copy">© 2025 MathVerse · Built with ∞ passion by Deepesh Kumar</div>
+  </div>
+</footer>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modalOverlay" onclick="closeModalOutside(event)">
+  <div class="modal" id="modal">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <div class="modal-class-tag" id="modalTag"></div>
+    <div class="modal-title" id="modalTitle"></div>
+    <div class="modal-sub" id="modalSub"></div>
+    <div class="topics-grid" id="topicsGrid"></div>
+  </div>
+</div>
+
+<script>
+// ─── STAR CANVAS ───────────────────────────────────────────────────────────────
+const canvas = document.getElementById('starCanvas');
+const ctx = canvas.getContext('2d');
+let stars = [];
+let clickStars = [];
+
+function resize() {
+  canvas.width  = window.innerWidth;
+  canvas.height = window.innerHeight;
+}
+resize();
+window.addEventListener('resize', resize);
+
+function initStars() {
+  stars = [];
+  for (let i = 0; i < 220; i++) {
+    stars.push({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height,
+      r: Math.random() * 1.4 + 0.2,
+      a: Math.random(),
+      speed: Math.random() * 0.3 + 0.05,
+      dir: Math.random() > 0.5 ? 1 : -1
+    });
+  }
+}
+initStars();
+
+function drawStars() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  stars.forEach(s => {
+    s.a += s.speed * s.dir * 0.005;
+    if (s.a <= 0 || s.a >= 1) s.dir *= -1;
+    ctx.beginPath();
+    ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+    ctx.fillStyle = `rgba(180,210,255,${s.a})`;
+    ctx.fill();
+  });
+
+  // click burst stars
+  clickStars = clickStars.filter(p => p.life > 0);
+  clickStars.forEach(p => {
+    p.x += p.vx;
+    p.y += p.vy;
+    p.vy += 0.08;
+    p.life -= 2;
+    ctx.beginPath();
+    ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+    ctx.fillStyle = `hsla(${p.hue},100%,70%,${p.life/100})`;
+    ctx.fill();
+  });
+
+  requestAnimationFrame(drawStars);
+}
+drawStars();
+
+// ─── CLICK BURST ───────────────────────────────────────────────────────────────
+document.addEventListener('click', e => {
+  const hues = [190, 280, 340, 50, 140];
+  for (let i = 0; i < 18; i++) {
+    const angle = (Math.PI * 2 * i) / 18 + Math.random() * 0.4;
+    const speed = Math.random() * 4 + 1.5;
+    clickStars.push({
+      x: e.clientX + window.scrollX * 0,
+      y: e.clientY,
+      vx: Math.cos(angle) * speed,
+      vy: Math.sin(angle) * speed - 2,
+      r: Math.random() * 2.5 + 0.8,
+      life: 80 + Math.random() * 40,
+      hue: hues[Math.floor(Math.random() * hues.length)]
+    });
+  }
+});
+
+// ─── FLOATING MATH SYMBOLS ────────────────────────────────────────────────────
+const symbols = ['∑','∫','√','π','∞','∂','∇','α','β','θ','φ','Δ','≡','≈','sin','cos','tan','lim','dx','dy','f(x)','ℝ','ℂ','∈','⊂'];
+const mathBg = document.getElementById('mathBg');
+function spawnSymbol() {
+  const el = document.createElement('div');
+  el.className = 'math-symbol';
+  el.textContent = symbols[Math.floor(Math.random() * symbols.length)];
+  el.style.left = Math.random() * 100 + '%';
+  el.style.animationDuration = (20 + Math.random() * 30) + 's';
+  el.style.animationDelay = (Math.random() * 10) + 's';
+  el.style.fontSize = (0.8 + Math.random() * 2.5) + 'rem';
+  mathBg.appendChild(el);
+  setTimeout(() => el.remove(), 55000);
+}
+for (let i = 0; i < 15; i++) setTimeout(spawnSymbol, i * 800);
+setInterval(spawnSymbol, 3000);
+
+// ─── FORMULA TICKER ────────────────────────────────────────────────────────────
+const formulas = [
+  'sin²θ + cos²θ = 1','sin(A+B) = sinA·cosB + cosA·sinB','cos(A+B) = cosA·cosB − sinA·sinB',
+  'tan(A+B) = (tanA+tanB)/(1−tanA·tanB)','sin2θ = 2sinθcosθ','cos2θ = cos²θ − sin²θ',
+  'a² + b² = c²  [Pythagoras]','Area = ½·base·height','d/dx(sinx) = cosx',
+  '∫sinx dx = −cosx + C','e^(iπ) + 1 = 0  [Euler]','lim(x→0) sinx/x = 1',
+  'sin(90°−θ) = cosθ','cosec²θ = 1 + cot²θ','sec²θ = 1 + tan²θ'
+];
+const track = document.getElementById('ticker');
+// duplicate for seamless loop
+[...formulas, ...formulas].forEach(f => {
+  const span = document.createElement('span');
+  span.className = 'ticker-item';
+  span.textContent = '✦  ' + f;
+  track.appendChild(span);
+});
+
+// ─── COUNT-UP ──────────────────────────────────────────────────────────────────
+function countUp(id, target, suffix='') {
+  let v = 0;
+  const el = document.getElementById(id);
+  const step = Math.ceil(target / 60);
+  const iv = setInterval(() => {
+    v = Math.min(v + step, target);
+    el.textContent = v + suffix;
+    if (v >= target) clearInterval(iv);
+  }, 24);
+}
+const observer = new IntersectionObserver(entries => {
+  if (entries[0].isIntersecting) {
+    countUp('s1', 200, '+');
+    countUp('s2', 150, '+');
+    countUp('s3', 4);
+    countUp('s4', 40, '+');
+    observer.disconnect();
+  }
+}, { threshold: 0.3 });
+observer.observe(document.querySelector('.stats-bar'));
+
+// ─── CLASS TOPICS DATA ─────────────────────────────────────────────────────────
+const classData = {
+  9: {
+    title: 'Class 9 Mathematics',
+    sub: 'CBSE Class 9 — Dive into the topics. Trigonometry is live!',
+    topics: [
+      { name: 'Introduction to Trigonometry', icon: '📐', locked: false, path: '/class9trigo' },
+      { name: 'Number Systems', icon: '🔢', locked: true },
+      { name: 'Polynomials', icon: '🔡', locked: true },
+      { name: 'Coordinate Geometry', icon: '📍', locked: true },
+      { name: 'Linear Equations', icon: '📏', locked: true },
+      { name: 'Triangles', icon: '△', locked: true },
+      { name: 'Circles', icon: '⭕', locked: true },
+      { name: 'Statistics', icon: '📊', locked: true },
+    ]
+  },
+  10: {
+    title: 'Class 10 Mathematics',
+    sub: 'CBSE Class 10 — Board level mastery starts here.',
+    topics: [
+      { name: 'Trigonometry', icon: '📐', locked: false, path: '/class10trigo' },
+      { name: 'Real Numbers', icon: '∞', locked: true },
+      { name: 'Polynomials', icon: '🔡', locked: true },
+      { name: 'Quadratic Equations', icon: 'x²', locked: true },
+      { name: 'Arithmetic Progressions', icon: '📈', locked: true },
+      { name: 'Triangles', icon: '△', locked: true },
+      { name: 'Coordinate Geometry', icon: '📍', locked: true },
+      { name: 'Circles', icon: '⭕', locked: true },
+      { name: 'Areas (Surface & Volume)', icon: '📦', locked: true },
+      { name: 'Statistics & Probability', icon: '📊', locked: true },
+    ]
+  },
+  11: {
+    title: 'Class 11 Mathematics',
+    sub: 'CBSE Class 11 — Where deep mathematics begins.',
+    topics: [
+      { name: 'Trigonometric Functions', icon: '📐', locked: false, path: '/class11trigo' },
+      { name: 'Sets', icon: '∪', locked: true },
+      { name: 'Relations & Functions', icon: '𝑓', locked: true },
+      { name: 'Complex Numbers', icon: 'ℂ', locked: true },
+      { name: 'Quadratic Equations', icon: 'x²', locked: true },
+      { name: 'Permutations & Combinations', icon: 'ⁿCᵣ', locked: true },
+      { name: 'Binomial Theorem', icon: '(a+b)ⁿ', locked: true },
+      { name: 'Sequences & Series', icon: '∑', locked: true },
+      { name: 'Straight Lines', icon: '📏', locked: true },
+      { name: 'Conic Sections', icon: '🪞', locked: true },
+      { name: 'Limits & Derivatives', icon: 'lim', locked: true },
+      { name: 'Statistics', icon: '📊', locked: true },
+    ]
+  },
+  12: {
+    title: 'Class 12 Mathematics',
+    sub: 'CBSE Class 12 — Board + JEE Advanced level depth.',
+    topics: [
+      { name: 'Inverse Trigonometric Functions', icon: '📐', locked: false, path: '/class12trigo' },
+      { name: 'Relations & Functions', icon: '𝑓', locked: true },
+      { name: 'Matrices & Determinants', icon: '[]', locked: true },
+      { name: 'Continuity & Differentiability', icon: "f'", locked: true },
+      { name: 'Applications of Derivatives', icon: '📈', locked: true },
+      { name: 'Integrals', icon: '∫', locked: true },
+      { name: 'Applications of Integrals', icon: '🖇', locked: true },
+      { name: 'Differential Equations', icon: 'dy/dx', locked: true },
+      { name: 'Vector Algebra', icon: '→', locked: true },
+      { name: '3D Geometry', icon: '📦', locked: true },
+      { name: 'Linear Programming', icon: '⚙️', locked: true },
+      { name: 'Probability', icon: 'P(A)', locked: true },
+    ]
+  }
+};
+
+// ─── MODAL ──────────────────────────────────────────────────────────────────────
+function openClassModal(cls) {
+  const data = classData[cls];
+  document.getElementById('modalTag').textContent = `✦  CLASS ${cls}  ✦`;
+  document.getElementById('modalTitle').textContent = data.title;
+  document.getElementById('modalSub').textContent   = data.sub;
+
+  const grid = document.getElementById('topicsGrid');
+  grid.innerHTML = '';
+  data.topics.forEach(t => {
+    const card = document.createElement('div');
+    card.className = 'topic-card ' + (t.locked ? 'locked' : 'unlocked');
+    card.innerHTML = `
+      <div class="topic-icon">${t.icon}</div>
+      <div class="topic-name">${t.name}</div>
+      <span class="topic-pill ${t.locked ? 'pill-soon' : 'pill-available'}">${t.locked ? '🔒 Coming Soon' : '✦ Available'}</span>
+    `;
+    if (!t.locked) card.onclick = () => navigateTo(t.path);
+    grid.appendChild(card);
+  });
+
+  document.getElementById('modalOverlay').classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeModal() {
+  document.getElementById('modalOverlay').classList.remove('active');
+  document.body.style.overflow = '';
+}
+
+function closeModalOutside(e) {
+  if (e.target === document.getElementById('modalOverlay')) closeModal();
+}
+
+function navigateTo(path) {
+  closeModal();
+  // Show a quick toast
+  showToast(`Opening ${path}…`);
+  setTimeout(() => {
+    window.location.href = path + '.html';
+  }, 600);
+}
+
+// ─── TOAST ─────────────────────────────────────────────────────────────────────
+function showToast(msg) {
+  const t = document.createElement('div');
+  t.textContent = msg;
+  Object.assign(t.style, {
+    position: 'fixed', bottom: '32px', left: '50%',
+    transform: 'translateX(-50%) translateY(20px)',
+    background: 'linear-gradient(135deg, #0a0a2e, #0d0520)',
+    border: '1px solid rgba(0,229,255,0.3)',
+    color: '#00e5ff',
+    padding: '12px 28px',
+    borderRadius: '40px',
+    fontFamily: 'Fira Code, monospace',
+    fontSize: '0.82rem',
+    letterSpacing: '1px',
+    zIndex: '9999',
+    opacity: '0',
+    transition: 'all 0.3s',
+    boxShadow: '0 8px 32px rgba(0,229,255,0.15)'
+  });
+  document.body.appendChild(t);
+  setTimeout(() => { t.style.opacity = '1'; t.style.transform = 'translateX(-50%) translateY(0)'; }, 50);
+  setTimeout(() => { t.style.opacity = '0'; setTimeout(() => t.remove(), 400); }, 2500);
+}
+
+// escape key
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+</script>
+</body>
+</html>

@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Class 12 — Inverse Trigonometry Complete</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&family=Syne:wght@700;800&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#030a08;--surface:#081510;--surface2:#0c1c14;--border:#163024;
+  --accent:#059669;--accent2:#34d399;--gold:#fbbf24;--blue:#3b82f6;
+  --pink:#f43f5e;--purple:#8b5cf6;--teal:#06b6d4;--orange:#f97316;
+  --text:#d1fae5;--text2:#86efac;--text3:#4ade80;--textg:#6b7280;
+}
+body{font-family:'Space Grotesk',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden}
+body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
+  background:radial-gradient(ellipse 70% 50% at 15% 5%,rgba(5,150,105,0.08) 0%,transparent 60%),
+  radial-gradient(ellipse 50% 40% at 85% 95%,rgba(59,130,246,0.05) 0%,transparent 60%)}
+
+.site-header{position:relative;z-index:10;padding:1.25rem 2rem;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border)}
+.home-btn{background:rgba(5,150,105,.12);border:1px solid rgba(5,150,105,.3);color:var(--accent2);font-family:'Space Grotesk',sans-serif;font-size:13px;font-weight:600;padding:8px 16px;border-radius:8px;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:6px;transition:all .2s}
+.home-btn:hover{background:rgba(5,150,105,.22);transform:translateX(-2px)}
+.class-badge{font-family:'Syne',sans-serif;font-size:13px;font-weight:700;letter-spacing:2px;color:var(--textg)}
+
+.hero{position:relative;z-index:1;text-align:center;padding:3rem 2rem 2.5rem;max-width:800px;margin:0 auto}
+.hero-label{font-family:'DM Mono',monospace;font-size:11px;color:var(--accent2);letter-spacing:3px;text-transform:uppercase;margin-bottom:1rem;display:flex;align-items:center;justify-content:center;gap:12px}
+.hero-label::before,.hero-label::after{content:'';flex:0 0 40px;height:1px;background:var(--accent2);opacity:.4}
+.hero h1{font-family:'Syne',sans-serif;font-size:clamp(2rem,5vw,3.2rem);font-weight:800;line-height:1.1;margin-bottom:.8rem;background:linear-gradient(135deg,#d1fae5 0%,#34d399 40%,#3b82f6 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero p{font-size:.95rem;color:var(--text2);line-height:1.7;max-width:600px;margin:0 auto 1.5rem}
+.hero-pills{display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
+.pill{font-size:11px;font-weight:600;padding:4px 13px;border-radius:20px}
+.pill.g{background:rgba(5,150,105,.1);border:1px solid rgba(5,150,105,.3);color:var(--accent2)}
+.pill.b{background:rgba(59,130,246,.1);border:1px solid rgba(59,130,246,.3);color:var(--blue)}
+.pill.gold{background:rgba(251,191,36,.1);border:1px solid rgba(251,191,36,.3);color:var(--gold)}
+.pill.p{background:rgba(139,92,246,.1);border:1px solid rgba(139,92,246,.3);color:var(--purple)}
+
+.main{max-width:1040px;margin:0 auto;padding:1.5rem 1.5rem 5rem;position:relative;z-index:1}
+
+.tabs{display:flex;gap:4px;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:5px;margin-bottom:1.5rem;flex-wrap:wrap}
+.tab-btn{flex:1;min-width:85px;padding:9px 10px;border-radius:8px;border:none;background:transparent;cursor:pointer;font-family:'Space Grotesk',sans-serif;font-size:12px;font-weight:600;color:var(--text2);transition:all .2s;white-space:nowrap}
+.tab-btn:hover{color:var(--text);background:rgba(5,150,105,.1)}
+.tab-btn.active{background:linear-gradient(135deg,rgba(5,150,105,.28),rgba(59,130,246,.1));color:var(--accent2);box-shadow:0 0 16px rgba(5,150,105,.2)}
+
+.section{display:none;animation:fadeUp .3s ease}
+.section.active{display:block}
+@keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+
+.card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:1.5rem;margin-bottom:1rem;position:relative;overflow:hidden}
+.card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--accent),transparent);opacity:.3}
+.card-title{font-family:'Syne',sans-serif;font-size:1.05rem;font-weight:700;color:var(--text);margin-bottom:1.1rem;display:flex;align-items:center;gap:8px}
+
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:.85rem;margin:.85rem 0}
+.grid3{display:grid;grid-template-columns:repeat(auto-fit,minmax(175px,1fr));gap:.85rem;margin:.85rem 0}
+
+.cbox{background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:1.1rem}
+.cbox h3{font-size:.7rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;margin-bottom:.7rem;color:var(--textg)}
+.cbox.g{border-color:rgba(5,150,105,.35)}.cbox.g h3{color:var(--accent2)}
+.cbox.b{border-color:rgba(59,130,246,.3)}.cbox.b h3{color:var(--blue)}
+.cbox.gold{border-color:rgba(251,191,36,.3)}.cbox.gold h3{color:var(--gold)}
+.cbox.p{border-color:rgba(139,92,246,.3)}.cbox.p h3{color:var(--purple)}
+.cbox.pk{border-color:rgba(244,63,94,.3)}.cbox.pk h3{color:var(--pink)}
+.cbox.t{border-color:rgba(6,182,212,.3)}.cbox.t h3{color:var(--teal)}
+.cbox.o{border-color:rgba(249,115,22,.3)}.cbox.o h3{color:var(--orange)}
+
+.frow{display:flex;align-items:flex-start;gap:7px;margin-bottom:.5rem;font-size:.84rem;line-height:1.6;color:var(--text2)}
+.frow:last-child{margin-bottom:0}
+.fm{display:inline-block;background:rgba(5,150,105,.1);border:1px solid rgba(5,150,105,.22);color:var(--accent2);font-family:'DM Mono',monospace;font-size:.78rem;padding:2px 8px;border-radius:5px}
+.fm.b{background:rgba(59,130,246,.1);border-color:rgba(59,130,246,.22);color:var(--blue)}
+.fm.g{background:rgba(251,191,36,.1);border-color:rgba(251,191,36,.22);color:var(--gold)}
+.fm.p{background:rgba(139,92,246,.1);border-color:rgba(139,92,246,.22);color:var(--purple)}
+.fm.pk{background:rgba(244,63,94,.1);border-color:rgba(244,63,94,.22);color:var(--pink)}
+.fm.t{background:rgba(6,182,212,.1);border-color:rgba(6,182,212,.22);color:var(--teal)}
+.fm.o{background:rgba(249,115,22,.1);border-color:rgba(249,115,22,.22);color:var(--orange)}
+
+.tw{overflow-x:auto;border-radius:10px;border:1px solid var(--border);margin:.75rem 0}
+table{width:100%;border-collapse:collapse;font-size:.79rem}
+th{background:rgba(5,150,105,.1);color:var(--accent2);font-weight:700;padding:8px 10px;text-align:center;border-bottom:1px solid var(--border);font-size:.74rem;letter-spacing:.5px}
+td{padding:7px 10px;text-align:center;border-bottom:1px solid rgba(22,48,36,.8);color:var(--text2)}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:rgba(5,150,105,.04)}
+
+.deriv{background:rgba(59,130,246,.04);border:1px solid rgba(59,130,246,.18);border-radius:12px;padding:1.2rem;margin:.75rem 0}
+.deriv-title{font-size:.7rem;font-weight:700;color:var(--blue);letter-spacing:2px;text-transform:uppercase;margin-bottom:.75rem}
+.step{display:flex;gap:10px;margin-bottom:.55rem;font-size:.83rem;color:var(--text2);line-height:1.6}
+.sn{background:rgba(59,130,246,.15);color:var(--blue);font-weight:700;font-size:.68rem;width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px}
+
+.fact{background:rgba(251,191,36,.04);border:1px solid rgba(251,191,36,.18);border-radius:10px;padding:.85rem 1rem;margin:.55rem 0;display:flex;gap:8px;align-items:flex-start}
+.fact p{font-size:.83rem;line-height:1.6;color:var(--text2)}
+.fact strong{color:var(--gold)}
+.tip{background:rgba(5,150,105,.06);border:1px solid rgba(5,150,105,.22);border-radius:10px;padding:.85rem 1rem;margin:.55rem 0}
+.tip-title{font-size:.7rem;font-weight:700;color:var(--accent2);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:.35rem}
+.tip p{font-size:.83rem;color:var(--text2);line-height:1.6}
+
+.iq{background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:1rem 1.1rem;margin:.5rem 0}
+.iq-q{font-size:.85rem;font-weight:600;color:var(--text);margin-bottom:.4rem}
+.iq-hint{font-size:.78rem;color:var(--text2);line-height:1.5}
+.iq-ans{font-family:'DM Mono',monospace;font-size:.78rem;color:var(--accent2);margin-top:.4rem}
+
+/* GRAPHS */
+.graph-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(145px,1fr));gap:9px;margin:.75rem 0}
+.graph-card{background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:.7rem;cursor:pointer;transition:all .2s}
+.graph-card:hover{border-color:var(--accent);transform:translateY(-2px);box-shadow:0 8px 24px rgba(5,150,105,.15)}
+.graph-card canvas{display:block;margin:0 auto 5px;border-radius:6px}
+.gc-name{font-family:'DM Mono',monospace;font-size:.73rem;text-align:center}
+.gc-dr{font-size:.65rem;color:var(--textg);text-align:center;margin-top:2px}
+
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.88);z-index:2000;backdrop-filter:blur(8px);overflow-y:auto;padding:2rem 1rem}
+.modal-box{background:var(--surface);border:1px solid var(--border);border-radius:20px;max-width:680px;margin:0 auto;padding:1.5rem;position:relative}
+.modal-close{position:absolute;top:12px;right:14px;background:rgba(255,255,255,.06);border:none;color:var(--text2);font-size:18px;cursor:pointer;border-radius:8px;width:30px;height:30px;display:flex;align-items:center;justify-content:center;transition:all .18s}
+.modal-close:hover{background:rgba(244,63,94,.2);color:var(--pink)}
+.modal-title{font-family:'Syne',sans-serif;font-size:1.3rem;font-weight:800;text-align:center;margin-bottom:.75rem}
+.modal-tags{display:flex;gap:6px;flex-wrap:wrap;justify-content:center;margin-bottom:.75rem}
+.modal-tag{font-size:.7rem;font-weight:600;padding:3px 9px;border-radius:20px;background:rgba(5,150,105,.1);border:1px solid rgba(5,150,105,.2);color:var(--accent2)}
+.modal-fmls{display:flex;gap:6px;flex-wrap:wrap;margin-top:.75rem}
+.modal-fml{background:rgba(59,130,246,.08);color:var(--blue);font-family:'DM Mono',monospace;font-size:.73rem;padding:3px 9px;border-radius:5px;border:1px solid rgba(59,130,246,.18)}
+
+/* QUIZ */
+.quiz-meta{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:1rem}
+.quiz-stat{background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:.65rem .85rem;min-width:60px;text-align:center}
+.quiz-num{font-family:'Syne',sans-serif;font-size:1.35rem;font-weight:800;color:var(--gold);display:block}
+.quiz-lbl{font-size:.64rem;color:var(--textg);letter-spacing:.5px;text-transform:uppercase}
+.prog-bar{height:4px;background:var(--border);border-radius:4px;margin-bottom:.9rem;overflow:hidden}
+.prog-fill{height:4px;border-radius:4px;background:linear-gradient(90deg,var(--accent),var(--blue));transition:width .4s}
+.quiz-q{font-size:.92rem;font-weight:600;color:var(--text);margin-bottom:.85rem;line-height:1.6}
+.opts{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+.opt{background:var(--surface2);border:1px solid var(--border);border-radius:9px;padding:9px 11px;cursor:pointer;font-family:'Space Grotesk',sans-serif;font-size:.8rem;color:var(--text2);transition:all .18s;text-align:left;width:100%}
+.opt:hover{border-color:var(--accent);background:rgba(5,150,105,.08);color:var(--text)}
+.opt.correct{background:rgba(52,211,153,.12)!important;border-color:var(--accent2)!important;color:var(--accent2)!important}
+.opt.wrong{background:rgba(244,63,94,.1)!important;border-color:var(--pink)!important;color:var(--pink)!important}
+.exp-box{background:rgba(59,130,246,.05);border:1px solid rgba(59,130,246,.18);border-radius:8px;padding:.8rem;margin-top:.8rem;font-size:.8rem;line-height:1.6;color:var(--blue);display:none}
+.exp-box.show{display:block;animation:fadeUp .2s ease}
+.btn{background:linear-gradient(135deg,rgba(5,150,105,.22),rgba(59,130,246,.1));border:1px solid rgba(5,150,105,.3);color:var(--accent2);font-family:'Space Grotesk',sans-serif;font-size:.8rem;font-weight:600;padding:9px 20px;border-radius:8px;cursor:pointer;transition:all .2s;display:inline-flex;align-items:center;gap:5px}
+.btn:hover{box-shadow:0 0 16px rgba(5,150,105,.25)}
+.btn-row{display:flex;gap:8px;margin-top:.85rem;flex-wrap:wrap}
+
+@media(max-width:600px){.opts{grid-template-columns:1fr}.main{padding:1rem 1rem 4rem}}
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <a href="index.html" class="home-btn">← Home</a>
+  <span class="class-badge">CBSE · CLASS 12</span>
+</header>
+
+<div class="hero">
+  <div class="hero-label">Inverse Trigonometric Functions</div>
+  <h1>Class 12<br>Trigonometry</h1>
+  <p>Complete CBSE Class 12 chapter on Inverse Trigonometric Functions — domain, range, properties, graphs, important results, and board-level questions.</p>
+  <div class="hero-pills">
+    <span class="pill g">🔄 Inverse Functions</span>
+    <span class="pill b">📊 All 6 Graphs</span>
+    <span class="pill gold">⭐ Board Questions</span>
+    <span class="pill p">🏆 Board-Level Quiz</span>
+  </div>
+</div>
+
+<div class="main">
+  <div class="tabs">
+    <button class="tab-btn active" onclick="showSec('concepts',this)">📐 Concepts</button>
+    <button class="tab-btn" onclick="showSec('formulas',this)">🔢 All Formulas</button>
+    <button class="tab-btn" onclick="showSec('graphs',this)">📊 Graphs</button>
+    <button class="tab-btn" onclick="showSec('deriv',this)">🔍 Derivations</button>
+    <button class="tab-btn" onclick="showSec('iq',this)">⭐ Board Questions</button>
+    <button class="tab-btn" onclick="showSec('tips',this)">💡 Tips & Facts</button>
+    <button class="tab-btn" onclick="showSec('quiz',this)">🏆 Quiz</button>
+  </div>
+
+  <!-- CONCEPTS -->
+  <div class="section active" id="sec-concepts">
+    <div class="card">
+      <div class="card-title">🔄 What Are Inverse Trig Functions?</div>
+      <div class="frow">Inverse trigonometric functions are the <strong style="color:var(--accent2)">inverse</strong> of the trigonometric functions — they give back the <strong style="color:var(--gold)">angle</strong> when given a ratio.</div>
+      <div class="frow" style="margin-top:.5rem">But since sin, cos, tan etc. are <strong style="color:var(--pink)">not one-one</strong> on their full domain, we restrict their domain to make them bijective — only then can an inverse exist.</div>
+      <div class="grid2" style="margin-top:1rem">
+        <div class="cbox g"><h3>Notation</h3>
+          <div class="frow"><span class="fm">sin⁻¹x</span> is NOT <span class="fm pk">1/sin x</span></div>
+          <div class="frow">sin⁻¹x means "the angle whose sine is x"</div>
+          <div class="frow">Also written as: <span class="fm">arcsin x</span></div>
+        </div>
+        <div class="cbox b"><h3>Why Restrict Domain?</h3>
+          <div class="frow">sin x = 1/2 has infinitely many solutions: 30°, 150°, 390°...</div>
+          <div class="frow">We restrict to <span class="fm b">[−π/2, π/2]</span> so sin⁻¹(1/2) = π/6 uniquely.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">📋 Principal Value Branch — All 6 Functions</div>
+      <div class="tw">
+        <table>
+          <thead><tr><th>Function</th><th>Domain</th><th>Range (Principal Value Branch)</th></tr></thead>
+          <tbody>
+            <tr><td style="color:var(--accent2);font-family:'DM Mono',monospace;font-weight:700">sin⁻¹x</td><td>[−1, 1]</td><td style="color:var(--gold)">[−π/2, π/2]</td></tr>
+            <tr><td style="color:var(--blue);font-family:'DM Mono',monospace;font-weight:700">cos⁻¹x</td><td>[−1, 1]</td><td style="color:var(--gold)">[0, π]</td></tr>
+            <tr><td style="color:var(--gold);font-family:'DM Mono',monospace;font-weight:700">tan⁻¹x</td><td>ℝ (all reals)</td><td style="color:var(--gold)">(−π/2, π/2)</td></tr>
+            <tr><td style="color:var(--purple);font-family:'DM Mono',monospace;font-weight:700">cosec⁻¹x</td><td>(−∞,−1] ∪ [1,∞)</td><td style="color:var(--gold)">[−π/2, π/2] − {0}</td></tr>
+            <tr><td style="color:var(--pink);font-family:'DM Mono',monospace;font-weight:700">sec⁻¹x</td><td>(−∞,−1] ∪ [1,∞)</td><td style="color:var(--gold)">[0, π] − {π/2}</td></tr>
+            <tr><td style="color:var(--teal);font-family:'DM Mono',monospace;font-weight:700">cot⁻¹x</td><td>ℝ (all reals)</td><td style="color:var(--gold)">(0, π)</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="tip"><div class="tip-title">💚 Key Observation</div>
+        <p>sin⁻¹ and tan⁻¹ have range around 0 (negative and positive), while cos⁻¹ and cot⁻¹ have range in [0, π]. This matters for sign determination.</p>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">💡 Specific Values of Inverse Functions</div>
+      <div class="tw">
+        <table>
+          <thead><tr><th>Expression</th><th>Value</th><th>Expression</th><th>Value</th></tr></thead>
+          <tbody>
+            <tr><td style="color:var(--accent2)">sin⁻¹(0)</td><td>0</td><td style="color:var(--blue)">cos⁻¹(1)</td><td>0</td></tr>
+            <tr><td style="color:var(--accent2)">sin⁻¹(1/2)</td><td>π/6</td><td style="color:var(--blue)">cos⁻¹(1/2)</td><td>π/3</td></tr>
+            <tr><td style="color:var(--accent2)">sin⁻¹(1/√2)</td><td>π/4</td><td style="color:var(--blue)">cos⁻¹(1/√2)</td><td>π/4</td></tr>
+            <tr><td style="color:var(--accent2)">sin⁻¹(√3/2)</td><td>π/3</td><td style="color:var(--blue)">cos⁻¹(√3/2)</td><td>π/6</td></tr>
+            <tr><td style="color:var(--accent2)">sin⁻¹(1)</td><td>π/2</td><td style="color:var(--blue)">cos⁻¹(0)</td><td>π/2</td></tr>
+            <tr><td style="color:var(--accent2)">sin⁻¹(−1/2)</td><td>−π/6</td><td style="color:var(--blue)">cos⁻¹(−1/2)</td><td>2π/3</td></tr>
+            <tr><td style="color:var(--gold)">tan⁻¹(0)</td><td>0</td><td style="color:var(--gold)">tan⁻¹(1)</td><td>π/4</td></tr>
+            <tr><td style="color:var(--gold)">tan⁻¹(1/√3)</td><td>π/6</td><td style="color:var(--gold)">tan⁻¹(√3)</td><td>π/3</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- FORMULAS -->
+  <div class="section" id="sec-formulas">
+    <div class="card">
+      <div class="card-title">🔗 Complementary Angle Properties</div>
+      <div class="grid3">
+        <div class="cbox g"><h3>sin⁻¹ + cos⁻¹</h3><div class="frow"><span class="fm" style="font-size:.88rem;padding:5px 12px">sin⁻¹x + cos⁻¹x = π/2</span></div><div class="frow">Valid for x ∈ [−1, 1]</div></div>
+        <div class="cbox b"><h3>tan⁻¹ + cot⁻¹</h3><div class="frow"><span class="fm b" style="font-size:.88rem;padding:5px 12px">tan⁻¹x + cot⁻¹x = π/2</span></div><div class="frow">Valid for x ∈ ℝ</div></div>
+        <div class="cbox gold"><h3>sec⁻¹ + cosec⁻¹</h3><div class="frow"><span class="fm g" style="font-size:.88rem;padding:5px 12px">sec⁻¹x + cosec⁻¹x = π/2</span></div><div class="frow">Valid for |x| ≥ 1</div></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">🔄 Negative Argument Properties</div>
+      <div class="grid2">
+        <div class="cbox pk"><h3>Odd Functions (negative goes out)</h3>
+          <div class="frow"><span class="fm pk">sin⁻¹(−x) = −sin⁻¹x</span>, x ∈ [−1,1]</div>
+          <div class="frow"><span class="fm pk">tan⁻¹(−x) = −tan⁻¹x</span>, x ∈ ℝ</div>
+          <div class="frow"><span class="fm pk">cosec⁻¹(−x) = −cosec⁻¹x</span>, |x|≥1</div>
+        </div>
+        <div class="cbox b"><h3>Even-like (π minus rule)</h3>
+          <div class="frow"><span class="fm b">cos⁻¹(−x) = π − cos⁻¹x</span>, x ∈ [−1,1]</div>
+          <div class="frow"><span class="fm b">sec⁻¹(−x) = π − sec⁻¹x</span>, |x|≥1</div>
+          <div class="frow"><span class="fm b">cot⁻¹(−x) = π − cot⁻¹x</span>, x ∈ ℝ</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">🔗 Reciprocal Identities for Inverse Functions</div>
+      <div class="grid3">
+        <div class="cbox g"><h3>sin⁻¹ ↔ cosec⁻¹</h3>
+          <div class="frow"><span class="fm">sin⁻¹(1/x) = cosec⁻¹x</span></div>
+          <div class="frow">for |x| ≥ 1</div>
+        </div>
+        <div class="cbox b"><h3>cos⁻¹ ↔ sec⁻¹</h3>
+          <div class="frow"><span class="fm b">cos⁻¹(1/x) = sec⁻¹x</span></div>
+          <div class="frow">for |x| ≥ 1</div>
+        </div>
+        <div class="cbox gold"><h3>tan⁻¹ ↔ cot⁻¹</h3>
+          <div class="frow"><span class="fm g">tan⁻¹(1/x) = cot⁻¹x</span>, x > 0</div>
+          <div class="frow"><span class="fm g">tan⁻¹(1/x) = −π + cot⁻¹x</span>, x < 0</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">➕ Addition Formulas for tan⁻¹</div>
+      <div class="grid2">
+        <div class="cbox g"><h3>tan⁻¹x + tan⁻¹y</h3>
+          <div class="frow">If xy &lt; 1: <span class="fm">= tan⁻¹((x+y)/(1−xy))</span></div>
+          <div class="frow">If xy > 1, x > 0: <span class="fm">= π + tan⁻¹((x+y)/(1−xy))</span></div>
+          <div class="frow">If xy > 1, x &lt; 0: <span class="fm">= −π + tan⁻¹((x+y)/(1−xy))</span></div>
+        </div>
+        <div class="cbox b"><h3>tan⁻¹x − tan⁻¹y</h3>
+          <div class="frow">If xy > −1: <span class="fm b">= tan⁻¹((x−y)/(1+xy))</span></div>
+          <div class="frow">If xy &lt; −1, x > 0: <span class="fm b">= π + tan⁻¹((x−y)/(1+xy))</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">🔢 Double & Triple Angle in Inverse Form</div>
+      <div class="grid2">
+        <div class="cbox p"><h3>Double Angle Inverse Formulas</h3>
+          <div class="frow"><span class="fm p">2sin⁻¹x = sin⁻¹(2x√(1−x²))</span>, |x| ≤ 1/√2</div>
+          <div class="frow"><span class="fm p">2cos⁻¹x = cos⁻¹(2x²−1)</span>, 0 ≤ x ≤ 1</div>
+          <div class="frow"><span class="fm p">2tan⁻¹x = tan⁻¹(2x/(1−x²))</span>, |x| &lt; 1</div>
+          <div class="frow"><span class="fm p">2tan⁻¹x = sin⁻¹(2x/(1+x²))</span>, |x| ≤ 1</div>
+          <div class="frow"><span class="fm p">2tan⁻¹x = cos⁻¹((1−x²)/(1+x²))</span>, x ≥ 0</div>
+        </div>
+        <div class="cbox t"><h3>Compositions (Simplifications)</h3>
+          <div class="frow"><span class="fm t">sin(sin⁻¹x) = x</span>, x ∈ [−1,1]</div>
+          <div class="frow"><span class="fm t">cos(cos⁻¹x) = x</span>, x ∈ [−1,1]</div>
+          <div class="frow"><span class="fm t">tan(tan⁻¹x) = x</span>, x ∈ ℝ</div>
+          <div class="frow"><span class="fm t">sin⁻¹(sin x) = x</span>, x ∈ [−π/2, π/2]</div>
+          <div class="frow"><span class="fm t">cos⁻¹(cos x) = x</span>, x ∈ [0, π]</div>
+          <div class="frow"><span class="fm t">tan⁻¹(tan x) = x</span>, x ∈ (−π/2, π/2)</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">🔗 Cross-Function Formulas</div>
+      <div class="grid2">
+        <div class="cbox g"><h3>sin⁻¹ in terms of others</h3>
+          <div class="frow"><span class="fm">sin⁻¹x = cos⁻¹(√(1−x²))</span></div>
+          <div class="frow"><span class="fm">sin⁻¹x = tan⁻¹(x/√(1−x²))</span></div>
+        </div>
+        <div class="cbox b"><h3>cos⁻¹ in terms of others</h3>
+          <div class="frow"><span class="fm b">cos⁻¹x = sin⁻¹(√(1−x²))</span></div>
+          <div class="frow"><span class="fm b">cos⁻¹x = tan⁻¹(√(1−x²)/x)</span>, x > 0</div>
+        </div>
+        <div class="cbox gold"><h3>tan⁻¹ in terms of others</h3>
+          <div class="frow"><span class="fm g">tan⁻¹x = sin⁻¹(x/√(1+x²))</span></div>
+          <div class="frow"><span class="fm g">tan⁻¹x = cos⁻¹(1/√(1+x²))</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- GRAPHS -->
+  <div class="section" id="sec-graphs">
+    <div class="card">
+      <div class="card-title">📊 Inverse Trig Graphs — Click to Expand</div>
+      <div class="graph-grid" id="graphGrid12"></div>
+    </div>
+    <div class="card">
+      <div class="card-title">🔑 Key Graph Properties</div>
+      <div class="tw">
+        <table>
+          <thead><tr><th>Function</th><th>Domain</th><th>Range</th><th>Increasing/Decreasing</th></tr></thead>
+          <tbody>
+            <tr><td style="color:var(--accent2);font-family:'DM Mono',monospace">sin⁻¹x</td><td>[−1, 1]</td><td>[−π/2, π/2]</td><td style="color:var(--accent2)">Increasing</td></tr>
+            <tr><td style="color:var(--blue);font-family:'DM Mono',monospace">cos⁻¹x</td><td>[−1, 1]</td><td>[0, π]</td><td style="color:var(--pink)">Decreasing</td></tr>
+            <tr><td style="color:var(--gold);font-family:'DM Mono',monospace">tan⁻¹x</td><td>ℝ</td><td>(−π/2, π/2)</td><td style="color:var(--accent2)">Increasing</td></tr>
+            <tr><td style="color:var(--purple);font-family:'DM Mono',monospace">cosec⁻¹x</td><td>(−∞,−1]∪[1,∞)</td><td>[−π/2,π/2]−{0}</td><td style="color:var(--pink)">Decreasing on each piece</td></tr>
+            <tr><td style="color:var(--pink);font-family:'DM Mono',monospace">sec⁻¹x</td><td>(−∞,−1]∪[1,∞)</td><td>[0,π]−{π/2}</td><td style="color:var(--accent2)">Increasing on each piece</td></tr>
+            <tr><td style="color:var(--teal);font-family:'DM Mono',monospace">cot⁻¹x</td><td>ℝ</td><td>(0, π)</td><td style="color:var(--pink)">Decreasing</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- DERIVATIONS -->
+  <div class="section" id="sec-deriv">
+    <div class="card">
+      <div class="card-title">🔍 Derivation — sin⁻¹x + cos⁻¹x = π/2</div>
+      <div class="deriv">
+        <div class="deriv-title">Proof</div>
+        <div class="step"><div class="sn">1</div><div>Let sin⁻¹x = θ, where θ ∈ [−π/2, π/2] and x ∈ [−1,1]</div></div>
+        <div class="step"><div class="sn">2</div><div>Then sin θ = x</div></div>
+        <div class="step"><div class="sn">3</div><div>We know: sin θ = cos(π/2 − θ)</div></div>
+        <div class="step"><div class="sn">4</div><div>So: x = cos(π/2 − θ), which means cos⁻¹x = π/2 − θ</div></div>
+        <div class="step"><div class="sn">5</div><div>Therefore: θ + cos⁻¹x = π/2 → <span class="fm" style="font-size:.88rem">sin⁻¹x + cos⁻¹x = π/2 ✓</span></div></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">🔍 Derivation — tan⁻¹x + tan⁻¹y = tan⁻¹((x+y)/(1−xy))</div>
+      <div class="deriv">
+        <div class="deriv-title">Proof (for xy &lt; 1)</div>
+        <div class="step"><div class="sn">1</div><div>Let tan⁻¹x = α and tan⁻¹y = β, so tan α = x, tan β = y</div></div>
+        <div class="step"><div class="sn">2</div><div>Use addition formula: <span class="fm b">tan(α+β) = (tan α + tan β)/(1 − tan α tan β)</span></div></div>
+        <div class="step"><div class="sn">3</div><div>Substitute: tan(α+β) = (x + y)/(1 − xy)</div></div>
+        <div class="step"><div class="sn">4</div><div>So: α + β = tan⁻¹((x+y)/(1−xy))</div></div>
+        <div class="step"><div class="sn">5</div><div>Therefore: <span class="fm" style="font-size:.88rem">tan⁻¹x + tan⁻¹y = tan⁻¹((x+y)/(1−xy)) ✓</span> when xy &lt; 1</div></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">🔍 Derivation — 2tan⁻¹x = sin⁻¹(2x/(1+x²))</div>
+      <div class="deriv">
+        <div class="deriv-title">Proof for |x| ≤ 1</div>
+        <div class="step"><div class="sn">1</div><div>Let tan⁻¹x = θ, so x = tan θ and θ ∈ (−π/2, π/2)</div></div>
+        <div class="step"><div class="sn">2</div><div>sin 2θ = 2 tan θ/(1 + tan²θ) = 2x/(1 + x²)</div></div>
+        <div class="step"><div class="sn">3</div><div>So: 2θ = sin⁻¹(2x/(1+x²))</div></div>
+        <div class="step"><div class="sn">4</div><div>Therefore: <span class="fm" style="font-size:.88rem">2tan⁻¹x = sin⁻¹(2x/(1+x²)) ✓</span></div></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">🔍 Derivation — sin⁻¹(−x) = −sin⁻¹x</div>
+      <div class="deriv">
+        <div class="deriv-title">Proof</div>
+        <div class="step"><div class="sn">1</div><div>Let sin⁻¹x = θ, so sin θ = x and θ ∈ [−π/2, π/2]</div></div>
+        <div class="step"><div class="sn">2</div><div>sin(−θ) = −sin θ = −x</div></div>
+        <div class="step"><div class="sn">3</div><div>So: sin⁻¹(−x) = −θ = −sin⁻¹x</div></div>
+        <div class="step"><div class="sn">4</div><div>Therefore: <span class="fm" style="font-size:.88rem">sin⁻¹(−x) = −sin⁻¹x ✓</span></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- BOARD QUESTIONS -->
+  <div class="section" id="sec-iq">
+    <div class="card">
+      <div class="card-title">⭐ CBSE Board-Level Questions</div>
+      <div class="iq">
+        <div class="iq-q">Q1. Find the value of sin⁻¹(sin 3π/5)</div>
+        <div class="iq-hint">Hint: sin⁻¹(sin x) = x only if x ∈ [−π/2, π/2]. Here 3π/5 ∉ [−π/2, π/2].</div>
+        <div class="iq-ans">sin(3π/5) = sin(π − 3π/5) = sin(2π/5). Since 2π/5 ∈ [−π/2, π/2], answer = 2π/5</div>
+      </div>
+      <div class="iq">
+        <div class="iq-q">Q2. Prove: 3sin⁻¹x = sin⁻¹(3x − 4x³)</div>
+        <div class="iq-hint">Hint: Let sin⁻¹x = θ, so x = sin θ. Then sin 3θ = 3sinθ − 4sin³θ = 3x − 4x³. Hence 3θ = sin⁻¹(3x − 4x³).</div>
+        <div class="iq-ans">Verified using triple angle formula: sin 3θ = 3sinθ − 4sin³θ</div>
+      </div>
+      <div class="iq">
+        <div class="iq-q">Q3. Find the value of tan⁻¹(1) + tan⁻¹(1/√3)</div>
+        <div class="iq-hint">tan⁻¹(1) = π/4, tan⁻¹(1/√3) = π/6. Check: product = 1/√3 &lt; 1, so use addition formula.</div>
+        <div class="iq-ans">= tan⁻¹((1 + 1/√3)/(1 − 1/√3)) = tan⁻¹((√3+1)/(√3−1)) = tan⁻¹(tan(5π/12)) = 5π/12</div>
+      </div>
+      <div class="iq">
+        <div class="iq-q">Q4. Write the function f(x) = tan⁻¹(√((1−cosx)/(1+cosx))) in simplified form.</div>
+        <div class="iq-hint">Use half-angle: (1−cosx)/(1+cosx) = tan²(x/2). So √ = |tan(x/2)|.</div>
+        <div class="iq-ans">f(x) = x/2, for x ∈ (0, π)</div>
+      </div>
+      <div class="iq">
+        <div class="iq-q">Q5. If sin⁻¹x + sin⁻¹y = π/2, find cos⁻¹x + cos⁻¹y.</div>
+        <div class="iq-hint">Use sin⁻¹x = π/2 − cos⁻¹x and sin⁻¹y = π/2 − cos⁻¹y.</div>
+        <div class="iq-ans">cos⁻¹x + cos⁻¹y = π − (sin⁻¹x + sin⁻¹y) = π − π/2 = π/2</div>
+      </div>
+      <div class="iq">
+        <div class="iq-q">Q6. Solve: tan⁻¹2x + tan⁻¹3x = π/4</div>
+        <div class="iq-hint">Apply addition formula: tan⁻¹((2x+3x)/(1−6x²)) = π/4. So 5x/(1−6x²) = 1.</div>
+        <div class="iq-ans">6x² + 5x − 1 = 0 → (6x − 1)(x + 1) = 0 → x = 1/6 (x = −1 rejected since it gives negative)</div>
+      </div>
+      <div class="iq">
+        <div class="iq-q">Q7. Simplify: tan⁻¹(cosx/(1+sinx)), x ∈ (−π/2, π/2)</div>
+        <div class="iq-hint">Divide numerator and denominator by cos(x/2). Use half-angle identities.</div>
+        <div class="iq-ans">= tan⁻¹(tan(π/4 − x/2)) = π/4 − x/2</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TIPS -->
+  <div class="section" id="sec-tips">
+    <div class="card">
+      <div class="card-title">💡 Key Facts About Inverse Trig</div>
+      <div class="fact"><span>📐</span><p>The <strong>principal value</strong> is the unique angle in the restricted range. Always check if the given angle is in the principal value branch before applying sin⁻¹(sin x) = x.</p></div>
+      <div class="fact"><span>🔄</span><p>Inverse trig functions are used in <strong>integration</strong> (Class 12 calculus): ∫ 1/√(1−x²) dx = sin⁻¹x + C, ∫ 1/(1+x²) dx = tan⁻¹x + C</p></div>
+      <div class="fact"><span>📊</span><p>The graphs of y = sin⁻¹x and y = sin x are <strong>reflections of each other</strong> in the line y = x (that's what inverse functions do geometrically).</p></div>
+      <div class="fact"><span>🎯</span><p>tan⁻¹x has <strong>horizontal asymptotes</strong> at y = ±π/2. This means tan⁻¹(∞) = π/2 and tan⁻¹(−∞) = −π/2 — very useful in limits and integration.</p></div>
+      <div class="fact"><span>⚡</span><p>In navigation and physics, inverse trig functions calculate <strong>angles from ratios</strong> — e.g., finding the angle of a slope, the direction of a vector, etc.</p></div>
+    </div>
+    <div class="card">
+      <div class="card-title">🧠 Board Exam Strategies</div>
+      <div class="tip"><div class="tip-title">💚 Tip 1 — Always Check the Domain</div>
+        <p>Before applying any inverse trig formula, verify the argument is in the correct domain. sin⁻¹ needs x ∈ [−1,1], tan⁻¹ needs the product condition checked.</p>
+      </div>
+      <div class="tip"><div class="tip-title">💚 Tip 2 — The tan⁻¹ Addition Formula Trap</div>
+        <p>tan⁻¹x + tan⁻¹y has THREE cases based on the sign of (1 − xy) and the quadrant. For boards, xy &lt; 1 case (simple formula) is most common. Always state the condition!</p>
+      </div>
+      <div class="tip"><div class="tip-title">💚 Tip 3 — Simplification Strategy</div>
+        <p>When asked to simplify expressions like tan⁻¹(√((1−cosx)/(1+cosx))), always try half-angle substitutions. Most Class 12 problems reduce to x/2 or π/4 ± x/2.</p>
+      </div>
+      <div class="tip"><div class="tip-title">💚 Tip 4 — Principal Value Problems</div>
+        <p>For sin⁻¹(sin 7π/6): First find sin(7π/6) = −1/2. Then sin⁻¹(−1/2) = −π/6. Don't blindly write 7π/6!</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- QUIZ -->
+  <div class="section" id="sec-quiz">
+    <div class="card">
+      <div class="card-title">🏆 Class 12 Quiz — Board Level</div>
+      <div class="quiz-meta">
+        <div class="quiz-stat"><span class="quiz-num" id="q12Score">0</span><span class="quiz-lbl">Score</span></div>
+        <div class="quiz-stat"><span class="quiz-num" id="q12Correct" style="color:var(--accent2)">0</span><span class="quiz-lbl">Correct</span></div>
+        <div class="quiz-stat"><span class="quiz-num" id="q12Wrong" style="color:var(--pink)">0</span><span class="quiz-lbl">Wrong</span></div>
+        <div class="quiz-stat"><span class="quiz-num" id="q12Total" style="color:var(--text2)">0/12</span><span class="quiz-lbl">Progress</span></div>
+      </div>
+      <div class="prog-bar"><div class="prog-fill" id="q12Fill" style="width:0%"></div></div>
+      <div id="q12Area"></div>
+      <div class="btn-row">
+        <button class="btn" id="q12Next" style="display:none" onclick="q12Next()">Next →</button>
+        <button class="btn" onclick="q12Init()" style="background:rgba(251,191,36,.1);border-color:rgba(251,191,36,.3);color:var(--gold)">↺ Restart</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="graphModal12" onclick="if(event.target===this)closeModal12()">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeModal12()">✕</button>
+    <div class="modal-title" id="modal12Title"></div>
+    <div class="modal-tags" id="modal12Tags"></div>
+    <canvas id="modal12Canvas"></canvas>
+    <div class="modal-fmls" id="modal12Fmls"></div>
+  </div>
+</div>
+
+<script>
+function showSec(id,btn){
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('sec-'+id).classList.add('active');
+  btn.classList.add('active');
+  if(id==='graphs')buildGraphs12();
+}
+
+var graphs12=[
+  {name:'sin⁻¹x',color:'#34d399',fn:function(x){if(x<-1||x>1)return NaN;return Math.asin(x);},xmin:-1.5,xmax:1.5,ymin:-2,ymax:2,domain:'[−1,1]',range:'[−π/2,π/2]',fmls:['sin⁻¹x+cos⁻¹x=π/2','sin⁻¹(−x)=−sin⁻¹x','Increasing function']},
+  {name:'cos⁻¹x',color:'#3b82f6',fn:function(x){if(x<-1||x>1)return NaN;return Math.acos(x);},xmin:-1.5,xmax:1.5,ymin:-0.5,ymax:3.6,domain:'[−1,1]',range:'[0,π]',fmls:['cos⁻¹x+sin⁻¹x=π/2','cos⁻¹(−x)=π−cos⁻¹x','Decreasing function']},
+  {name:'tan⁻¹x',color:'#fbbf24',fn:Math.atan,xmin:-5,xmax:5,ymin:-2,ymax:2,domain:'ℝ',range:'(−π/2,π/2)',fmls:['Asymptotes at ±π/2','tan⁻¹x+cot⁻¹x=π/2','tan⁻¹(−x)=−tan⁻¹x']},
+  {name:'cosec⁻¹x',color:'#8b5cf6',fn:function(x){if(x>-1&&x<1)return NaN;return Math.asin(1/x);},xmin:-4,xmax:4,ymin:-2,ymax:2,domain:'|x|≥1',range:'[−π/2,π/2]−{0}',fmls:['cosec⁻¹x=sin⁻¹(1/x)','cosec⁻¹(−x)=−cosec⁻¹x']},
+  {name:'sec⁻¹x',color:'#f43f5e',fn:function(x){if(x>-1&&x<1)return NaN;return Math.acos(1/x);},xmin:-4,xmax:4,ymin:-0.5,ymax:3.8,domain:'|x|≥1',range:'[0,π]−{π/2}',fmls:['sec⁻¹x=cos⁻¹(1/x)','sec⁻¹(−x)=π−sec⁻¹x']},
+  {name:'cot⁻¹x',color:'#06b6d4',fn:function(x){return Math.PI/2-Math.atan(x);},xmin:-5,xmax:5,ymin:-0.5,ymax:3.8,domain:'ℝ',range:'(0,π)',fmls:['cot⁻¹x+tan⁻¹x=π/2','cot⁻¹(−x)=π−cot⁻¹x','Decreasing function']},
+];
+var _g12Built=false;
+function buildGraphs12(){
+  if(_g12Built)return;_g12Built=true;
+  var grid=document.getElementById('graphGrid12');
+  graphs12.forEach(function(g){
+    var card=document.createElement('div');card.className='graph-card';
+    var cv=document.createElement('canvas');cv.width=140;cv.height=80;
+    drawG12(cv,g,140,80);
+    var nm=document.createElement('div');nm.className='gc-name';nm.textContent='y='+g.name;nm.style.color=g.color;
+    var dr=document.createElement('div');dr.className='gc-dr';dr.textContent=g.domain;
+    card.appendChild(cv);card.appendChild(nm);card.appendChild(dr);
+    card.addEventListener('click',function(){openModal12(g);});
+    grid.appendChild(card);
+  });
+}
+function drawG12(cv,g,W,H){
+  var c=cv.getContext('2d');c.clearRect(0,0,W,H);
+  var xmin=g.xmin||(-2),xmax=g.xmax||2,ymin=g.ymin||(-2),ymax=g.ymax||2;
+  function tx(x){return (x-xmin)/(xmax-xmin)*W;}
+  function ty(y){return H-(y-ymin)/(ymax-ymin)*H;}
+  c.strokeStyle='rgba(22,48,36,0.9)';c.lineWidth=0.5;
+  for(var i=Math.ceil(xmin);i<=Math.floor(xmax);i++){c.beginPath();c.moveTo(tx(i),0);c.lineTo(tx(i),H);c.stroke();}
+  c.strokeStyle='rgba(52,211,153,0.3)';c.lineWidth=1;
+  c.beginPath();c.moveTo(0,ty(0));c.lineTo(W,ty(0));c.stroke();
+  c.beginPath();c.moveTo(tx(0),0);c.lineTo(tx(0),H);c.stroke();
+  c.strokeStyle=g.color;c.lineWidth=W>200?2.2:1.6;c.shadowBlur=6;c.shadowColor=g.color;
+  var steps=500,dx=(xmax-xmin)/steps,started=false,prev=null;
+  c.beginPath();
+  for(var i=0;i<=steps;i++){
+    var x=xmin+i*dx,y;
+    try{y=g.fn(x);}catch(e){started=false;continue;}
+    if(isNaN(y)||!isFinite(y)){started=false;prev=null;continue;}
+    if(y<ymin-0.1||y>ymax+0.1){started=false;prev=null;continue;}
+    if(prev!==null&&Math.abs(y-prev)>3){started=false;prev=null;}
+    var px=tx(x),py=ty(y);
+    if(!started){c.moveTo(px,py);started=true;}else{c.lineTo(px,py);}
+    prev=y;
+  }
+  c.stroke();c.shadowBlur=0;
+}
+function openModal12(g){
+  document.getElementById('modal12Title').textContent='y = '+g.name;
+  document.getElementById('modal12Title').style.color=g.color;
+  var tags=document.getElementById('modal12Tags');
+  tags.innerHTML='<span class="modal-tag">Domain: '+g.domain+'</span><span class="modal-tag" style="color:var(--gold)">Range: '+g.range+'</span>';
+  var W=Math.min(640,window.innerWidth-80);
+  var cv=document.getElementById('modal12Canvas');
+  cv.width=W;cv.height=Math.round(W*0.55);
+  drawG12(cv,g,W,cv.height);
+  var fmls=document.getElementById('modal12Fmls');
+  fmls.innerHTML='';
+  (g.fmls||[]).forEach(function(f){var s=document.createElement('span');s.className='modal-fml';s.textContent=f;fmls.appendChild(s);});
+  document.getElementById('graphModal12').style.display='block';document.body.style.overflow='hidden';
+}
+function closeModal12(){document.getElementById('graphModal12').style.display='none';document.body.style.overflow='';}
+
+// QUIZ
+var q12Data=[
+  {q:'The principal value branch of cos⁻¹x is:',opts:['[−π/2,π/2]','(−π/2,π/2)','[0,π]','(0,π)'],ans:2,exp:'cos⁻¹x has principal value branch [0,π]. It gives angles in this range uniquely.'},
+  {q:'sin⁻¹(−1/2) = ?',opts:['π/6','−π/6','5π/6','−5π/6'],ans:1,exp:'sin⁻¹ is an odd function: sin⁻¹(−x) = −sin⁻¹x. sin⁻¹(1/2) = π/6, so sin⁻¹(−1/2) = −π/6'},
+  {q:'cos⁻¹(−1/2) = ?',opts:['−π/3','π/3','2π/3','5π/3'],ans:2,exp:'cos⁻¹(−x) = π − cos⁻¹x. cos⁻¹(1/2) = π/3, so cos⁻¹(−1/2) = π − π/3 = 2π/3'},
+  {q:'tan⁻¹(1) + tan⁻¹(1) = ?',opts:['π/4','π/2','π','3π/4'],ans:1,exp:'tan⁻¹(1)+tan⁻¹(1): product = 1, NOT <1, so we add π. But actually, tan(π/2) is undefined, and 2×π/4 = π/2 directly. Both arguments same and tan⁻¹(1)=π/4, so sum = π/2.'},
+  {q:'sin⁻¹x + cos⁻¹x (for x ∈ [−1,1]) = ?',opts:['π','0','π/2','2π'],ans:2,exp:'This is a standard identity: sin⁻¹x + cos⁻¹x = π/2 for all x ∈ [−1,1]'},
+  {q:'The domain of sec⁻¹x is:',opts:['[−1,1]','ℝ','(−∞,−1]∪[1,∞)','ℝ−{0}'],ans:2,exp:'sec⁻¹x is defined only when |x| ≥ 1, i.e., domain = (−∞,−1] ∪ [1,∞)'},
+  {q:'tan⁻¹(1/√3) + tan⁻¹(1/√3) = ?',opts:['π/6','π/3','π/4','2π/3'],ans:1,exp:'2tan⁻¹(1/√3) = 2×π/6 = π/3. Or use: tan⁻¹((1/√3+1/√3)/(1−1/3)) = tan⁻¹((2/√3)/(2/3)) = tan⁻¹(√3) = π/3'},
+  {q:'sin⁻¹(sin(5π/6)) = ?',opts:['5π/6','π/6','−π/6','π/3'],ans:1,exp:'sin(5π/6) = sin(π−π/6) = sin(π/6) = 1/2. And sin⁻¹(1/2) = π/6. So sin⁻¹(sin(5π/6)) = π/6'},
+  {q:'tan⁻¹x + tan⁻¹(1/x) for x > 0 = ?',opts:['π/4','0','π/2','π'],ans:2,exp:'For x>0: tan⁻¹x + cot⁻¹x = π/2. And tan⁻¹(1/x) = cot⁻¹x for x>0. So the sum = π/2.'},
+  {q:'The range of cot⁻¹x is:',opts:['(0,π)','[0,π]','(−π/2,π/2)','[−π/2,π/2]'],ans:0,exp:'cot⁻¹x has range (0,π) — open interval, not including 0 or π.'},
+  {q:'2tan⁻¹(1/2) + tan⁻¹(1/7) = ?',opts:['π/4','π/3','π/2','π'],ans:0,exp:'2tan⁻¹(1/2) = tan⁻¹(2×(1/2)/(1−1/4)) = tan⁻¹(1/(3/4)) = tan⁻¹(4/3). Then tan⁻¹(4/3)+tan⁻¹(1/7) = tan⁻¹((4/3+1/7)/(1−4/21)) = tan⁻¹(1) = π/4'},
+  {q:'cos⁻¹(cos(7π/6)) = ?',opts:['7π/6','5π/6','π/6','−π/6'],ans:1,exp:'cos(7π/6) = cos(π+π/6) = −cos(π/6) = −√3/2. Then cos⁻¹(−√3/2) = π − π/6 = 5π/6'},
+];
+var q12Idx=0,q12Score=0,q12Correct=0,q12Wrong=0,q12Answered=false;
+function q12Init(){q12Idx=0;q12Score=0;q12Correct=0;q12Wrong=0;q12Answered=false;q12UpdateStats();q12Render();}
+function q12Next(){q12Render();}
+function q12UpdateStats(){
+  document.getElementById('q12Score').textContent=q12Score;
+  document.getElementById('q12Correct').textContent=q12Correct;
+  document.getElementById('q12Wrong').textContent=q12Wrong;
+  document.getElementById('q12Total').textContent=q12Idx+'/'+q12Data.length;
+  document.getElementById('q12Fill').style.width=(q12Idx/q12Data.length*100)+'%';
+}
+function q12Render(){
+  document.getElementById('q12Next').style.display='none';
+  if(q12Idx>=q12Data.length){
+    var pct=Math.round(q12Score/q12Data.length*100);
+    document.getElementById('q12Area').innerHTML='<div style="text-align:center;padding:2rem"><div style="font-size:3rem">'+(pct>=80?'🎉':pct>=50?'💪':'📚')+'</div><div style="font-size:1.5rem;font-weight:800;color:var(--gold);margin:12px 0">Quiz Complete!</div><div style="color:var(--accent2)">Score: '+q12Score+'/'+q12Data.length+' ('+pct+'%)</div><div style="color:var(--text2);font-size:.85rem;margin-top:8px">'+(pct>=80?'Board exam ready! 🚀':pct>=50?'Review the weak areas. 💪':'Go through the concepts section again! 📚')+'</div></div>';
+    return;
+  }
+  q12Answered=false;
+  var q=q12Data[q12Idx];
+  var html='<div class="quiz-q">Q'+(q12Idx+1)+'. '+q.q+'</div><div class="opts">';
+  q.opts.forEach(function(o,i){html+='<button class="opt" onclick="q12Answer('+i+')">'+String.fromCharCode(65+i)+'. '+o+'</button>';});
+  html+='</div><div class="exp-box" id="q12Exp">'+q.exp+'</div>';
+  document.getElementById('q12Area').innerHTML=html;
+}
+function q12Answer(i){
+  if(q12Answered)return;q12Answered=true;
+  var q=q12Data[q12Idx];
+  document.querySelectorAll('#q12Area .opt').forEach(function(o,idx){
+    if(idx===q.ans)o.classList.add('correct');
+    else if(idx===i&&i!==q.ans)o.classList.add('wrong');
+    o.style.pointerEvents='none';
+  });
+  if(i===q.ans){q12Score++;q12Correct++;}else{q12Wrong++;}
+  q12Idx++;q12UpdateStats();
+  document.getElementById('q12Exp').classList.add('show');
+  document.getElementById('q12Next').style.display='inline-flex';
+}
+
+(function(){
+  var colors=['#34d399','#3b82f6','#fbbf24','#8b5cf6','#f43f5e','#06b6d4'];
+  document.addEventListener('click',function(e){
+    for(var i=0;i<6;i++){(function(i){setTimeout(function(){
+      var el=document.createElement('div');
+      var color=colors[Math.floor(Math.random()*colors.length)];
+      var angle=Math.random()*360,dist=40+Math.random()*60;
+      var dx=Math.cos(angle*Math.PI/180)*dist,dy=Math.sin(angle*Math.PI/180)*dist;
+      el.style.cssText='position:fixed;left:'+e.clientX+'px;top:'+e.clientY+'px;width:5px;height:5px;border-radius:50%;background:'+color+';pointer-events:none;z-index:99999;transform:translate(-50%,-50%);transition:transform 600ms ease,opacity 600ms ease;box-shadow:0 0 7px '+color;
+      document.body.appendChild(el);
+      requestAnimationFrame(function(){requestAnimationFrame(function(){
+        el.style.transform='translate(calc(-50% + '+dx+'px),calc(-50% + '+dy+'px)) scale(0)';
+        el.style.opacity='0';
+      });});
+      setTimeout(function(){el.remove();},650);
+    },i*35);})(i);}
+  });
+})();
+
+q12Init();
+</script>
+</body>
+</html>
