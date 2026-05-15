@@ -1,0 +1,1262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Class 10 — Chapter 1: Real Numbers</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&family=Syne:wght@700;800&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --accent:     #0ea5e9;
+      --accent2:    #38bdf8;
+      --glow-rgb:   14, 165, 233;
+      --bg:         #050810;
+      --surface:    #0c1120;
+      --surface2:   #111827;
+      --border:     #1e2d45;
+      --gold:       #f59e0b;
+      --teal:       #14b8a6;
+      --green:      #22c55e;
+      --pink:       #ec4899;
+      --purple:     #a855f7;
+      --orange:     #f97316;
+      --text:       #e2e8f0;
+      --text2:      #94a3b8;
+      --text3:      #64748b;
+    }
+    body {
+      font-family: 'Space Grotesk', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      overflow-x: hidden;
+      line-height: 1.6;
+    }
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      background:
+        radial-gradient(ellipse 80% 60% at 15% 0%, rgba(var(--glow-rgb), 0.08) 0%, transparent 60%),
+        radial-gradient(ellipse 60% 40% at 85% 100%, rgba(20, 184, 166, 0.05) 0%, transparent 60%);
+    }
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      padding: 1.25rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--border);
+      backdrop-filter: blur(12px);
+      background: rgba(5, 8, 16, 0.6);
+    }
+    .home-btn {
+      background: rgba(var(--glow-rgb), 0.10);
+      border: 1px solid rgba(var(--glow-rgb), 0.28);
+      color: var(--accent2);
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 13px;
+      font-weight: 600;
+      padding: 8px 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s ease;
+    }
+    .home-btn:hover {
+      background: rgba(var(--glow-rgb), 0.20);
+      transform: translateX(-2px);
+      box-shadow: 0 0 14px rgba(var(--glow-rgb), 0.2);
+    }
+    .class-badge {
+      font-family: 'Syne', sans-serif;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--text3);
+    }
+    .hero {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      padding: 4rem 2rem 3rem;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    .hero-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--teal);
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      margin-bottom: 1.2rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+    }
+    .hero-label::before, .hero-label::after {
+      content: '';
+      flex: 0 0 40px;
+      height: 1px;
+      background: var(--teal);
+      opacity: 0.4;
+    }
+    .hero h1 {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(2.2rem, 5vw, 3.5rem);
+      font-weight: 800;
+      line-height: 1.1;
+      margin-bottom: 1rem;
+      background: linear-gradient(135deg, #e2e8f0 0%, var(--accent2) 50%, var(--teal) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .hero p {
+      font-size: 1.05rem;
+      color: var(--text2);
+      line-height: 1.7;
+      max-width: 560px;
+      margin: 0 auto 2rem;
+    }
+    .hero-pills { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; }
+    .pill {
+      font-size: 11px;
+      font-weight: 600;
+      padding: 5px 14px;
+      border-radius: 20px;
+      letter-spacing: 0.5px;
+    }
+    .pill.accent { background: rgba(var(--glow-rgb), 0.12); border: 1px solid rgba(var(--glow-rgb), 0.3); color: var(--accent2); }
+    .pill.teal   { background: rgba(20,184,166, 0.10); border: 1px solid rgba(20,184,166, 0.3); color: var(--teal); }
+    .pill.gold   { background: rgba(245,158,11, 0.10); border: 1px solid rgba(245,158,11, 0.3); color: var(--gold); }
+    .pill.pink   { background: rgba(236,72,153, 0.10); border: 1px solid rgba(236,72,153, 0.3); color: var(--pink); }
+    .pill.purple { background: rgba(168,85,247, 0.10); border: 1px solid rgba(168,85,247, 0.3); color: var(--purple); }
+    .main {
+      max-width: 1020px;
+      margin: 0 auto;
+      padding: 2rem 1.5rem 6rem;
+      position: relative;
+      z-index: 1;
+    }
+    .tabs {
+      display: flex;
+      gap: 4px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 5px;
+      margin-bottom: 2rem;
+      flex-wrap: wrap;
+      position: sticky;
+      top: 65px;
+      z-index: 5;
+      backdrop-filter: blur(12px);
+    }
+    .tab-btn {
+      flex: 1;
+      min-width: 90px;
+      padding: 10px 12px;
+      border-radius: 8px;
+      border: none;
+      background: transparent;
+      cursor: pointer;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 12.5px;
+      font-weight: 600;
+      color: var(--text2);
+      transition: all 0.2s ease;
+      white-space: nowrap;
+      letter-spacing: 0.2px;
+    }
+    .tab-btn:hover { color: var(--text); background: rgba(255, 255, 255, 0.04); }
+    .tab-btn.active {
+      background: linear-gradient(135deg, rgba(var(--glow-rgb), 0.25), rgba(20, 184, 166, 0.12));
+      color: var(--accent2);
+      box-shadow: 0 0 20px rgba(var(--glow-rgb), 0.18);
+    }
+    .section { display: none; animation: fadeUp 0.3s ease; }
+    .section.active { display: block; }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(8px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 1.75rem;
+      margin-bottom: 1.25rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--accent), transparent);
+      opacity: 0.4;
+    }
+    .card-title {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 1.25rem;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .card-title .icon { font-size: 1.25rem; }
+    .grid2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem; margin: 1rem 0; }
+    .grid3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(175px, 1fr)); gap: 1rem; margin: 1rem 0; }
+    .cbox {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.2rem 1.4rem;
+    }
+    .cbox h3 {
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 0.8rem;
+      color: var(--text3);
+    }
+    .cbox.accent { border-color: rgba(var(--glow-rgb), 0.32); }
+    .cbox.accent h3 { color: var(--accent2); }
+    .cbox.teal   { border-color: rgba(20,184,166, 0.30); }
+    .cbox.teal h3 { color: var(--teal); }
+    .cbox.gold   { border-color: rgba(245,158,11, 0.30); }
+    .cbox.gold h3 { color: var(--gold); }
+    .cbox.green  { border-color: rgba(34,197,94,  0.30); }
+    .cbox.green h3 { color: var(--green); }
+    .cbox.pink   { border-color: rgba(236,72,153, 0.30); }
+    .cbox.pink h3 { color: var(--pink); }
+    .cbox.purple { border-color: rgba(168,85,247, 0.30); }
+    .cbox.purple h3 { color: var(--purple); }
+    .cbox.orange { border-color: rgba(249,115,22, 0.30); }
+    .cbox.orange h3 { color: var(--orange); }
+    .frow {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      margin-bottom: 0.6rem;
+      font-size: 0.88rem;
+      line-height: 1.6;
+      color: var(--text2);
+    }
+    .frow:last-child { margin-bottom: 0; }
+    .fm {
+      display: inline-block;
+      background: rgba(var(--glow-rgb), 0.10);
+      border: 1px solid rgba(var(--glow-rgb), 0.22);
+      color: var(--accent2);
+      font-family: 'DM Mono', monospace;
+      font-size: 0.82rem;
+      padding: 3px 10px;
+      border-radius: 6px;
+      font-weight: 500;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    .fm.gold   { background:rgba(245,158,11,.10); border-color:rgba(245,158,11,.22); color:var(--gold); }
+    .fm.teal   { background:rgba(20,184,166,.10);  border-color:rgba(20,184,166,.22);  color:var(--teal); }
+    .fm.green  { background:rgba(34,197,94,.10);   border-color:rgba(34,197,94,.22);   color:var(--green); }
+    .fm.pink   { background:rgba(236,72,153,.10);  border-color:rgba(236,72,153,.22);  color:var(--pink); }
+    .fm.purple { background:rgba(168,85,247,.10);  border-color:rgba(168,85,247,.22);  color:var(--purple); }
+    .fm.orange { background:rgba(249,115,22,.10);  border-color:rgba(249,115,22,.22);  color:var(--orange); }
+    .tw { overflow-x: auto; border-radius: 10px; border: 1px solid var(--border); margin: 0.75rem 0; }
+    table { width: 100%; border-collapse: collapse; font-size: 0.82rem; }
+    th {
+      background: rgba(var(--glow-rgb), 0.12);
+      color: var(--accent2);
+      font-weight: 700;
+      padding: 10px 12px;
+      text-align: center;
+      border-bottom: 1px solid var(--border);
+      font-size: 0.78rem;
+      letter-spacing: 0.5px;
+    }
+    td { padding: 9px 12px; text-align: center; border-bottom: 1px solid rgba(30, 45, 69, 0.6); color: var(--text2); }
+    tr:last-child td { border-bottom: none; }
+    tr:hover td { background: rgba(var(--glow-rgb), 0.04); }
+    .ud { color: var(--pink); font-weight: 700; font-size: 0.75rem; }
+    .deriv {
+      background: rgba(20, 184, 166, 0.05);
+      border: 1px solid rgba(20, 184, 166, 0.20);
+      border-radius: 12px;
+      padding: 1.2rem;
+      margin: 0.75rem 0;
+    }
+    .deriv-title {
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: var(--teal);
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 0.75rem;
+    }
+    .step {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 0.6rem;
+      font-size: 0.85rem;
+      color: var(--text2);
+      line-height: 1.6;
+    }
+    .step:last-child { margin-bottom: 0; }
+    .sn {
+      background: rgba(20, 184, 166, 0.15);
+      color: var(--teal);
+      font-weight: 700;
+      font-size: 0.70rem;
+      width: 22px; height: 22px;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+    .fact {
+      background: linear-gradient(135deg, rgba(245,158,11, 0.06), rgba(20,184,166, 0.04));
+      border: 1px solid rgba(245,158,11, 0.22);
+      border-radius: 10px;
+      padding: 1rem 1.2rem;
+      margin: 0.6rem 0;
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+    }
+    .fact-icon { font-size: 1.15rem; flex-shrink: 0; margin-top: 1px; }
+    .fact p { font-size: 0.87rem; line-height: 1.6; color: var(--text2); }
+    .fact strong { color: var(--gold); }
+    .tip {
+      background: rgba(168, 85, 247, 0.07);
+      border: 1px solid rgba(168, 85, 247, 0.25);
+      border-radius: 10px;
+      padding: 1rem 1.2rem;
+      margin: 0.6rem 0;
+    }
+    .tip-title {
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: var(--purple);
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      margin-bottom: 0.4rem;
+    }
+    .tip p { font-size: 0.87rem; color: var(--text2); line-height: 1.6; }
+    .iq {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1rem 1.2rem;
+      margin: 0.5rem 0;
+      transition: border-color 0.2s;
+    }
+    .iq:hover { border-color: rgba(var(--glow-rgb), 0.35); }
+    .iq-q    { font-size: 0.87rem; font-weight: 600; color: var(--text); margin-bottom: 0.35rem; }
+    .iq-hint { font-size: 0.80rem; color: var(--text2); line-height: 1.5; }
+    .iq-ans  { font-family: 'DM Mono', monospace; font-size: 0.80rem; color: var(--accent2); margin-top: 0.4rem; }
+    /* Number line visual */
+    .numline-wrap {
+      overflow-x: auto;
+      padding: 1rem 0;
+      margin: 0.75rem 0;
+    }
+    .quiz-meta { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 1.2rem; }
+    .quiz-stat {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 0.75rem 1rem;
+      min-width: 70px;
+      text-align: center;
+    }
+    .quiz-num {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: var(--gold);
+      display: block;
+    }
+    .quiz-lbl { font-size: 0.68rem; color: var(--text3); letter-spacing: 0.5px; text-transform: uppercase; }
+    .prog-bar { height: 4px; background: var(--border); border-radius: 4px; margin-bottom: 1.2rem; overflow: hidden; }
+    .prog-fill {
+      height: 4px; border-radius: 4px;
+      background: linear-gradient(90deg, var(--accent), var(--teal));
+      transition: width 0.4s ease;
+      box-shadow: 0 0 8px rgba(var(--glow-rgb), 0.5);
+    }
+    .quiz-q { font-size: 1rem; font-weight: 600; color: var(--text); margin-bottom: 1rem; line-height: 1.6; }
+    .opts { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    .opt {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 12px 14px;
+      cursor: pointer;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.85rem;
+      color: var(--text2);
+      transition: all 0.18s ease;
+      text-align: left;
+      width: 100%;
+    }
+    .opt:hover { border-color: var(--accent); background: rgba(var(--glow-rgb), 0.07); color: var(--text); }
+    .opt.correct { background: rgba(34,197,94, 0.12) !important; border-color: var(--green) !important; color: var(--green) !important; }
+    .opt.wrong   { background: rgba(236,72,153, 0.10) !important; border-color: var(--pink) !important;  color: var(--pink)  !important; }
+    .exp-box {
+      background: rgba(20,184,166, 0.07);
+      border: 1px solid rgba(20,184,166, 0.22);
+      border-radius: 8px;
+      padding: 0.9rem;
+      margin-top: 0.9rem;
+      font-size: 0.84rem;
+      line-height: 1.6;
+      color: var(--teal);
+      display: none;
+    }
+    .exp-box.show { display: block; animation: fadeUp 0.2s ease; }
+    .btn {
+      background: linear-gradient(135deg, rgba(var(--glow-rgb), 0.22), rgba(20,184,166, 0.12));
+      border: 1px solid rgba(var(--glow-rgb), 0.30);
+      color: var(--accent2);
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 600;
+      padding: 10px 22px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .btn:hover {
+      background: linear-gradient(135deg, rgba(var(--glow-rgb), 0.35), rgba(20,184,166, 0.22));
+      box-shadow: 0 0 16px rgba(var(--glow-rgb), 0.25);
+    }
+    .btn.restart { background: rgba(245,158,11, 0.12); border-color: rgba(245,158,11, 0.30); color: var(--gold); }
+    .btn-row { display: flex; gap: 10px; margin-top: 1rem; flex-wrap: wrap; }
+    @media (max-width: 600px) {
+      .hero { padding: 2.5rem 1rem 2rem; }
+      .hero h1 { font-size: 2rem; }
+      .opts { grid-template-columns: 1fr; }
+      .main { padding: 1.5rem 1rem 4rem; }
+      .tabs { top: 58px; }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="site-header">
+    <a href="index.html" class="home-btn">← Home</a>
+    <span class="class-badge">CBSE · CLASS 10</span>
+  </header>
+
+  <div class="hero">
+    <div class="hero-label">Chapter 1 · Mathematics</div>
+    <h1>Real Numbers</h1>
+    <p>Master Euclid's Division Lemma, the Fundamental Theorem of Arithmetic, and the properties of rational and irrational numbers — the bedrock of Class 10 Maths.</p>
+    <div class="hero-pills">
+      <span class="pill accent">🔢 Euclid's Algorithm</span>
+      <span class="pill teal">🧮 HCF & LCM</span>
+      <span class="pill gold">📐 Irrational Numbers</span>
+      <span class="pill pink">∞ Number System</span>
+      <span class="pill purple">🏆 10 Quiz Questions</span>
+    </div>
+  </div>
+
+  <div class="main">
+
+    <div class="tabs">
+      <button class="tab-btn active" onclick="showSec('concepts', this)">📐 Concepts</button>
+      <button class="tab-btn"        onclick="showSec('formulas', this)">🔢 Formulas</button>
+      <button class="tab-btn"        onclick="showSec('proofs',   this)">🔍 Proofs</button>
+      <button class="tab-btn"        onclick="showSec('iq',       this)">⭐ Imp. Questions</button>
+      <button class="tab-btn"        onclick="showSec('tips',     this)">💡 Tips & Facts</button>
+      <button class="tab-btn"        onclick="showSec('quiz',     this)">🏆 Quiz</button>
+    </div>
+
+
+    <!-- ═══════════ TAB: CONCEPTS ═══════════ -->
+    <div class="section active" id="sec-concepts">
+
+      <!-- Number System Overview -->
+      <div class="card">
+        <div class="card-title"><span class="icon">🔢</span> The Real Number System</div>
+        <div class="frow">Real numbers (ℝ) include every number on the number line — both rational and irrational. Understanding their structure is the foundation of this chapter.</div>
+        <div class="grid2">
+          <div class="cbox accent">
+            <h3>Natural Numbers (ℕ)</h3>
+            <div class="frow">Counting numbers starting from 1.</div>
+            <div class="frow"><span class="fm">ℕ = {1, 2, 3, 4, ...}</span></div>
+            <div class="frow">Every natural number is also a whole, integer, rational, and real number.</div>
+          </div>
+          <div class="cbox teal">
+            <h3>Whole Numbers (W)</h3>
+            <div class="frow">Natural numbers plus zero.</div>
+            <div class="frow"><span class="fm teal">W = {0, 1, 2, 3, ...}</span></div>
+            <div class="frow">0 is whole but NOT a natural number.</div>
+          </div>
+          <div class="cbox gold">
+            <h3>Integers (ℤ)</h3>
+            <div class="frow">All whole numbers and their negatives.</div>
+            <div class="frow"><span class="fm gold">ℤ = {..., −2, −1, 0, 1, 2, ...}</span></div>
+          </div>
+          <div class="cbox green">
+            <h3>Rational Numbers (ℚ)</h3>
+            <div class="frow">Numbers expressible as p/q where p, q ∈ ℤ, q ≠ 0.</div>
+            <div class="frow"><span class="fm green">e.g. 1/2, −3/4, 7, 0.333...</span></div>
+            <div class="frow">Decimal expansion is either terminating or recurring.</div>
+          </div>
+          <div class="cbox pink">
+            <h3>Irrational Numbers</h3>
+            <div class="frow">Cannot be written as p/q. Non-terminating, non-repeating decimals.</div>
+            <div class="frow"><span class="fm pink">e.g. √2, √3, π, e</span></div>
+          </div>
+          <div class="cbox purple">
+            <h3>Real Numbers (ℝ)</h3>
+            <div class="frow">Union of all rational and irrational numbers. Covers entire number line.</div>
+            <div class="frow"><span class="fm purple">ℝ = ℚ ∪ (Irrationals)</span></div>
+          </div>
+        </div>
+        <div class="fact">
+          <span class="fact-icon">💡</span>
+          <p><strong>Key Hierarchy:</strong> ℕ ⊂ W ⊂ ℤ ⊂ ℚ ⊂ ℝ. Every set is a proper subset of the next. Irrational numbers are NOT a subset of ℚ — they form a completely separate part of ℝ.</p>
+        </div>
+      </div>
+
+      <!-- Euclid's Division Lemma -->
+      <div class="card">
+        <div class="card-title"><span class="icon">➗</span> Euclid's Division Lemma</div>
+        <div class="frow">The cornerstone theorem of this chapter — it formalises the concept of division with remainder.</div>
+        <div class="cbox accent">
+          <h3>The Lemma (Theorem)</h3>
+          <div class="frow">For any two positive integers <strong style="color:var(--accent2)">a</strong> and <strong style="color:var(--accent2)">b</strong>, there exist unique integers <strong style="color:var(--teal)">q</strong> (quotient) and <strong style="color:var(--gold)">r</strong> (remainder) such that:</div>
+          <div class="frow" style="justify-content:center;margin:1rem 0">
+            <span class="fm" style="font-size:1.1rem;padding:8px 20px">a = bq + r,  where  0 ≤ r &lt; b</span>
+          </div>
+          <div class="frow">Here: <span class="fm">a</span> = dividend, <span class="fm teal">b</span> = divisor, <span class="fm teal">q</span> = quotient, <span class="fm gold">r</span> = remainder.</div>
+        </div>
+        <div class="fact">
+          <span class="fact-icon">📌</span>
+          <p><strong>Example:</strong> For a = 17, b = 5 → 17 = 5 × 3 + 2. Here q = 3, r = 2. Note r = 2 satisfies 0 ≤ 2 &lt; 5. ✓</p>
+        </div>
+        <div class="tip">
+          <div class="tip-title">💜 Uniqueness Matters</div>
+          <p>The lemma guarantees the values of q and r are <em>unique</em> — there's exactly one way to write a = bq + r satisfying 0 ≤ r &lt; b. This uniqueness is what makes the algorithm work.</p>
+        </div>
+      </div>
+
+      <!-- Euclid's Division Algorithm -->
+      <div class="card">
+        <div class="card-title"><span class="icon">🔄</span> Euclid's Division Algorithm (for HCF)</div>
+        <div class="frow">The algorithm applies the Division Lemma repeatedly to find the HCF (Highest Common Factor) of two positive integers.</div>
+        <div class="cbox teal">
+          <h3>Algorithm Steps</h3>
+          <div class="frow"><span class="fm teal">Step 1</span> Apply Lemma: write a = bq₁ + r₁ (if r₁ = 0, HCF = b)</div>
+          <div class="frow"><span class="fm teal">Step 2</span> Now apply lemma to (b, r₁): write b = r₁·q₂ + r₂</div>
+          <div class="frow"><span class="fm teal">Step 3</span> Continue: r₁ = r₂·q₃ + r₃, and so on...</div>
+          <div class="frow"><span class="fm teal">Stop</span> When remainder = 0. The last non-zero remainder is the HCF.</div>
+        </div>
+        <div class="fact">
+          <span class="fact-icon">🧮</span>
+          <p><strong>Worked Example — HCF(135, 225):</strong><br>
+          225 = 135 × 1 + 90<br>
+          135 = 90 × 1 + 45<br>
+          90 = 45 × 2 + 0 → <strong>HCF = 45</strong></p>
+        </div>
+        <div class="fact">
+          <span class="fact-icon">🧮</span>
+          <p><strong>Worked Example — HCF(196, 38220):</strong><br>
+          38220 = 196 × 195 + 0 → <strong>HCF = 196</strong></p>
+        </div>
+      </div>
+
+      <!-- Fundamental Theorem of Arithmetic -->
+      <div class="card">
+        <div class="card-title"><span class="icon">🏛️</span> Fundamental Theorem of Arithmetic</div>
+        <div class="frow">One of the most powerful theorems in mathematics — every composite number has a unique prime factorisation.</div>
+        <div class="cbox gold">
+          <h3>The Theorem</h3>
+          <div class="frow">Every composite number can be expressed (factorised) as a product of primes, and this factorisation is <strong style="color:var(--gold)">unique</strong> (except for the order of factors).</div>
+          <div class="frow" style="justify-content:center;margin:0.75rem 0">
+            <span class="fm gold" style="font-size:0.95rem;padding:6px 16px">n = p₁ᵃ¹ × p₂ᵃ² × p₃ᵃ³ × ...</span>
+          </div>
+          <div class="frow">where p₁, p₂, p₃,... are distinct primes and a₁, a₂, a₃,... are positive integers.</div>
+        </div>
+        <div class="grid2">
+          <div class="cbox accent">
+            <h3>HCF via Prime Factorisation</h3>
+            <div class="frow">HCF = Product of the <strong style="color:var(--accent2)">smallest powers</strong> of each common prime factor.</div>
+            <div class="frow"><span class="fm">HCF(12, 18) = 2¹ × 3¹ = 6</span></div>
+          </div>
+          <div class="cbox teal">
+            <h3>LCM via Prime Factorisation</h3>
+            <div class="frow">LCM = Product of the <strong style="color:var(--teal)">highest powers</strong> of each prime factor (common or not).</div>
+            <div class="frow"><span class="fm teal">LCM(12, 18) = 2² × 3² = 36</span></div>
+          </div>
+        </div>
+        <div class="fact">
+          <span class="fact-icon">⭐</span>
+          <p><strong>Golden Relationship:</strong> For any two positive integers a and b — <span style="color:var(--gold)">HCF(a,b) × LCM(a,b) = a × b</span>. This is one of the most commonly tested results in CBSE exams!</p>
+        </div>
+      </div>
+
+      <!-- Irrational Numbers -->
+      <div class="card">
+        <div class="card-title"><span class="icon">√</span> Irrational Numbers</div>
+        <div class="frow">Numbers that cannot be expressed in the form p/q where p, q are integers and q ≠ 0. Their decimal expansions are non-terminating and non-repeating.</div>
+        <div class="grid2">
+          <div class="cbox pink">
+            <h3>Common Irrationals</h3>
+            <div class="frow"><span class="fm pink">√2 = 1.41421356...</span></div>
+            <div class="frow"><span class="fm pink">√3 = 1.73205080...</span></div>
+            <div class="frow"><span class="fm pink">√5 = 2.23606797...</span></div>
+            <div class="frow"><span class="fm pink">π = 3.14159265...</span></div>
+          </div>
+          <div class="cbox green">
+            <h3>Key Properties</h3>
+            <div class="frow">Sum/difference of a rational and irrational is <strong style="color:var(--green)">irrational</strong>.</div>
+            <div class="frow">Product of a non-zero rational and irrational is <strong style="color:var(--green)">irrational</strong>.</div>
+            <div class="frow">√p is irrational if p is a prime number.</div>
+          </div>
+        </div>
+        <div class="fact">
+          <span class="fact-icon">⚠️</span>
+          <p><strong>Common Confusion:</strong> √4 = 2 is rational (since 2 = 2/1). Only √p where p is prime is irrational. Always simplify the square root first before concluding it's irrational!</p>
+        </div>
+      </div>
+
+      <!-- Rational Numbers & Decimal Expansions -->
+      <div class="card">
+        <div class="card-title"><span class="icon">🔁</span> Decimal Expansion of Rational Numbers</div>
+        <div class="frow">The nature of p/q (in lowest terms) depends entirely on the prime factors of q.</div>
+        <div class="tw">
+          <table>
+            <thead>
+              <tr><th>Denominator q (in lowest terms)</th><th>Decimal Type</th><th>Example</th></tr>
+            </thead>
+            <tbody>
+              <tr><td style="color:var(--accent2)">q = 2ⁿ × 5ᵐ only</td><td style="color:var(--green)">Terminating</td><td>3/8 = 0.375</td></tr>
+              <tr><td style="color:var(--pink)">q has factor other than 2 or 5</td><td style="color:var(--gold)">Non-terminating recurring</td><td>1/3 = 0.333...</td></tr>
+              <tr><td style="color:var(--purple)">q = 2ⁿ × 5ᵐ × (other prime)</td><td style="color:var(--gold)">Non-terminating recurring</td><td>7/6 = 1.1666...</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="tip">
+          <div class="tip-title">💜 Quick Check for Terminating Decimal</div>
+          <p>Express p/q in <strong>lowest terms</strong> first. Then factorise q. If q = 2ⁿ × 5ᵐ (and nothing else), the decimal terminates. Otherwise, it repeats. This is a favourite 1-mark question in CBSE!</p>
+        </div>
+        <div class="fact">
+          <span class="fact-icon">📌</span>
+          <p><strong>Worked Example:</strong> Is 13/3125 terminating? 3125 = 5⁵. Since q = 5⁵ = 2⁰ × 5⁵, it <strong>terminates</strong>. 13/3125 = 0.00416.</p>
+        </div>
+      </div>
+
+    </div><!-- /sec-concepts -->
+
+
+    <!-- ═══════════ TAB: FORMULAS ═══════════ -->
+    <div class="section" id="sec-formulas">
+
+      <div class="card">
+        <div class="card-title"><span class="icon">📌</span> Euclid's Division Lemma</div>
+        <div class="cbox accent">
+          <h3>Core Formula</h3>
+          <div class="frow" style="justify-content:center">
+            <span class="fm" style="font-size:1rem;padding:7px 18px">a = bq + r</span>
+          </div>
+          <div class="frow">Where a > b > 0, q ≥ 0, and <span class="fm">0 ≤ r &lt; b</span></div>
+          <div class="frow">a = dividend, b = divisor, q = quotient, r = remainder</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title"><span class="icon">🏛️</span> Fundamental Theorem of Arithmetic</div>
+        <div class="grid2">
+          <div class="cbox accent">
+            <h3>Prime Factorisation</h3>
+            <div class="frow"><span class="fm">n = p₁ᵃ¹ · p₂ᵃ² · p₃ᵃ³ · ...</span></div>
+            <div class="frow">Each pᵢ is a distinct prime; factorisation is unique.</div>
+          </div>
+          <div class="cbox gold">
+            <h3>HCF × LCM Relation</h3>
+            <div class="frow"><span class="fm gold" style="font-size:.95rem">HCF(a,b) × LCM(a,b) = a × b</span></div>
+            <div class="frow">Only valid for TWO numbers.</div>
+          </div>
+          <div class="cbox teal">
+            <h3>HCF Formula</h3>
+            <div class="frow"><span class="fm teal">HCF = product of least powers of common prime factors</span></div>
+          </div>
+          <div class="cbox green">
+            <h3>LCM Formula</h3>
+            <div class="frow"><span class="fm green">LCM = product of highest powers of all prime factors</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title"><span class="icon">🔁</span> Decimal Expansion Condition</div>
+        <div class="grid2">
+          <div class="cbox green">
+            <h3>Terminating Decimal</h3>
+            <div class="frow">p/q terminates if q (in lowest terms) is of the form:</div>
+            <div class="frow" style="justify-content:center"><span class="fm green">q = 2ⁿ × 5ᵐ</span></div>
+            <div class="frow">(n, m are non-negative integers)</div>
+          </div>
+          <div class="cbox gold">
+            <h3>Non-Terminating Recurring</h3>
+            <div class="frow">p/q does NOT terminate if q (lowest terms) has a prime factor <strong style="color:var(--gold)">other than 2 or 5</strong>.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title"><span class="icon">√</span> Key Irrational Number Properties</div>
+        <div class="grid3">
+          <div class="cbox pink">
+            <h3>Rational + Irrational</h3>
+            <div class="frow"><span class="fm pink">= Irrational</span></div>
+            <div class="frow">e.g. 2 + √3 is irrational</div>
+          </div>
+          <div class="cbox pink">
+            <h3>Rational × Irrational</h3>
+            <div class="frow"><span class="fm pink">= Irrational</span> (if rational ≠ 0)</div>
+            <div class="frow">e.g. 3√2 is irrational</div>
+          </div>
+          <div class="cbox teal">
+            <h3>√p (p = prime)</h3>
+            <div class="frow"><span class="fm teal">= Irrational</span></div>
+            <div class="frow">e.g. √2, √3, √5, √7 are all irrational</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title"><span class="icon">📋</span> Quick Reference — HCF &amp; LCM</div>
+        <div class="tw">
+          <table>
+            <thead>
+              <tr><th>Numbers</th><th>Prime Factorisation</th><th>HCF</th><th>LCM</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>12, 18</td><td>2²×3 , 2×3²</td><td style="color:var(--accent2)">6</td><td style="color:var(--gold)">36</td></tr>
+              <tr><td>26, 91</td><td>2×13 , 7×13</td><td style="color:var(--accent2)">13</td><td style="color:var(--gold)">182</td></tr>
+              <tr><td>336, 54</td><td>2⁴×3×7 , 2×3³</td><td style="color:var(--accent2)">6</td><td style="color:var(--gold)">3024</td></tr>
+              <tr><td>510, 92</td><td>2×3×5×17 , 2²×23</td><td style="color:var(--accent2)">2</td><td style="color:var(--gold)">23460</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div><!-- /sec-formulas -->
+
+
+    <!-- ═══════════ TAB: PROOFS ═══════════ -->
+    <div class="section" id="sec-proofs">
+
+      <!-- Proof: √2 is irrational -->
+      <div class="card">
+        <div class="card-title"><span class="icon">🔍</span> Proof — √2 is Irrational</div>
+        <div class="frow">Method: Proof by Contradiction (most important proof for board exams)</div>
+        <div class="deriv">
+          <div class="deriv-title">Proof by Contradiction</div>
+          <div class="step">
+            <div class="sn">1</div>
+            <div><strong>Assume</strong> √2 is rational. Then √2 = p/q where p, q are integers, q ≠ 0, and p/q is in <strong>lowest terms</strong> (i.e., HCF(p,q) = 1).</div>
+          </div>
+          <div class="step">
+            <div class="sn">2</div>
+            <div><strong>Squaring both sides:</strong> 2 = p²/q² → <span class="fm teal">p² = 2q²</span>. So p² is even, which means p is even.</div>
+          </div>
+          <div class="step">
+            <div class="sn">3</div>
+            <div>Since p is even, write <span class="fm teal">p = 2m</span> for some integer m. Substituting: (2m)² = 2q² → 4m² = 2q² → <span class="fm teal">q² = 2m²</span>.</div>
+          </div>
+          <div class="step">
+            <div class="sn">4</div>
+            <div>So q² is even, which means q is also even. Therefore <strong>both p and q are even</strong>.</div>
+          </div>
+          <div class="step">
+            <div class="sn">5</div>
+            <div><strong>Contradiction!</strong> If both p and q are even, then HCF(p,q) ≥ 2. But we assumed HCF(p,q) = 1. This is a contradiction.</div>
+          </div>
+          <div class="step">
+            <div class="sn">6</div>
+            <div><strong>Conclusion:</strong> Our assumption was wrong. Therefore <span class="fm" style="font-size:.9rem">√2 is irrational ✓</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Proof: √3 is irrational -->
+      <div class="card">
+        <div class="card-title"><span class="icon">🔍</span> Proof — √3 is Irrational</div>
+        <div class="deriv">
+          <div class="deriv-title">Proof by Contradiction</div>
+          <div class="step">
+            <div class="sn">1</div>
+            <div>Assume √3 = p/q in lowest terms (HCF(p,q) = 1).</div>
+          </div>
+          <div class="step">
+            <div class="sn">2</div>
+            <div>Squaring: <span class="fm teal">3q² = p²</span>. So 3 divides p², and since 3 is prime, 3 divides p (by FTA).</div>
+          </div>
+          <div class="step">
+            <div class="sn">3</div>
+            <div>Let p = 3c. Then: 3q² = 9c² → <span class="fm teal">q² = 3c²</span>. So 3 divides q² → 3 divides q.</div>
+          </div>
+          <div class="step">
+            <div class="sn">4</div>
+            <div>Both p and q are divisible by 3 → HCF(p,q) ≥ 3. Contradicts HCF = 1.</div>
+          </div>
+          <div class="step">
+            <div class="sn">5</div>
+            <div>Therefore <span class="fm" style="font-size:.9rem">√3 is irrational ✓</span></div>
+          </div>
+        </div>
+        <div class="tip">
+          <div class="tip-title">💜 Generalisation</div>
+          <p>The same method proves √p is irrational for ANY prime p. The key step is: "if p divides a², then p divides a" — this only holds when p is prime. This is where the Fundamental Theorem of Arithmetic is used!</p>
+        </div>
+      </div>
+
+      <!-- Proof: 5 - √3 is irrational -->
+      <div class="card">
+        <div class="card-title"><span class="icon">🔍</span> Proof — (5 − √3) is Irrational</div>
+        <div class="deriv">
+          <div class="deriv-title">Proof by Contradiction</div>
+          <div class="step">
+            <div class="sn">1</div>
+            <div>Assume (5 − √3) is rational. Then (5 − √3) = p/q for some integers p, q with q ≠ 0.</div>
+          </div>
+          <div class="step">
+            <div class="sn">2</div>
+            <div>Rearranging: <span class="fm teal">√3 = 5 − p/q = (5q − p)/q</span>.</div>
+          </div>
+          <div class="step">
+            <div class="sn">3</div>
+            <div>Since p, q are integers, (5q − p)/q is rational. So √3 would be rational.</div>
+          </div>
+          <div class="step">
+            <div class="sn">4</div>
+            <div><strong>Contradiction!</strong> We proved √3 is irrational. Hence our assumption was wrong.</div>
+          </div>
+          <div class="step">
+            <div class="sn">5</div>
+            <div><span class="fm" style="font-size:.9rem">∴ (5 − √3) is irrational ✓</span></div>
+          </div>
+        </div>
+        <div class="fact">
+          <span class="fact-icon">🎯</span>
+          <p><strong>Pattern:</strong> To prove (a ± b√p) is irrational (where a is rational, p is prime): assume it's rational, isolate √p, show √p equals a rational number — contradiction!</p>
+        </div>
+      </div>
+
+      <!-- Euclid's Division Algorithm Proof Application -->
+      <div class="card">
+        <div class="card-title"><span class="icon">🔍</span> Proof — Every Positive Even Integer is of the form 2q</div>
+        <div class="deriv">
+          <div class="deriv-title">Using Euclid's Division Lemma</div>
+          <div class="step">
+            <div class="sn">1</div>
+            <div>Let n be any positive integer. By Euclid's lemma with b=2: <span class="fm teal">n = 2q + r</span>, where r = 0 or 1.</div>
+          </div>
+          <div class="step">
+            <div class="sn">2</div>
+            <div>If r = 0: n = 2q → n is even. If r = 1: n = 2q+1 → n is odd.</div>
+          </div>
+          <div class="step">
+            <div class="sn">3</div>
+            <div>Therefore every positive even integer is of form <span class="fm">2q</span> and every odd integer is of form <span class="fm">2q+1</span> ✓</div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /sec-proofs -->
+
+
+    <!-- ═══════════ TAB: IMPORTANT QUESTIONS ═══════════ -->
+    <div class="section" id="sec-iq">
+
+      <div class="card">
+        <div class="card-title"><span class="icon">⭐</span> NCERT & Board Exam Questions</div>
+
+        <div class="iq">
+          <div class="iq-q">Q1. Use Euclid's Division Algorithm to find HCF(135, 225).</div>
+          <div class="iq-hint">Hint: Apply the lemma repeatedly — start with 225 = 135q + r.</div>
+          <div class="iq-ans">Answer: 225 = 135×1+90 → 135 = 90×1+45 → 90 = 45×2+0 ∴ HCF = 45</div>
+        </div>
+
+        <div class="iq">
+          <div class="iq-q">Q2. Express 140 as a product of its prime factors.</div>
+          <div class="iq-hint">Hint: Divide by 2 first, then continue with other primes.</div>
+          <div class="iq-ans">Answer: 140 = 2² × 5 × 7</div>
+        </div>
+
+        <div class="iq">
+          <div class="iq-q">Q3. Find LCM(26, 91) using prime factorisation. Also verify: HCF × LCM = product of numbers.</div>
+          <div class="iq-hint">Hint: 26 = 2×13, 91 = 7×13. Common factor = 13.</div>
+          <div class="iq-ans">Answer: HCF = 13, LCM = 182. Check: 13 × 182 = 2366 = 26 × 91 ✓</div>
+        </div>
+
+        <div class="iq">
+          <div class="iq-q">Q4. Prove that √5 is irrational.</div>
+          <div class="iq-hint">Hint: Assume √5 = p/q (HCF=1), square both sides, show 5 | p and 5 | q → contradiction.</div>
+          <div class="iq-ans">Answer: If √5 = p/q → 5q² = p² → 5|p → p=5c → q² = 5c² → 5|q. HCF≥5, contradicts HCF=1. ∴ √5 is irrational.</div>
+        </div>
+
+        <div class="iq">
+          <div class="iq-q">Q5. Without actually performing long division, state whether 13/3125 has a terminating or non-terminating decimal expansion.</div>
+          <div class="iq-hint">Hint: Factorise 3125 and check if it's of the form 2ⁿ × 5ᵐ.</div>
+          <div class="iq-ans">Answer: 3125 = 5⁵ = 2⁰ × 5⁵. Since denominator = 2ⁿ × 5ᵐ, it TERMINATES.</div>
+        </div>
+
+        <div class="iq">
+          <div class="iq-q">Q6. Check whether 6ⁿ can end with the digit 0 for any natural number n.</div>
+          <div class="iq-hint">Hint: For a number to end in 0, it must have both 2 and 5 as prime factors.</div>
+          <div class="iq-ans">Answer: 6ⁿ = (2×3)ⁿ = 2ⁿ × 3ⁿ. Since 5 is never a factor of 6ⁿ, it can NEVER end with 0.</div>
+        </div>
+
+        <div class="iq">
+          <div class="iq-q">Q7. Prove that 3 + 2√5 is irrational.</div>
+          <div class="iq-hint">Hint: Assume rational, isolate √5, show it equals rational — contradiction.</div>
+          <div class="iq-ans">Answer: If 3+2√5 = p/q → √5 = (p−3q)/2q = rational. But √5 is irrational. Contradiction. ∴ 3+2√5 is irrational.</div>
+        </div>
+
+        <div class="iq">
+          <div class="iq-q">Q8. Find the largest number that divides 245 and 1029 leaving remainder 5 in each case.</div>
+          <div class="iq-hint">Hint: Subtract 5 from each number, then find HCF of the results.</div>
+          <div class="iq-ans">Answer: HCF(245−5, 1029−5) = HCF(240, 1024) = 16. Largest number = 16.</div>
+        </div>
+
+        <div class="iq">
+          <div class="iq-q">Q9. An army contingent of 616 members is to march behind an army band of 32 members. Find the maximum number of columns such that both groups march in the same number.</div>
+          <div class="iq-hint">Hint: This is an HCF problem — find HCF(616, 32).</div>
+          <div class="iq-ans">Answer: 616 = 2³×7×11, 32 = 2⁵. HCF = 2³ = 8. Maximum columns = 8.</div>
+        </div>
+
+        <div class="iq">
+          <div class="iq-q">Q10. Show that any positive odd integer is of the form 4q+1 or 4q+3, where q is some integer.</div>
+          <div class="iq-hint">Hint: Apply Euclid's lemma with b=4. Possible remainders are 0, 1, 2, 3. Eliminate even cases.</div>
+          <div class="iq-ans">Answer: n = 4q+r, r∈{0,1,2,3}. r=0,2 gives even numbers (4q, 4q+2). For odd n, r must be 1 or 3 → n = 4q+1 or 4q+3. ✓</div>
+        </div>
+
+      </div>
+
+    </div><!-- /sec-iq -->
+
+
+    <!-- ═══════════ TAB: TIPS & FACTS ═══════════ -->
+    <div class="section" id="sec-tips">
+
+      <div class="card">
+        <div class="card-title"><span class="icon">💡</span> Key Facts to Remember</div>
+
+        <div class="fact">
+          <span class="fact-icon">💡</span>
+          <p><strong>1 is neither prime nor composite.</strong> It has exactly one factor (itself). Always remember this for prime factorisation questions.</p>
+        </div>
+        <div class="fact">
+          <span class="fact-icon">💡</span>
+          <p><strong>2 is the only even prime number.</strong> All other even numbers have 2 as a factor, so they're composite.</p>
+        </div>
+        <div class="fact">
+          <span class="fact-icon">⭐</span>
+          <p><strong>HCF × LCM = Product of two numbers</strong> — this formula only works for exactly TWO numbers, not three. Don't apply it to three numbers!</p>
+        </div>
+        <div class="fact">
+          <span class="fact-icon">⚠️</span>
+          <p><strong>Common Mistake:</strong> √4 = 2 is RATIONAL (not irrational). Always simplify surds first — √4, √9, √16, √25 etc. are all rational.</p>
+        </div>
+        <div class="fact">
+          <span class="fact-icon">⚠️</span>
+          <p><strong>Common Mistake:</strong> When checking terminating decimals, first reduce p/q to <strong>lowest terms</strong>. Then check if denominator = 2ⁿ × 5ᵐ. For example, 6/15 = 2/5 → terminates (not 6/15 directly).</p>
+        </div>
+        <div class="fact">
+          <span class="fact-icon">🎯</span>
+          <p><strong>Exam Trend:</strong> Proof of irrationality (2–3 marks) is the most frequently asked question from this chapter. Practice proofs for √2, √3, √5 and composite forms like 3+2√5, 5−√3, 7√5.</p>
+        </div>
+        <div class="fact">
+          <span class="fact-icon">📌</span>
+          <p><strong>Euclid vs FTA:</strong> Euclid's algorithm is used to find HCF quickly without prime factorisation. But prime factorisation (FTA) is used to find BOTH HCF and LCM together. Choose wisely based on the question!</p>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title"><span class="icon">🧠</span> Exam Strategy Tips</div>
+
+        <div class="tip">
+          <div class="tip-title">💜 Tip 1 — Euclid's Algorithm Direction</div>
+          <p>Always start with the <strong>larger number</strong> as the dividend. Write: larger = smaller × q + r. Never start with the smaller one — it will give a quotient of 0 and waste a step.</p>
+        </div>
+
+        <div class="tip">
+          <div class="tip-title">💜 Tip 2 — Contradiction Proof Structure</div>
+          <p>For irrationality proofs, always follow this exact structure: (1) Assume rational = p/q in lowest terms, (2) Square/manipulate to get prime divides p², (3) Conclude prime divides p, (4) Substitute and show prime divides q, (5) State contradiction with HCF = 1, (6) Conclude. Don't skip steps in board exams!</p>
+        </div>
+
+        <div class="tip">
+          <div class="tip-title">💜 Tip 3 — The "Ending in 0" Type Questions</div>
+          <p>For questions like "Can 6ⁿ / 8ⁿ / 9ⁿ end in zero?", write out the prime factorisation. A number ends in 0 only if it has <strong>both 2 and 5 as factors</strong>. If 5 is absent from the factorisation, the answer is always NO.</p>
+        </div>
+
+        <div class="tip">
+          <div class="tip-title">💜 Tip 4 — HCF from Word Problems</div>
+          <p>Word problems asking for the "largest size", "maximum number of groups", "biggest equal share" are always HCF problems. Problems asking for "minimum time to meet again", "smallest common container" are always LCM problems.</p>
+        </div>
+
+        <div class="tip">
+          <div class="tip-title">💜 Tip 5 — Decimal Expansion Fast Method</div>
+          <p>For terminating decimals, multiply numerator and denominator to make denominator a power of 10. E.g., 3/8 = 3/(2³) = 3×5³/(2³×5³) = 375/1000 = 0.375. This also tells you how many decimal places: equal to max(n,m) where denominator = 2ⁿ × 5ᵐ.</p>
+        </div>
+
+        <div class="tip">
+          <div class="tip-title">💜 Tip 6 — Remainder Problems</div>
+          <p>If a number leaves remainder r when divided by d, subtract r from the number first, then find HCF. "Find the largest number that divides a and b leaving same remainder r" → Find HCF(a−r, b−r).</p>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title"><span class="icon">📊</span> Chapter Weightage & Marks Distribution</div>
+        <div class="tw">
+          <table>
+            <thead>
+              <tr><th>Topic</th><th>Typical Marks</th><th>Question Type</th></tr>
+            </thead>
+            <tbody>
+              <tr><td style="text-align:left;color:var(--accent2)">Euclid's Division Algorithm (HCF)</td><td style="color:var(--green)">2–3</td><td>Procedural</td></tr>
+              <tr><td style="text-align:left;color:var(--accent2)">Prime Factorisation (HCF & LCM)</td><td style="color:var(--green)">2–3</td><td>Computation</td></tr>
+              <tr><td style="text-align:left;color:var(--accent2)">Irrationality Proofs</td><td style="color:var(--gold)">3–5</td><td>Proof/Reasoning</td></tr>
+              <tr><td style="text-align:left;color:var(--accent2)">Decimal Expansions</td><td style="color:var(--green)">1–2</td><td>Concept-based</td></tr>
+              <tr><td style="text-align:left;color:var(--accent2)">Word Problems (HCF/LCM)</td><td style="color:var(--gold)">3</td><td>Application</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div><!-- /sec-tips -->
+
+
+    <!-- ═══════════ TAB: QUIZ ═══════════ -->
+    <div class="section" id="sec-quiz">
+
+      <div class="card">
+        <div class="card-title"><span class="icon">🏆</span> Class 10 Quiz — Real Numbers</div>
+
+        <div class="quiz-meta">
+          <div class="quiz-stat"><span class="quiz-num" id="qScore">0</span><span class="quiz-lbl">Score</span></div>
+          <div class="quiz-stat"><span class="quiz-num" id="qCorrect" style="color:var(--green)">0</span><span class="quiz-lbl">Correct</span></div>
+          <div class="quiz-stat"><span class="quiz-num" id="qWrong"   style="color:var(--pink)">0</span><span class="quiz-lbl">Wrong</span></div>
+          <div class="quiz-stat"><span class="quiz-num" id="qTotal"   style="color:var(--text2)">0/10</span><span class="quiz-lbl">Progress</span></div>
+        </div>
+
+        <div class="prog-bar"><div class="prog-fill" id="qFill" style="width:0%"></div></div>
+
+        <div id="qArea"></div>
+
+        <div class="btn-row">
+          <button class="btn"         id="qNext"  style="display:none" onclick="qNext()">Next Question →</button>
+          <button class="btn restart" id="qReset" onclick="qInit()">↺ Restart</button>
+        </div>
+      </div>
+
+    </div><!-- /sec-quiz -->
+
+  </div><!-- /main -->
+
+
+  <script>
+  /* ══════════════════════════════════════════════
+     TAB NAVIGATION
+  ══════════════════════════════════════════════ */
+  function showSec(id, btn) {
+    document.querySelectorAll('.section').forEach(function(s) { s.classList.remove('active'); });
+    document.querySelectorAll('.tab-btn').forEach(function(b) { b.classList.remove('active'); });
+    document.getElementById('sec-' + id).classList.add('active');
+    btn.classList.add('active');
+  }
+
+  /* ══════════════════════════════════════════════
+     QUIZ DATA — Real Numbers, Class 10
+  ══════════════════════════════════════════════ */
+  var quizData = [
+    {
+      q: 'Euclid\'s Division Lemma states that for two positive integers a and b, there exist unique integers q and r such that a = bq + r. What is the condition on r?',
+      opts: ['0 < r < b', '0 ≤ r < b', '0 ≤ r ≤ b', '0 < r ≤ b'],
+      ans: 1,
+      exp: 'The condition is 0 ≤ r < b. The remainder r can be 0 (when b divides a exactly), but r must be strictly less than b. This is the uniqueness condition.'
+    },
+    {
+      q: 'Using Euclid\'s Division Algorithm, what is HCF(135, 225)?',
+      opts: ['15', '45', '5', '9'],
+      ans: 1,
+      exp: '225 = 135×1 + 90 → 135 = 90×1 + 45 → 90 = 45×2 + 0. Last non-zero remainder = 45. So HCF(135, 225) = 45.'
+    },
+    {
+      q: 'The prime factorisation of 3825 is:',
+      opts: ['3² × 5² × 17', '3 × 5² × 17', '3² × 5 × 17', '3² × 5³'],
+      ans: 0,
+      exp: '3825 ÷ 3 = 1275; 1275 ÷ 3 = 425; 425 ÷ 5 = 85; 85 ÷ 5 = 17. So 3825 = 3² × 5² × 17.'
+    },
+    {
+      q: 'If HCF(a, b) = 12 and a × b = 1800, what is LCM(a, b)?',
+      opts: ['75', '100', '150', '50'],
+      ans: 2,
+      exp: 'Using HCF × LCM = a × b: 12 × LCM = 1800 → LCM = 1800 ÷ 12 = 150.'
+    },
+    {
+      q: 'Which of the following will have a terminating decimal expansion?',
+      opts: ['17/9', '77/210', '15/1600', '29/343'],
+      ans: 2,
+      exp: '15/1600. In lowest terms: 3/320. Now 320 = 2⁶ × 5. This is of the form 2ⁿ × 5ᵐ (n=6, m=1), so it terminates. The others have prime factors like 3, 7 in the denominator.'
+    },
+    {
+      q: 'In the proof that √2 is irrational, after assuming √2 = p/q (HCF=1) and squaring, we get p² = 2q². This means:',
+      opts: ['p is odd', 'p is even and q is odd', 'p is even', 'q is even'],
+      ans: 2,
+      exp: 'p² = 2q² means p² is even. If p were odd, p² would be odd. Since p² is even, p must be even. The conclusion that q is also even comes in the next step.'
+    },
+    {
+      q: 'Can the number 6ⁿ end with the digit 0 for any natural number n?',
+      opts: ['Yes, for n = 6', 'Yes, for large values of n', 'No, never', 'Yes, for even n'],
+      ans: 2,
+      exp: '6ⁿ = (2×3)ⁿ = 2ⁿ × 3ⁿ. For a number to end in 0, it must have 5 as a prime factor. Since 5 never appears in the prime factorisation of 6ⁿ, it can NEVER end with 0.'
+    },
+    {
+      q: 'Which of the following is irrational?',
+      opts: ['√4 + √9', '√(2 + 3)', '√4 × √9', '√2 + √3'],
+      ans: 3,
+      exp: '√4 + √9 = 2+3 = 5 (rational). √(2+3) = √5 (irrational, but check option D). √4 × √9 = 2×3 = 6 (rational). √2 + √3 is irrational (sum of two distinct irrationals with no simplification). So D is correct.'
+    },
+    {
+      q: 'What is HCF(8, 9, 25)?',
+      opts: ['1', '3', '9', '25'],
+      ans: 0,
+      exp: '8 = 2³, 9 = 3², 25 = 5². There are no common prime factors among all three numbers. Therefore HCF(8, 9, 25) = 1. (These are pairwise coprime numbers.)'
+    },
+    {
+      q: 'The decimal expansion of 23/(2² × 5) is:',
+      opts: ['Non-terminating repeating', 'Terminating', 'Non-terminating non-repeating', 'Cannot be determined'],
+      ans: 1,
+      exp: 'The denominator is 2² × 5¹ = 20, which is of the form 2ⁿ × 5ᵐ. Therefore 23/20 = 1.15, a terminating decimal. Verify: 23/20 = 1.15 ✓'
+    }
+  ];
+
+  /* Quiz state */
+  var qIdx = 0, qScore = 0, qCorrect = 0, qWrong = 0, qAnswered = false;
+
+  function qInit() {
+    qIdx = 0; qScore = 0; qCorrect = 0; qWrong = 0; qAnswered = false;
+    qUpdateStats();
+    qRender();
+  }
+  function qNext() { qRender(); }
+
+  function qUpdateStats() {
+    document.getElementById('qScore').textContent   = qScore;
+    document.getElementById('qCorrect').textContent = qCorrect;
+    document.getElementById('qWrong').textContent   = qWrong;
+    document.getElementById('qTotal').textContent   = qIdx + '/' + quizData.length;
+    document.getElementById('qFill').style.width    = (qIdx / quizData.length * 100) + '%';
+  }
+
+  function qRender() {
+    document.getElementById('qNext').style.display = 'none';
+    if (qIdx >= quizData.length) {
+      var pct = Math.round(qScore / quizData.length * 100);
+      var emoji   = pct >= 80 ? '🎉' : pct >= 50 ? '💪' : '📚';
+      var message = pct >= 80
+        ? 'Excellent! Real Numbers mastered! 🚀'
+        : pct >= 50
+        ? 'Good start! Review the weak areas. 💪'
+        : 'Keep studying — revisit the concepts section! 📚';
+      document.getElementById('qArea').innerHTML =
+        '<div style="text-align:center;padding:2rem">'
+        + '<div style="font-size:3rem">' + emoji + '</div>'
+        + '<div style="font-family:Syne,sans-serif;font-size:1.5rem;font-weight:800;color:var(--gold);margin:12px 0">Quiz Complete!</div>'
+        + '<div style="color:var(--teal)">Score: ' + qScore + '/' + quizData.length + ' (' + pct + '%)</div>'
+        + '<div style="font-size:.85rem;color:var(--text2);margin-top:8px">' + message + '</div>'
+        + '</div>';
+      return;
+    }
+    qAnswered = false;
+    var q = quizData[qIdx];
+    var html = '<div class="quiz-q">Q' + (qIdx + 1) + '. ' + q.q + '</div><div class="opts">';
+    q.opts.forEach(function(o, i) {
+      html += '<button class="opt" onclick="qAnswer(' + i + ')">' + String.fromCharCode(65 + i) + '. ' + o + '</button>';
+    });
+    html += '</div><div class="exp-box" id="qExp">' + q.exp + '</div>';
+    document.getElementById('qArea').innerHTML = html;
+  }
+
+  function qAnswer(i) {
+    if (qAnswered) return;
+    qAnswered = true;
+    var q = quizData[qIdx];
+    document.querySelectorAll('#qArea .opt').forEach(function(btn, idx) {
+      if (idx === q.ans)               btn.classList.add('correct');
+      else if (idx === i && i !== q.ans) btn.classList.add('wrong');
+      btn.style.pointerEvents = 'none';
+    });
+    if (i === q.ans) { qScore++; qCorrect++; } else { qWrong++; }
+    qIdx++;
+    qUpdateStats();
+    document.getElementById('qExp').classList.add('show');
+    document.getElementById('qNext').style.display = 'inline-flex';
+  }
+
+  /* ══════════════════════════════════════════════
+     CLICK PARTICLE EFFECT
+  ══════════════════════════════════════════════ */
+  (function() {
+    var colors = ['var(--accent2)', 'var(--teal)', 'var(--gold)', 'var(--green)', 'var(--purple)', 'var(--pink)'];
+    document.addEventListener('click', function(e) {
+      for (var i = 0; i < 6; i++) {
+        (function(i) {
+          setTimeout(function() {
+            var el    = document.createElement('div');
+            var color = colors[Math.floor(Math.random() * colors.length)];
+            var angle = Math.random() * 360;
+            var dist  = 40 + Math.random() * 60;
+            var dx    = Math.cos(angle * Math.PI / 180) * dist;
+            var dy    = Math.sin(angle * Math.PI / 180) * dist;
+            el.style.cssText =
+              'position:fixed;left:' + e.clientX + 'px;top:' + e.clientY + 'px;'
+              + 'width:6px;height:6px;border-radius:50%;background:' + color + ';'
+              + 'pointer-events:none;z-index:99999;transform:translate(-50%,-50%);'
+              + 'transition:transform 600ms ease,opacity 600ms ease;box-shadow:0 0 8px ' + color + ';';
+            document.body.appendChild(el);
+            requestAnimationFrame(function() {
+              requestAnimationFrame(function() {
+                el.style.transform = 'translate(calc(-50% + ' + dx + 'px), calc(-50% + ' + dy + 'px)) scale(0)';
+                el.style.opacity   = '0';
+              });
+            });
+            setTimeout(function() { el.remove(); }, 650);
+          }, i * 40);
+        })(i);
+      }
+    });
+  })();
+
+  /* Init quiz on load */
+  qInit();
+  </script>
+</body>
+</html>
