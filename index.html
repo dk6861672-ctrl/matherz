@@ -560,23 +560,131 @@
   }
   .dev-tag:hover { border-color: var(--accent-cyan); color: var(--accent-cyan); }
 
-  .dev-card-support .dev-role { color: var(--accent-green); }
-  .dev-card-support::before {
-    background: linear-gradient(90deg, transparent, var(--accent-green), transparent);
+  /* Co-Developer card — stands out, secondary to lead */
+  .dev-card-codev {
+    border-color: rgba(0,229,255,0.3);
   }
-  .dev-name-support {
+  .dev-card-codev::before {
+    background: linear-gradient(90deg, transparent, var(--accent-cyan), transparent);
+  }
+  .dev-card-codev .dev-role { color: var(--accent-cyan); }
+  .dev-name-codev {
     font-family: 'Orbitron', monospace;
-    font-size: 1.6rem;
-    font-weight: 700;
+    font-size: 1.8rem;
+    font-weight: 800;
     letter-spacing: 3px;
-    background: linear-gradient(90deg, var(--accent-green), var(--accent-cyan));
+    background: linear-gradient(90deg, var(--accent-cyan), #fff);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    margin-bottom: 16px;
+    margin-bottom: 18px;
   }
-  .dev-avatar-support {
-    background: linear-gradient(135deg, var(--accent-green), var(--accent-cyan));
-    box-shadow: 0 0 30px rgba(57,255,133,0.2);
+  .dev-avatar-codev {
+    background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
+    box-shadow: 0 0 28px rgba(0,229,255,0.28);
+  }
+
+  /* Social Manager card — subdued */
+  .dev-card-social {
+    border-color: rgba(255,79,163,0.15);
+    opacity: 0.88;
+  }
+  .dev-card-social::before {
+    background: linear-gradient(90deg, transparent, var(--accent-pink), transparent);
+  }
+  .dev-card-social .dev-role { color: var(--accent-pink); }
+  .dev-name-social {
+    font-family: 'Orbitron', monospace;
+    font-size: 1.3rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    background: linear-gradient(90deg, var(--accent-pink), var(--text-secondary));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 14px;
+  }
+  .dev-avatar-social {
+    width: 52px; height: 52px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--accent-pink), rgba(180,79,255,0.6));
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.4rem;
+    box-shadow: 0 0 18px rgba(255,79,163,0.18);
+  }
+  .dev-card-social .dev-bio { font-size: 0.86rem; }
+
+  /* Batch Manager subsection */
+  .batch-managers-wrap {
+    max-width: 780px;
+    margin: 0 auto;
+  }
+  .batch-managers-label {
+    font-family: 'Fira Code', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--accent-purple);
+    text-align: center;
+    margin-bottom: 16px;
+    display: flex; align-items: center; justify-content: center; gap: 10px;
+  }
+  .batch-managers-label::before, .batch-managers-label::after {
+    content: '';
+    width: 40px; height: 1px;
+    background: var(--accent-purple);
+    opacity: 0.4;
+  }
+  .batch-managers-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 14px;
+  }
+  .batch-card {
+    background: linear-gradient(135deg, rgba(10,10,35,0.9), rgba(13,5,32,0.9));
+    border: 1px solid rgba(180,79,255,0.15);
+    border-radius: 16px;
+    padding: 20px 20px 16px;
+    position: relative;
+    overflow: hidden;
+    opacity: 0.85;
+    transition: border-color 0.3s, opacity 0.3s;
+  }
+  .batch-card::before {
+    content: '';
+    position: absolute;
+    top: -1px; left: 20px; right: 20px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--accent-purple), transparent);
+  }
+  .batch-card:hover { border-color: rgba(180,79,255,0.35); opacity: 1; }
+  .batch-card-role {
+    font-family: 'Fira Code', monospace;
+    font-size: 0.62rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--accent-purple);
+    margin-bottom: 6px;
+  }
+  .batch-card-name {
+    font-family: 'Orbitron', monospace;
+    font-size: 0.95rem;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    background: linear-gradient(90deg, var(--accent-purple), var(--text-secondary));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 6px;
+  }
+  .batch-card-manages {
+    font-size: 0.78rem;
+    color: var(--text-secondary);
+    margin-bottom: 6px;
+    line-height: 1.4;
+  }
+  .batch-card-desc {
+    font-size: 0.75rem;
+    color: rgba(136,136,187,0.6);
+    line-height: 1.5;
+    font-style: italic;
   }
 
   /* ── FOOTER ── */
@@ -682,22 +790,22 @@
       <div class="class-card" onclick="openClassModal(9)">
         <div class="class-number">IX</div>
         <div class="class-label">Class 9</div>
-        <div class="class-badge">1 Topic Live</div>
+        <div class="class-badge" id="badge-9"></div>
       </div>
       <div class="class-card" onclick="openClassModal(10)">
         <div class="class-number">X</div>
         <div class="class-label">Class 10</div>
-        <div class="class-badge">1 Topic Live</div>
+        <div class="class-badge" id="badge-10"></div>
       </div>
       <div class="class-card" onclick="openClassModal(11)">
         <div class="class-number">XI</div>
         <div class="class-label">Class 11</div>
-        <div class="class-badge">1 Topic Live</div>
+        <div class="class-badge" id="badge-11"></div>
       </div>
       <div class="class-card" onclick="openClassModal(12)">
         <div class="class-number">XII</div>
         <div class="class-label">Class 12</div>
-        <div class="class-badge">1 Topic Live</div>
+        <div class="class-badge" id="badge-12"></div>
       </div>
     </div>
   </div>
@@ -759,19 +867,47 @@
         </div>
       </div>
 
-      <!-- Support -->
-      <div class="dev-card dev-card-support">
-        <div class="dev-role" style="color:var(--accent-green)">🌱 Supported &amp; Guided By</div>
+      <!-- Co-Developer -->
+      <div class="dev-card dev-card-codev">
+        <div class="dev-role">🛠️ Co-Developer</div>
         <div style="display:flex;align-items:center;gap:20px;flex-wrap:wrap">
-          <div class="dev-avatar dev-avatar-support">🌟</div>
-          <div class="dev-name-support">HALENDER KUMAR</div>
+          <div class="dev-avatar dev-avatar-codev">⚙️</div>
+          <div class="dev-name-codev">HALENDER KUMAR</div>
         </div>
         <p class="dev-bio">
-          The guiding force and backbone of this project — always there with the right words at the right time. His unwavering support and mentorship shaped MathVerse into what it is. 👍
+          <strong>Halender Kumar</strong> — the co-architect who brought essential technical depth and partnership to MathVerse. His contributions span across development, problem-solving, and ensuring every part of this platform runs seamlessly. A true builder in every sense.
         </p>
+        <div class="dev-tags">
+          <span class="dev-tag">🔧 Co-Developer</span>
+          <span class="dev-tag">💡 Problem Solver</span>
+        </div>
+      </div>
+
+      <!-- Social Media Manager -->
+      <div class="dev-card dev-card-social">
+        <div class="dev-role">📱 Social Media Manager</div>
+        <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap">
+          <div class="dev-avatar-social">✨</div>
+          <div class="dev-name-social">— COMING SOON —</div>
+        </div>
+        <p class="dev-bio">
+          Manages MathVerse's presence across Instagram, YouTube, and all social platforms — growing the community, crafting content, and spreading the love for mathematics far and wide.
+        </p>
+        <div class="dev-tags">
+          <span class="dev-tag">📸 Instagram</span>
+          <span class="dev-tag">▶️ YouTube</span>
+          <span class="dev-tag">🌐 All Platforms</span>
+        </div>
       </div>
 
     </div>
+
+    <!-- Batch Managers -->
+    <div class="batch-managers-wrap" style="margin-top:40px;">
+      <div class="batch-managers-label">📚 Batch Managers</div>
+      <div class="batch-managers-grid" id="batchManagersGrid"></div>
+    </div>
+
   </div>
 </section>
 
@@ -1002,6 +1138,13 @@ const classData = {
   }
 };
 
+// ─── AUTO BADGE COUNTS ────────────────────────────────────────────────────────
+Object.keys(classData).forEach(cls => {
+  const live = classData[cls].topics.filter(t => !t.locked).length;
+  const badge = document.getElementById('badge-' + cls);
+  if (badge) badge.textContent = live + (live === 1 ? ' Topic Live' : ' Topics Live');
+});
+
 // ─── MODAL ──────────────────────────────────────────────────────────────────────
 function openClassModal(cls) {
   const data = classData[cls];
@@ -1072,6 +1215,33 @@ function showToast(msg) {
 
 // escape key
 document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+// ─── BATCH MANAGERS ────────────────────────────────────────────────────────────
+// Edit this JSON array to add / update batch managers.
+// Each entry: { name, manages, description (optional) }
+const batchManagers = [
+  // Example entries — replace or extend as needed:
+  // { name: "Riya Sharma", manages: "Class 9 & 10 Batch", description: "Keeps the junior batches on track and full of energy." },
+  // { name: "Arjun Mehta", manages: "JEE Advanced Batch", description: "Guides the advanced cohort with precision and calm." }
+];
+
+function renderBatchManagers() {
+  const grid = document.getElementById('batchManagersGrid');
+  if (!grid) return;
+  if (batchManagers.length === 0) {
+    grid.innerHTML = `<div style="grid-column:1/-1;text-align:center;color:var(--text-secondary);font-family:'Fira Code',monospace;font-size:0.78rem;opacity:0.5;padding:18px 0;">No batch managers added yet.</div>`;
+    return;
+  }
+  grid.innerHTML = batchManagers.map(m => `
+    <div class="batch-card">
+      <div class="batch-card-role">📋 Batch Manager</div>
+      <div class="batch-card-name">${m.name}</div>
+      <div class="batch-card-manages">📚 ${m.manages}</div>
+      ${m.description ? `<div class="batch-card-desc">${m.description}</div>` : ''}
+    </div>
+  `).join('');
+}
+renderBatchManagers();
 
 </script>
 </body>
