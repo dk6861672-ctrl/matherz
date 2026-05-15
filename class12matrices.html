@@ -1,0 +1,908 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Class 12 — Chapter 3: Matrices</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&family=Syne:wght@700;800&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --accent:     #7c3aed;
+      --accent2:    #a78bfa;
+      --glow-rgb:   124, 58, 237;
+      --bg:         #050810;
+      --surface:    #0c1120;
+      --surface2:   #111827;
+      --border:     #1e2d45;
+      --gold:       #f59e0b;
+      --teal:       #14b8a6;
+      --green:      #22c55e;
+      --pink:       #ec4899;
+      --purple:     #a855f7;
+      --orange:     #f97316;
+      --text:       #e2e8f0;
+      --text2:      #94a3b8;
+      --text3:      #64748b;
+    }
+
+    body { font-family: 'Space Grotesk', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; overflow-x: hidden; line-height: 1.6; }
+    body::before { content: ''; position: fixed; inset: 0; pointer-events: none; z-index: 0; background: radial-gradient(ellipse 80% 60% at 15% 0%, rgba(var(--glow-rgb), 0.09) 0%, transparent 60%), radial-gradient(ellipse 60% 40% at 85% 100%, rgba(20,184,166,0.05) 0%, transparent 60%); }
+
+    .site-header { position: sticky; top: 0; z-index: 10; padding: 1.25rem 2rem; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--border); backdrop-filter: blur(12px); background: rgba(5,8,16,0.6); }
+    .home-btn { background: rgba(var(--glow-rgb),0.10); border: 1px solid rgba(var(--glow-rgb),0.28); color: var(--accent2); font-family: 'Space Grotesk',sans-serif; font-size: 13px; font-weight: 600; padding: 8px 16px; border-radius: 8px; cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; transition: all 0.2s ease; }
+    .home-btn:hover { background: rgba(var(--glow-rgb),0.20); transform: translateX(-2px); box-shadow: 0 0 14px rgba(var(--glow-rgb),0.2); }
+    .class-badge { font-family: 'Syne',sans-serif; font-size: 13px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--text3); }
+
+    .hero { position: relative; z-index: 1; text-align: center; padding: 4rem 2rem 3rem; max-width: 800px; margin: 0 auto; }
+    .hero-label { font-family: 'DM Mono',monospace; font-size: 11px; font-weight: 500; color: var(--teal); letter-spacing: 3px; text-transform: uppercase; margin-bottom: 1.2rem; display: flex; align-items: center; justify-content: center; gap: 12px; }
+    .hero-label::before, .hero-label::after { content: ''; flex: 0 0 40px; height: 1px; background: var(--teal); opacity: 0.4; }
+    .hero h1 { font-family: 'Syne',sans-serif; font-size: clamp(2.2rem,5vw,3.5rem); font-weight: 800; line-height: 1.1; margin-bottom: 1rem; background: linear-gradient(135deg,#e2e8f0 0%,var(--accent2) 50%,var(--teal) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .hero p { font-size: 1.05rem; color: var(--text2); line-height: 1.7; max-width: 560px; margin: 0 auto 2rem; }
+    .hero-pills { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; }
+    .pill { font-size: 11px; font-weight: 600; padding: 5px 14px; border-radius: 20px; letter-spacing: 0.5px; }
+    .pill.accent { background: rgba(var(--glow-rgb),0.12); border: 1px solid rgba(var(--glow-rgb),0.3); color: var(--accent2); }
+    .pill.teal   { background: rgba(20,184,166,0.10); border: 1px solid rgba(20,184,166,0.3); color: var(--teal); }
+    .pill.gold   { background: rgba(245,158,11,0.10); border: 1px solid rgba(245,158,11,0.3); color: var(--gold); }
+    .pill.pink   { background: rgba(236,72,153,0.10); border: 1px solid rgba(236,72,153,0.3); color: var(--pink); }
+    .pill.purple { background: rgba(168,85,247,0.10); border: 1px solid rgba(168,85,247,0.3); color: var(--purple); }
+
+    .main { max-width: 1020px; margin: 0 auto; padding: 2rem 1.5rem 6rem; position: relative; z-index: 1; }
+
+    .tabs { display: flex; gap: 4px; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 5px; margin-bottom: 2rem; flex-wrap: wrap; position: sticky; top: 65px; z-index: 5; backdrop-filter: blur(12px); }
+    .tab-btn { flex: 1; min-width: 80px; padding: 10px 10px; border-radius: 8px; border: none; background: transparent; cursor: pointer; font-family: 'Space Grotesk',sans-serif; font-size: 12px; font-weight: 600; color: var(--text2); transition: all 0.2s ease; white-space: nowrap; }
+    .tab-btn:hover { color: var(--text); background: rgba(255,255,255,0.04); }
+    .tab-btn.active { background: linear-gradient(135deg,rgba(var(--glow-rgb),0.25),rgba(20,184,166,0.12)); color: var(--accent2); box-shadow: 0 0 12px rgba(var(--glow-rgb),0.15); }
+
+    .section { display: none; }
+    .section.active { display: block; animation: fadeUp 0.3s ease; }
+    @keyframes fadeUp { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:translateY(0); } }
+
+    .card { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 1.5rem; margin-bottom: 1.5rem; position: relative; overflow: hidden; }
+    .card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg,var(--accent),var(--teal)); opacity: 0.6; }
+    .card-title { font-family: 'Syne',sans-serif; font-size: 1.05rem; font-weight: 800; color: var(--text); margin-bottom: 1rem; display: flex; align-items: center; gap: 8px; }
+
+    .grid2 { display: grid; grid-template-columns: repeat(auto-fill,minmax(220px,1fr)); gap: 10px; margin: 0.75rem 0; }
+    .grid3 { display: grid; grid-template-columns: repeat(auto-fill,minmax(180px,1fr)); gap: 10px; margin: 0.75rem 0; }
+
+    .cbox { background: var(--surface2); border: 1px solid var(--border); border-radius: 12px; padding: 1rem; transition: border-color 0.2s; }
+    .cbox:hover { border-color: rgba(var(--glow-rgb),0.4); }
+    .cbox h3 { font-family: 'Syne',sans-serif; font-size: 0.82rem; font-weight: 700; margin-bottom: 0.5rem; }
+    .cbox p, .cbox .frow { font-size: 0.83rem; color: var(--text2); line-height: 1.6; }
+    .cbox.accent { border-color: rgba(var(--glow-rgb),0.25); } .cbox.accent h3 { color: var(--accent2); }
+    .cbox.teal   { border-color: rgba(20,184,166,0.30); } .cbox.teal h3 { color: var(--teal); }
+    .cbox.gold   { border-color: rgba(245,158,11,0.30); } .cbox.gold h3 { color: var(--gold); }
+    .cbox.green  { border-color: rgba(34,197,94,0.30); } .cbox.green h3 { color: var(--green); }
+    .cbox.pink   { border-color: rgba(236,72,153,0.30); } .cbox.pink h3 { color: var(--pink); }
+    .cbox.purple { border-color: rgba(168,85,247,0.30); } .cbox.purple h3 { color: var(--purple); }
+    .cbox.orange { border-color: rgba(249,115,22,0.30); } .cbox.orange h3 { color: var(--orange); }
+
+    .frow { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 0.6rem; font-size: 0.88rem; line-height: 1.6; color: var(--text2); }
+    .frow:last-child { margin-bottom: 0; }
+
+    .fm { display: inline-block; background: rgba(var(--glow-rgb),0.10); border: 1px solid rgba(var(--glow-rgb),0.22); color: var(--accent2); font-family: 'DM Mono',monospace; font-size: 0.82rem; padding: 3px 10px; border-radius: 6px; font-weight: 500; white-space: nowrap; flex-shrink: 0; }
+    .fm.gold   { background:rgba(245,158,11,.10); border-color:rgba(245,158,11,.22); color:var(--gold); }
+    .fm.teal   { background:rgba(20,184,166,.10); border-color:rgba(20,184,166,.22); color:var(--teal); }
+    .fm.green  { background:rgba(34,197,94,.10); border-color:rgba(34,197,94,.22); color:var(--green); }
+    .fm.pink   { background:rgba(236,72,153,.10); border-color:rgba(236,72,153,.22); color:var(--pink); }
+    .fm.purple { background:rgba(168,85,247,.10); border-color:rgba(168,85,247,.22); color:var(--purple); }
+    .fm.orange { background:rgba(249,115,22,.10); border-color:rgba(249,115,22,.22); color:var(--orange); }
+
+    .tw { overflow-x: auto; border-radius: 10px; border: 1px solid var(--border); margin: 0.75rem 0; }
+    table { width: 100%; border-collapse: collapse; font-size: 0.82rem; }
+    th { background: rgba(var(--glow-rgb),0.12); color: var(--accent2); font-weight: 700; padding: 10px 12px; text-align: center; border-bottom: 1px solid var(--border); font-size: 0.78rem; letter-spacing: 0.5px; }
+    td { padding: 9px 12px; text-align: center; border-bottom: 1px solid rgba(30,45,69,0.6); color: var(--text2); }
+    tr:last-child td { border-bottom: none; }
+    tr:hover td { background: rgba(var(--glow-rgb),0.04); }
+    .ud { color: var(--pink); font-weight: 700; font-size: 0.75rem; }
+
+    .deriv { background: rgba(20,184,166,0.05); border: 1px solid rgba(20,184,166,0.20); border-radius: 12px; padding: 1.2rem; margin: 0.75rem 0; }
+    .deriv-title { font-size: 0.72rem; font-weight: 700; color: var(--teal); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 0.75rem; }
+    .step { display: flex; gap: 10px; margin-bottom: 0.6rem; font-size: 0.85rem; color: var(--text2); line-height: 1.6; }
+    .step:last-child { margin-bottom: 0; }
+    .sn { background: rgba(20,184,166,0.15); color: var(--teal); font-weight: 700; font-size: 0.70rem; width: 22px; height: 22px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 2px; }
+
+    .fact { background: linear-gradient(135deg,rgba(245,158,11,0.06),rgba(20,184,166,0.04)); border: 1px solid rgba(245,158,11,0.22); border-radius: 10px; padding: 1rem 1.2rem; margin: 0.6rem 0; display: flex; gap: 10px; align-items: flex-start; }
+    .fact-icon { font-size: 1.15rem; flex-shrink: 0; margin-top: 1px; }
+    .fact p { font-size: 0.87rem; line-height: 1.6; color: var(--text2); }
+    .fact strong { color: var(--gold); }
+
+    .tip { background: rgba(168,85,247,0.07); border: 1px solid rgba(168,85,247,0.25); border-radius: 10px; padding: 1rem 1.2rem; margin: 0.6rem 0; }
+    .tip-title { font-size: 0.72rem; font-weight: 700; color: var(--purple); letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 0.4rem; }
+    .tip p { font-size: 0.87rem; color: var(--text2); line-height: 1.6; }
+
+    .iq { background: var(--surface2); border: 1px solid var(--border); border-radius: 10px; padding: 1rem 1.2rem; margin: 0.5rem 0; transition: border-color 0.2s; }
+    .iq:hover { border-color: rgba(var(--glow-rgb),0.35); }
+    .iq-q    { font-size: 0.87rem; font-weight: 600; color: var(--text); margin-bottom: 0.35rem; }
+    .iq-hint { font-size: 0.80rem; color: var(--text2); line-height: 1.5; }
+    .iq-ans  { font-family: 'DM Mono',monospace; font-size: 0.80rem; color: var(--accent2); margin-top: 0.4rem; }
+
+    .quiz-meta { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 1.2rem; }
+    .quiz-stat { background: var(--surface2); border: 1px solid var(--border); border-radius: 10px; padding: 0.75rem 1rem; min-width: 70px; text-align: center; }
+    .quiz-num { font-family: 'Syne',sans-serif; font-size: 1.5rem; font-weight: 800; color: var(--gold); display: block; }
+    .quiz-lbl { font-size: 0.68rem; color: var(--text3); letter-spacing: 0.5px; text-transform: uppercase; }
+    .prog-bar { height: 4px; background: var(--border); border-radius: 4px; margin-bottom: 1.2rem; overflow: hidden; }
+    .prog-fill { height: 4px; border-radius: 4px; background: linear-gradient(90deg,var(--accent),var(--teal)); transition: width 0.4s ease; box-shadow: 0 0 8px rgba(var(--glow-rgb),0.5); }
+    .quiz-q { font-size: 1rem; font-weight: 600; color: var(--text); margin-bottom: 1rem; line-height: 1.6; }
+    .opts { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    .opt { background: var(--surface2); border: 1px solid var(--border); border-radius: 10px; padding: 12px 14px; cursor: pointer; font-family: 'Space Grotesk',sans-serif; font-size: 0.85rem; color: var(--text2); transition: all 0.18s ease; text-align: left; width: 100%; }
+    .opt:hover { border-color: var(--accent); background: rgba(var(--glow-rgb),0.07); color: var(--text); }
+    .opt.correct { background: rgba(34,197,94,0.12) !important; border-color: var(--green) !important; color: var(--green) !important; }
+    .opt.wrong   { background: rgba(236,72,153,0.10) !important; border-color: var(--pink) !important; color: var(--pink) !important; }
+    .exp-box { background: rgba(20,184,166,0.07); border: 1px solid rgba(20,184,166,0.22); border-radius: 8px; padding: 0.9rem; margin-top: 0.9rem; font-size: 0.84rem; line-height: 1.6; color: var(--teal); display: none; }
+    .exp-box.show { display: block; animation: fadeUp 0.2s ease; }
+    .btn { background: linear-gradient(135deg,rgba(var(--glow-rgb),0.22),rgba(20,184,166,0.12)); border: 1px solid rgba(var(--glow-rgb),0.30); color: var(--accent2); font-family: 'Space Grotesk',sans-serif; font-size: 0.85rem; font-weight: 600; padding: 10px 22px; border-radius: 8px; cursor: pointer; transition: all 0.2s ease; display: inline-flex; align-items: center; gap: 6px; }
+    .btn:hover { background: linear-gradient(135deg,rgba(var(--glow-rgb),0.35),rgba(20,184,166,0.22)); box-shadow: 0 0 16px rgba(var(--glow-rgb),0.25); }
+    .btn.restart { background: rgba(245,158,11,0.12); border-color: rgba(245,158,11,0.30); color: var(--gold); }
+    .btn-row { display: flex; gap: 10px; margin-top: 1rem; flex-wrap: wrap; }
+
+    @media (max-width: 600px) {
+      .hero { padding: 2.5rem 1rem 2rem; }
+      .hero h1 { font-size: 2rem; }
+      .opts { grid-template-columns: 1fr; }
+      .main { padding: 1.5rem 1rem 4rem; }
+      .tabs { top: 58px; }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="site-header">
+    <a href="index.html" class="home-btn">&#8592; Home</a>
+    <span class="class-badge">CBSE &middot; CLASS 12</span>
+  </header>
+
+  <div class="hero">
+    <div class="hero-label">Chapter 3 &middot; Class 12 Maths</div>
+    <h1>Matrices</h1>
+    <p>Master the rectangular array of numbers &mdash; from types and operations to transpose, symmetric matrices, and elementary transformations. Built for Board &amp; JEE.</p>
+    <div class="hero-pills">
+      <span class="pill accent">&#x1F4D0; Types of Matrices</span>
+      <span class="pill teal">&#x2795; Operations</span>
+      <span class="pill gold">&#x1F504; Transpose</span>
+      <span class="pill pink">&#x2699;&#xFE0F; Elementary Ops</span>
+      <span class="pill purple">&#x1F3C6; 12-Q Quiz</span>
+    </div>
+  </div>
+
+  <div class="main">
+
+    <div class="tabs">
+      <button class="tab-btn active" onclick="showSec('concepts',this)">&#x1F4D0; Concepts</button>
+      <button class="tab-btn"        onclick="showSec('types',this)">&#x1F521; Types</button>
+      <button class="tab-btn"        onclick="showSec('ops',this)">&#x2795; Operations</button>
+      <button class="tab-btn"        onclick="showSec('transpose',this)">&#x1F504; Transpose</button>
+      <button class="tab-btn"        onclick="showSec('elem',this)">&#x2699;&#xFE0F; Elem. Ops</button>
+      <button class="tab-btn"        onclick="showSec('iq',this)">&#x2B50; Imp. Qs</button>
+      <button class="tab-btn"        onclick="showSec('tips',this)">&#x1F4A1; Tips</button>
+      <button class="tab-btn"        onclick="showSec('quiz',this)">&#x1F3C6; Quiz</button>
+    </div>
+
+
+    <!-- TAB: CONCEPTS -->
+    <div class="section active" id="sec-concepts">
+
+      <div class="card">
+        <div class="card-title"><span class="icon">&#x1F4D0;</span> What is a Matrix?</div>
+        <div class="frow">A matrix is an <strong style="color:var(--accent2)">ordered rectangular array</strong> of numbers (or functions) arranged in m rows and n columns, enclosed in brackets [ &nbsp;] or ( &nbsp;) or &#x2016;&nbsp;&#x2016;. Denoted as A = [a&#x1D62;&#x2C7C;]&#x2098;&#x2093;&#x2099;.</div>
+
+        <div class="grid2">
+          <div class="cbox accent">
+            <h3>Order &amp; Size</h3>
+            <div class="frow">A matrix with m rows and n columns has order <strong style="color:var(--accent2)">m &times; n</strong>.</div>
+            <div class="frow"><span class="fm">No. of elements = m &times; n</span></div>
+            <div class="frow">For square matrix (m = n): &nbsp;<span class="fm">elements = n&sup2;</span></div>
+          </div>
+          <div class="cbox teal">
+            <h3>Element Notation</h3>
+            <div class="frow">a&#x1D62;&#x2C7C; = element in <strong style="color:var(--teal)">i-th row</strong> and <strong style="color:var(--teal)">j-th column</strong>.</div>
+            <div class="frow">Example: a&#x2082;&#x2083; &rarr; 2nd row, 3rd column.</div>
+            <div class="frow"><span class="fm teal">A = [a&#x1D62;&#x2C7C;]&#x2098;&#x2093;&#x2099;</span> &nbsp; i = 1..m, j = 1..n</div>
+          </div>
+          <div class="cbox gold">
+            <h3>Diagonal Elements</h3>
+            <div class="frow">Elements a&#x2081;&#x2081;, a&#x2082;&#x2082;, a&#x2083;&#x2083;, &hellip;, a&#x2099;&#x2099; are called <strong style="color:var(--gold)">Diagonal Elements</strong>.</div>
+            <div class="frow">The line along which they lie is called the <strong style="color:var(--gold)">Principal or Leading Diagonal</strong>.</div>
+          </div>
+          <div class="cbox purple">
+            <h3>Conjugate Elements</h3>
+            <div class="frow">In a square matrix, a&#x1D62;&#x2C7C; and a&#x2C7C;&#x1D62; are called <strong style="color:var(--purple)">Conjugate Elements</strong>.</div>
+            <div class="frow"><span class="fm purple">a&#x2081;&#x2082; &harr; a&#x2082;&#x2081;</span> &nbsp; <span class="fm purple">a&#x2081;&#x2083; &harr; a&#x2083;&#x2081;</span> &nbsp; <span class="fm purple">a&#x2082;&#x2083; &harr; a&#x2083;&#x2082;</span></div>
+          </div>
+        </div>
+
+        <div class="fact">
+          <span class="fact-icon">&#x26A0;&#xFE0F;</span>
+          <p><strong>Critical Rule:</strong> Determinant of a matrix exists ONLY for a <strong>square matrix</strong>. For any non-square matrix (m &ne; n), determinant is not defined.</p>
+        </div>
+        <div class="fact">
+          <span class="fact-icon">&#x1F9E0;</span>
+          <p>In a square matrix n&times;n: Principal diagonal has <strong>n elements</strong> (i = j). Elements strictly above diagonal: <strong>(n&sup2;&minus;n)/2</strong>. Same count below diagonal. Total: n&sup2; elements.</p>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title"><span class="icon">&#x2705;</span> Equality of Two Matrices</div>
+        <div class="frow">Two matrices A = [a&#x1D62;&#x2C7C;] and B = [b&#x1D62;&#x2C7C;] are <strong style="color:var(--accent2)">equal</strong> if and only if <em>both</em> conditions hold:</div>
+        <div class="grid2">
+          <div class="cbox green">
+            <h3>Condition 1 &mdash; Same Order</h3>
+            <div class="frow">They must have the <strong style="color:var(--green)">same number of rows and columns</strong> (same order m &times; n).</div>
+          </div>
+          <div class="cbox teal">
+            <h3>Condition 2 &mdash; Equal Elements</h3>
+            <div class="frow">Every corresponding element is equal: <span class="fm teal">a&#x1D62;&#x2C7C; = b&#x1D62;&#x2C7C;</span> for all i and j.</div>
+          </div>
+        </div>
+        <div class="tip">
+          <div class="tip-title">&#x1F49C; Board Exam Tip</div>
+          <p>When A = B is given, set up individual element equations (a&#x2081;&#x2081; = b&#x2081;&#x2081;, a&#x2081;&#x2082; = b&#x2081;&#x2082;, etc.) and solve simultaneously. Do not try to guess values mentally.</p>
+        </div>
+      </div>
+
+    </div><!-- /sec-concepts -->
+
+
+    <!-- TAB: TYPES -->
+    <div class="section" id="sec-types">
+
+      <div class="card">
+        <div class="card-title"><span class="icon">&#x1F521;</span> All Types of Matrices</div>
+        <div class="grid2">
+
+          <div class="cbox accent">
+            <h3>Row Matrix (Row Vector)</h3>
+            <div class="frow">Only <strong style="color:var(--accent2)">one row</strong>, any number of columns.</div>
+            <div class="frow"><span class="fm">Order: 1 &times; n</span></div>
+            <div class="frow">A = [a&#x2081;&#x2081; &nbsp;a&#x2081;&#x2082; &nbsp;&hellip; &nbsp;a&#x2081;&#x2099;]</div>
+          </div>
+
+          <div class="cbox teal">
+            <h3>Column Matrix (Column Vector)</h3>
+            <div class="frow">Only <strong style="color:var(--teal)">one column</strong>, any number of rows.</div>
+            <div class="frow"><span class="fm teal">Order: m &times; 1</span></div>
+            <div class="frow">A = [a&#x2081;&#x2081;; a&#x2082;&#x2081;; &hellip; a&#x2098;&#x2081;]</div>
+          </div>
+
+          <div class="cbox gold">
+            <h3>Zero / Null Matrix (O)</h3>
+            <div class="frow">All entries are <strong style="color:var(--gold)">zero</strong>. Denoted O or 0&#x2098;&#x2093;&#x2099;.</div>
+            <div class="frow"><span class="fm gold">a&#x1D62;&#x2C7C; = 0 for all i, j</span></div>
+          </div>
+
+          <div class="cbox pink">
+            <h3>Horizontal Matrix</h3>
+            <div class="frow">Order m &times; n with <strong style="color:var(--pink)">n &gt; m</strong> (more cols than rows).</div>
+            <div class="frow">Example: [1 3 5 6 1; 2 3 5 7 1]&#x2082;&#x2085;</div>
+          </div>
+
+          <div class="cbox purple">
+            <h3>Vertical Matrix</h3>
+            <div class="frow">Order m &times; n with <strong style="color:var(--purple)">m &gt; n</strong> (more rows than cols).</div>
+            <div class="frow">Example: [3 4; 1 2; 2 5; 1 1]&#x2084;&#x2082;</div>
+          </div>
+
+          <div class="cbox orange">
+            <h3>Singleton Matrix</h3>
+            <div class="frow">Only <strong style="color:var(--orange)">one element</strong>.</div>
+            <div class="frow"><span class="fm orange">Order: 1 &times; 1</span></div>
+          </div>
+
+          <div class="cbox green">
+            <h3>Square Matrix (Order n)</h3>
+            <div class="frow">Number of rows = Number of columns.</div>
+            <div class="frow"><span class="fm green">m = n</span></div>
+            <div class="frow">Only square matrices have a defined diagonal, determinant, and can be symmetric/skew-symmetric.</div>
+          </div>
+
+          <div class="cbox accent">
+            <h3>Diagonal Matrix</h3>
+            <div class="frow">A square matrix where <strong style="color:var(--accent2)">all non-diagonal elements = 0</strong>.</div>
+            <div class="frow"><span class="fm">a&#x1D62;&#x2C7C; = 0 if i &ne; j</span></div>
+            <div class="frow">Diagonal elements can be anything (including zero).</div>
+          </div>
+
+          <div class="cbox teal">
+            <h3>Scalar Matrix</h3>
+            <div class="frow">A diagonal matrix where <strong style="color:var(--teal)">all diagonal elements are equal</strong>.</div>
+            <div class="frow"><span class="fm teal">d&#x2081; = d&#x2082; = d&#x2083; = a (const)</span></div>
+            <div class="frow">Special case of diagonal matrix.</div>
+          </div>
+
+          <div class="cbox gold">
+            <h3>Unit / Identity Matrix (I)</h3>
+            <div class="frow">Scalar matrix where all diagonal elements = 1.</div>
+            <div class="frow"><span class="fm gold">a&#x1D62;&#x2C7C; = 1 if i=j, else 0</span></div>
+            <div class="frow"><span class="fm gold">Det(I) = |I| = 1</span></div>
+          </div>
+
+        </div>
+
+        <div class="tw">
+          <table>
+            <thead><tr><th>Type</th><th>Condition</th><th>Diagonal?</th><th>Det?</th></tr></thead>
+            <tbody>
+              <tr><td style="color:var(--accent2)">Row (1&times;n)</td><td>1 row only</td><td>&mdash;</td><td class="ud">No</td></tr>
+              <tr><td style="color:var(--teal)">Column (m&times;1)</td><td>1 col only</td><td>&mdash;</td><td class="ud">No</td></tr>
+              <tr><td style="color:var(--gold)">Square (n&times;n)</td><td>m = n</td><td>&#x2713;</td><td style="color:var(--green)">Yes</td></tr>
+              <tr><td style="color:var(--purple)">Diagonal</td><td>a&#x1D62;&#x2C7C; = 0, i &ne; j</td><td>&#x2713;</td><td style="color:var(--green)">Yes</td></tr>
+              <tr><td style="color:var(--pink)">Scalar</td><td>Diagonal + all diag same</td><td>&#x2713;</td><td style="color:var(--green)">Yes</td></tr>
+              <tr><td style="color:var(--green)">Identity (I)</td><td>Scalar + a = 1</td><td>&#x2713;</td><td style="color:var(--green)">|I| = 1</td></tr>
+              <tr><td style="color:var(--orange)">Null (O)</td><td>All = 0</td><td>&#x2713;</td><td style="color:var(--green)">|O| = 0</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="tip">
+          <div class="tip-title">&#x1F49C; Hierarchy Trick</div>
+          <p>Identity &sub; Scalar &sub; Diagonal &sub; Square. Each is a more general form of the previous. A scalar matrix IS a diagonal matrix. An identity matrix IS a scalar matrix.</p>
+        </div>
+      </div>
+
+    </div><!-- /sec-types -->
+
+
+    <!-- TAB: OPERATIONS -->
+    <div class="section" id="sec-ops">
+
+      <div class="card">
+        <div class="card-title"><span class="icon">&#x2795;</span> Addition &amp; Subtraction</div>
+        <div class="frow">Two matrices can be added/subtracted <strong style="color:var(--accent2)">only if they have the same order</strong>.</div>
+        <div class="grid2">
+          <div class="cbox accent">
+            <h3>Definition</h3>
+            <div class="frow">If A = [a&#x1D62;&#x2C7C;] and B = [b&#x1D62;&#x2C7C;] are both m&times;n:</div>
+            <div class="frow"><span class="fm">A + B = [a&#x1D62;&#x2C7C; + b&#x1D62;&#x2C7C;]</span></div>
+            <div class="frow"><span class="fm">A &minus; B = [a&#x1D62;&#x2C7C; &minus; b&#x1D62;&#x2C7C;]</span></div>
+          </div>
+          <div class="cbox teal">
+            <h3>Properties of Addition</h3>
+            <div class="frow"><span class="fm teal">A + B = B + A</span> (Commutative)</div>
+            <div class="frow"><span class="fm teal">(A+B)+C = A+(B+C)</span> (Associative)</div>
+            <div class="frow"><span class="fm teal">A + O = A</span> (Identity)</div>
+            <div class="frow"><span class="fm teal">A + (&minus;A) = O</span> (Inverse)</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title"><span class="icon">&#x1F522;</span> Scalar Multiplication</div>
+        <div class="frow">If k is a scalar and A = [a&#x1D62;&#x2C7C;], then <span class="fm" style="font-size:.9rem">kA = [k &middot; a&#x1D62;&#x2C7C;]</span> &mdash; every element multiplied by k.</div>
+        <div class="grid2">
+          <div class="cbox gold">
+            <h3>Properties</h3>
+            <div class="frow"><span class="fm gold">k(A+B) = kA + kB</span></div>
+            <div class="frow"><span class="fm gold">(k+l)A = kA + lA</span></div>
+            <div class="frow"><span class="fm gold">k(lA) = (kl)A</span></div>
+            <div class="frow"><span class="fm gold">(&minus;1)A = &minus;A</span></div>
+          </div>
+          <div class="cbox purple">
+            <h3>Negative of Matrix</h3>
+            <div class="frow">&minus;A = (&minus;1)A = [&minus;a&#x1D62;&#x2C7C;]</div>
+            <div class="frow">Every element is negated.</div>
+            <div class="frow"><span class="fm purple">A &minus; B = A + (&minus;B)</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title"><span class="icon">&#x2716;&#xFE0F;</span> Matrix Multiplication (AB)</div>
+        <div class="frow"><strong style="color:var(--accent2)">Condition:</strong> Columns of A = Rows of B. If A is m&times;n and B is n&times;p, then AB is m&times;p.</div>
+        <div class="frow"><span class="fm" style="font-size:.9rem">c&#x1D62;&#x2C7C; = &sum;&#x2096; a&#x1D62;&#x2096; &middot; b&#x2096;&#x2C7C;</span> &mdash; dot product of i-th row of A with j-th column of B.</div>
+        <div class="grid2">
+          <div class="cbox accent">
+            <h3>Properties</h3>
+            <div class="frow"><span class="fm">A(BC) = (AB)C</span> Associative</div>
+            <div class="frow"><span class="fm">A(B+C) = AB + AC</span></div>
+            <div class="frow"><span class="fm">AI = IA = A</span></div>
+            <div class="frow"><span class="fm">AO = OA = O</span></div>
+          </div>
+          <div class="cbox pink">
+            <h3>&#x26A0; NOT Commutative!</h3>
+            <div class="frow" style="color:var(--pink);font-weight:600">AB &ne; BA &nbsp;(in general)</div>
+            <div class="frow">Even if both products are defined and of same order, they are generally different.</div>
+          </div>
+          <div class="cbox gold">
+            <h3>&#x26A0; Zero Product Warning</h3>
+            <div class="frow">AB = O &nbsp;<strong style="color:var(--gold)">does NOT mean</strong>&nbsp; A = O or B = O.</div>
+            <div class="frow">AB = AC &nbsp;<strong style="color:var(--gold)">does NOT imply</strong>&nbsp; B = C (even if A &ne; O).</div>
+          </div>
+          <div class="cbox teal">
+            <h3>Result Order Rule</h3>
+            <div class="frow">A(m&times;n) &times; B(n&times;p) = C(m&times;p)</div>
+            <div class="frow">The inner n&rsquo;s must match. Result takes the outer dimensions.</div>
+          </div>
+        </div>
+        <div class="tip">
+          <div class="tip-title">&#x1F49C; Memory Trick &mdash; Matrix Multiply</div>
+          <p>For C = AB: element c&#x1D62;&#x2C7C; = (row i of A) &middot; (column j of B). Each element of C is a dot product. Visualise "row scans left-to-right, column scans top-to-bottom."</p>
+        </div>
+      </div>
+
+    </div><!-- /sec-ops -->
+
+
+    <!-- TAB: TRANSPOSE -->
+    <div class="section" id="sec-transpose">
+
+      <div class="card">
+        <div class="card-title"><span class="icon">&#x1F504;</span> Transpose of a Matrix</div>
+        <div class="frow">The transpose of A (written A' or A&#x1D40;) is obtained by <strong style="color:var(--accent2)">interchanging rows and columns</strong>. If A = [a&#x1D62;&#x2C7C;]&#x2098;&#x2093;&#x2099;, then A' = [a&#x2C7C;&#x1D62;]&#x2099;&#x2093;&#x2098;.</div>
+        <div class="grid2">
+          <div class="cbox accent">
+            <h3>Properties of Transpose</h3>
+            <div class="frow"><span class="fm">(A')' = A</span></div>
+            <div class="frow"><span class="fm">(kA)' = kA'</span></div>
+            <div class="frow"><span class="fm">(A+B)' = A' + B'</span></div>
+            <div class="frow"><span class="fm">(AB)' = B'A'</span> &larr; order reversed!</div>
+          </div>
+          <div class="cbox teal">
+            <h3>Example</h3>
+            <div class="frow">If A = [2 8; 6 4]&#x2082;&#x2082; then:</div>
+            <div class="frow">A' = [2 6; 8 4]&#x2082;&#x2082;</div>
+            <div class="frow">Rows become columns. Order changes from m&times;n &rarr; n&times;m.</div>
+          </div>
+        </div>
+        <div class="fact">
+          <span class="fact-icon">&#x26A0;&#xFE0F;</span>
+          <p><strong>Reversal Rule (Critical):</strong> (AB)' = B'A' &mdash; the transpose of a product <strong>reverses the order</strong>. This is the #1 tested transpose property in boards and JEE.</p>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title"><span class="icon">&#x1F501;</span> Symmetric &amp; Skew-Symmetric Matrices</div>
+        <div class="grid2">
+          <div class="cbox green">
+            <h3>Symmetric Matrix</h3>
+            <div class="frow">A is symmetric if <span class="fm green">A' = A</span></div>
+            <div class="frow">i.e., a&#x1D62;&#x2C7C; = a&#x2C7C;&#x1D62; for all i, j</div>
+            <div class="frow">Example: [1 2 3; 2 5 4; 3 4 6]</div>
+          </div>
+          <div class="cbox pink">
+            <h3>Skew-Symmetric Matrix</h3>
+            <div class="frow">A is skew-symmetric if <span class="fm pink">A' = &minus;A</span></div>
+            <div class="frow">i.e., a&#x1D62;&#x2C7C; = &minus;a&#x2C7C;&#x1D62; for all i, j</div>
+            <div class="frow" style="color:var(--pink)">All diagonal elements MUST be 0!</div>
+          </div>
+        </div>
+
+        <div class="deriv">
+          <div class="deriv-title">Key Theorem &mdash; Decomposition of Any Square Matrix</div>
+          <div class="step">
+            <div class="sn">1</div>
+            <div>Any square matrix A can be written as: <span class="fm teal">A = &frac12;(A + A') + &frac12;(A &minus; A')</span></div>
+          </div>
+          <div class="step">
+            <div class="sn">2</div>
+            <div>Let <span class="fm teal">P = &frac12;(A + A')</span>. Then P' = &frac12;(A + A')' = &frac12;(A' + A) = P. So <strong style="color:var(--green)">P is symmetric</strong>.</div>
+          </div>
+          <div class="step">
+            <div class="sn">3</div>
+            <div>Let <span class="fm teal">Q = &frac12;(A &minus; A')</span>. Then Q' = &frac12;(A &minus; A')' = &frac12;(A' &minus; A) = &minus;Q. So <strong style="color:var(--pink)">Q is skew-symmetric</strong>.</div>
+          </div>
+          <div class="step">
+            <div class="sn">4</div>
+            <div>Therefore: <span class="fm green">A = P + Q = Symmetric + Skew-Symmetric &#x2713;</span></div>
+          </div>
+        </div>
+
+        <div class="tip">
+          <div class="tip-title">&#x1F49C; Board 3-Mark Proof &mdash; Must Know</div>
+          <p>Proving A = Symmetric + Skew-Symmetric is asked every year. Write P = &frac12;(A+A'), show P'=P. Write Q = &frac12;(A&minus;A'), show Q'=&minus;Q. Then verify A = P+Q. Show all 3 steps clearly.</p>
+        </div>
+
+        <div class="tw">
+          <table>
+            <thead><tr><th>Type</th><th>Condition</th><th>Diagonal Elements</th></tr></thead>
+            <tbody>
+              <tr><td style="color:var(--green)">Symmetric</td><td>A' = A</td><td>Any value</td></tr>
+              <tr><td style="color:var(--pink)">Skew-Symmetric</td><td>A' = &minus;A</td><td style="color:var(--pink)">Must all be ZERO</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div><!-- /sec-transpose -->
+
+
+    <!-- TAB: ELEMENTARY OPS -->
+    <div class="section" id="sec-elem">
+
+      <div class="card">
+        <div class="card-title"><span class="icon">&#x2699;&#xFE0F;</span> Elementary Operations (Transformations)</div>
+        <div class="frow">Used to find the <strong style="color:var(--accent2)">inverse of a matrix</strong> via the method A = IA &rarr; I = A&#x207B;&#xB9;A.</div>
+
+        <div class="grid2">
+          <div class="cbox accent">
+            <h3>Three Row Operations</h3>
+            <div class="frow"><span class="fm">R&#x1D62; &harr; R&#x2C7C;</span> &mdash; Interchange rows i and j</div>
+            <div class="frow"><span class="fm">R&#x1D62; &rarr; kR&#x1D62;</span> &mdash; Multiply row i by k (&ne; 0)</div>
+            <div class="frow"><span class="fm">R&#x1D62; &rarr; R&#x1D62; + kR&#x2C7C;</span> &mdash; Add k&times;row j to row i</div>
+          </div>
+          <div class="cbox teal">
+            <h3>Three Column Operations</h3>
+            <div class="frow"><span class="fm teal">C&#x1D62; &harr; C&#x2C7C;</span> &mdash; Interchange cols i and j</div>
+            <div class="frow"><span class="fm teal">C&#x1D62; &rarr; kC&#x1D62;</span> &mdash; Multiply col i by k (&ne; 0)</div>
+            <div class="frow"><span class="fm teal">C&#x1D62; &rarr; C&#x1D62; + kC&#x2C7C;</span> &mdash; Add k&times;col j to col i</div>
+          </div>
+        </div>
+
+        <div class="deriv">
+          <div class="deriv-title">Finding Inverse by Elementary Row Operations</div>
+          <div class="step"><div class="sn">1</div><div>Write <span class="fm teal">A = IA</span> &mdash; place Identity matrix I on the right side</div></div>
+          <div class="step"><div class="sn">2</div><div>Apply the <strong>same row operations to both sides</strong> simultaneously to transform left-side A into I</div></div>
+          <div class="step"><div class="sn">3</div><div>When left side becomes I, the right side automatically becomes <span class="fm teal">A&#x207B;&#xB9;</span></div></div>
+          <div class="step"><div class="sn">4</div><div>Final: <span class="fm green">I = A&#x207B;&#xB9; &middot; A, so right side = A&#x207B;&#xB9; &#x2713;</span></div></div>
+        </div>
+
+        <div class="fact">
+          <span class="fact-icon">&#x26A0;&#xFE0F;</span>
+          <p><strong>Critical Rule:</strong> Use ONLY row operations OR ONLY column operations in a single problem. <strong>Never mix both</strong> when finding inverse &mdash; it gives a wrong answer.</p>
+        </div>
+
+        <div class="card" style="margin-top:1rem;background:var(--surface2)">
+          <div class="card-title"><span class="icon">&#x1F504;</span> Invertible Matrix</div>
+          <div class="grid2">
+            <div class="cbox green">
+              <h3>Definition</h3>
+              <div class="frow">A square matrix A is invertible if &exist; B such that <span class="fm green">AB = BA = I</span>.</div>
+              <div class="frow">Then B = A&#x207B;&#xB9;. Inverse is <strong style="color:var(--green)">unique</strong> if it exists.</div>
+            </div>
+            <div class="cbox pink">
+              <h3>Reversal Rule</h3>
+              <div class="frow">If A, B are invertible of same order:</div>
+              <div class="frow"><span class="fm pink">(AB)&#x207B;&#xB9; = B&#x207B;&#xB9;A&#x207B;&#xB9;</span></div>
+              <div class="frow">Order is <strong style="color:var(--pink)">reversed</strong> &mdash; same as transpose!</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /sec-elem -->
+
+
+    <!-- TAB: IMPORTANT QUESTIONS -->
+    <div class="section" id="sec-iq">
+      <div class="card">
+        <div class="card-title"><span class="icon">&#x2B50;</span> Board &amp; JEE Important Questions</div>
+
+        <div class="iq">
+          <div class="iq-q">Q1. If A and B are square matrices of equal order, which statement is always correct? (JEE 1995, 2M)</div>
+          <div class="iq-hint">Hint: Test commutativity of addition vs multiplication. Only one property holds universally.</div>
+          <div class="iq-ans">Answer: A + B = B + A (addition is always commutative). AB &ne; BA in general.</div>
+        </div>
+
+        <div class="iq">
+          <div class="iq-q">Q2. Express A = [2 7; 1 4] as sum of a symmetric and a skew-symmetric matrix. (Board 3M)</div>
+          <div class="iq-hint">Hint: Compute A' first, then P = &frac12;(A+A') and Q = &frac12;(A&minus;A'). Verify P' = P and Q' = &minus;Q.</div>
+          <div class="iq-ans">P = [2 4; 4 4] (symmetric), Q = [0 3; -3 0] (skew-symmetric). Check: P + Q = A &#x2713;</div>
+        </div>
+
+        <div class="iq">
+          <div class="iq-q">Q3. If A = [1 2 2; 2 1 -2; a 2 b] satisfies AA&#x1D40; = 9I, find the ordered pair (a, b). (JEE 2015 Main)</div>
+          <div class="iq-hint">Hint: Each row must have magnitude 3 (row&middot;row = 9). Use row 3 to get two equations in a and b.</div>
+          <div class="iq-ans">Answer: (a, b) = (2, &minus;1). Row 3: [a 2 b], a&sup2; + 4 + b&sup2; = 9 and 2a + 2 &minus; 2b = 0.</div>
+        </div>
+
+        <div class="iq">
+          <div class="iq-q">Q4. For 3&times;3 matrices M and N, is N&#x1D40;MN symmetric or skew-symmetric when M is symmetric/skew-symmetric? (JEE 2013 Adv)</div>
+          <div class="iq-hint">Hint: Take (N&#x1D40;MN)&#x1D40; = N&#x1D40;M&#x1D40;(N&#x1D40;)&#x1D40; = N&#x1D40;M&#x1D40;N. Now substitute M&#x1D40; = M or M&#x1D40; = &minus;M.</div>
+          <div class="iq-ans">If M symmetric: (N&#x1D40;MN)&#x1D40; = N&#x1D40;MN (symmetric). If M skew: (N&#x1D40;MN)&#x1D40; = &minus;N&#x1D40;MN (skew-symmetric). &#x2713;</div>
+        </div>
+
+        <div class="iq">
+          <div class="iq-q">Q5. If M is 3&times;3, M&#x1D40;M = I and det(M) = 1, prove that det(M &minus; I) = 0. (JEE 2004, 2M)</div>
+          <div class="iq-hint">Hint: det(M&minus;I) = det(M&minus;M&#x1D40;M) = det(M)det(I&minus;M&#x1D40;) = det(I&minus;M&#x1D40;). Note det(A&#x1D40;) = det(A).</div>
+          <div class="iq-ans">det(M&minus;I) = 1 &middot; det(I&minus;M&#x1D40;) = det(I&minus;M)&#x1D40; = det(I&minus;M) = &minus;det(M&minus;I) &Rightarrow; 2det(M&minus;I) = 0 &#x2713;</div>
+        </div>
+
+        <div class="iq">
+          <div class="iq-q">Q6. If A = [a b c; b c a; c a b] with a,b,c &gt; 0, abc = 1 and A&#x1D40;A = I, find a&#xB3; + b&#xB3; + c&#xB3;. (JEE 2003, 2M)</div>
+          <div class="iq-hint">Hint: From A&#x1D40;A = I, get a&sup2;+b&sup2;+c&sup2; = 1 and ab+bc+ca = 0. Use a&#xB3;+b&#xB3;+c&#xB3;&minus;3abc = (a+b+c)((a+b+c)&#xB2;&minus;3(ab+bc+ca)).</div>
+          <div class="iq-ans">Answer: a&#xB3; + b&#xB3; + c&#xB3; = 4.</div>
+        </div>
+
+      </div>
+    </div><!-- /sec-iq -->
+
+
+    <!-- TAB: TIPS -->
+    <div class="section" id="sec-tips">
+
+      <div class="card">
+        <div class="card-title"><span class="icon">&#x1F4A1;</span> Must-Know Facts</div>
+        <div class="fact"><span class="fact-icon">&#x1F9E0;</span><p><strong>Diagonal only in Square:</strong> You can discuss diagonal elements ONLY in a square matrix. Principal diagonal has exactly n elements (where i = j). Off-diagonal has (n&#xB2;&minus;n)/2 elements on each side.</p></div>
+        <div class="fact"><span class="fact-icon">&#x26A0;&#xFE0F;</span><p><strong>AB &ne; BA:</strong> Matrix multiplication is NOT commutative in general. This is the #1 exam mistake. Always double-check order when multiplying.</p></div>
+        <div class="fact"><span class="fact-icon">&#x26A0;&#xFE0F;</span><p><strong>AB = O &ne; A or B is zero:</strong> Unlike real numbers, if AB = O it does NOT mean A = O or B = O. Counter-examples exist.</p></div>
+        <div class="fact"><span class="fact-icon">&#x1F3AF;</span><p><strong>Reversal Rule (Both!):</strong> (AB)' = B'A' &nbsp;&amp;&nbsp; (AB)&#x207B;&#xB9; = B&#x207B;&#xB9;A&#x207B;&#xB9;. Both transpose and inverse reverse the multiplication order. Tested every year.</p></div>
+        <div class="fact"><span class="fact-icon">&#x1F3AF;</span><p><strong>Skew-Symmetric diagonal = 0:</strong> Since a&#x1D62;&#x1D62; = &minus;a&#x1D62;&#x1D62; &Rightarrow; 2a&#x1D62;&#x1D62; = 0 &Rightarrow; a&#x1D62;&#x1D62; = 0. All diagonal entries are zero. No exceptions.</p></div>
+        <div class="fact"><span class="fact-icon">&#x1F4CC;</span><p><strong>Determinant:</strong> Only defined for square matrices. For rectangular matrices, det is undefined.</p></div>
+      </div>
+
+      <div class="card">
+        <div class="card-title"><span class="icon">&#x1F9E0;</span> Exam Strategy Tips</div>
+        <div class="tip">
+          <div class="tip-title">&#x1F49C; Decomposition Proof (3 Marks)</div>
+          <p>Write P = &frac12;(A+A') and Q = &frac12;(A&minus;A'). Show P' = P (symmetric). Show Q' = &minus;Q (skew-symmetric). Then state A = P + Q. All 3 steps must appear for full marks.</p>
+        </div>
+        <div class="tip">
+          <div class="tip-title">&#x1F49C; Matrix Multiplication &mdash; Check Order First</div>
+          <p>Always write: "A is m&times;n, B is n&times;p, so AB exists and is m&times;p." This 1-line check prevents errors and shows the examiner you know the condition.</p>
+        </div>
+        <div class="tip">
+          <div class="tip-title">&#x1F49C; Finding Inverse &mdash; Be Consistent</div>
+          <p>Choose row ops OR column ops &mdash; not both. Write each step explicitly: R&#x2082; &rarr; R&#x2082; &minus; 2R&#x2081;. Examiners award marks for each clearly written operation.</p>
+        </div>
+        <div class="tip">
+          <div class="tip-title">&#x1F49C; Types Hierarchy to Remember</div>
+          <p>Identity &sub; Scalar &sub; Diagonal &sub; Square. Each level adds a relaxed condition. Identity IS a scalar matrix. Scalar IS a diagonal matrix. Use this hierarchy to quickly classify any given matrix.</p>
+        </div>
+        <div class="tip">
+          <div class="tip-title">&#x1F49C; Transpose of Product &mdash; JEE Trap</div>
+          <p>Students often write (AB)' = A'B'. This is WRONG. The correct answer is (AB)' = B'A'. Remember: the transpose of any product reverses the order &mdash; just like the inverse of a product.</p>
+        </div>
+      </div>
+
+    </div><!-- /sec-tips -->
+
+
+    <!-- TAB: QUIZ -->
+    <div class="section" id="sec-quiz">
+      <div class="card">
+        <div class="card-title"><span class="icon">&#x1F3C6;</span> Class 12 Quiz &mdash; Matrices (12 Questions)</div>
+        <div class="quiz-meta">
+          <div class="quiz-stat"><span class="quiz-num" id="qScore">0</span><span class="quiz-lbl">Score</span></div>
+          <div class="quiz-stat"><span class="quiz-num" id="qCorrect" style="color:var(--green)">0</span><span class="quiz-lbl">Correct</span></div>
+          <div class="quiz-stat"><span class="quiz-num" id="qWrong" style="color:var(--pink)">0</span><span class="quiz-lbl">Wrong</span></div>
+          <div class="quiz-stat"><span class="quiz-num" id="qTotal" style="color:var(--text2)">0/12</span><span class="quiz-lbl">Progress</span></div>
+        </div>
+        <div class="prog-bar"><div class="prog-fill" id="qFill" style="width:0%"></div></div>
+        <div id="qArea"></div>
+        <div class="btn-row">
+          <button class="btn" id="qNext" style="display:none" onclick="qNext()">Next Question &rarr;</button>
+          <button class="btn restart" id="qReset" onclick="qInit()">&#x21BA; Restart</button>
+        </div>
+      </div>
+    </div><!-- /sec-quiz -->
+
+  </div><!-- /main -->
+
+
+  <script>
+  function showSec(id, btn) {
+    document.querySelectorAll('.section').forEach(function(s) { s.classList.remove('active'); });
+    document.querySelectorAll('.tab-btn').forEach(function(b) { b.classList.remove('active'); });
+    document.getElementById('sec-' + id).classList.add('active');
+    btn.classList.add('active');
+  }
+
+  var quizData = [
+    { q: 'A matrix having only one row is called:',
+      opts: ['Column Matrix','Row Matrix','Square Matrix','Null Matrix'],
+      ans: 1, exp: 'A Row Matrix (Row Vector) has exactly 1 row and any number of columns. Order = 1 x n.' },
+    { q: 'For matrix product AB to exist, which condition must hold?',
+      opts: ['Rows of A = Rows of B','Columns of A = Rows of B','Both must be square','Same order'],
+      ans: 1, exp: 'AB is defined only if columns of A = rows of B. If A is m x n and B is n x p, then AB is m x p.' },
+    { q: 'Which property always holds for square matrices A and B?',
+      opts: ['AB = BA','A + B = B + A','det(AB) = det(A) + det(B)','(AB)T = AT BT'],
+      ans: 1, exp: 'Matrix addition is always commutative: A + B = B + A. Multiplication is NOT commutative in general.' },
+    { q: 'In a skew-symmetric matrix, the diagonal elements are always:',
+      opts: ['1','Positive','Zero','Equal'],
+      ans: 2, exp: 'For skew-symmetric: A\' = -A, so aii = -aii => 2aii = 0 => aii = 0 for all i. Always zero.' },
+    { q: 'The transpose of product (AB)\' equals:',
+      opts: ['A\'B\'','B\'A\'','AB','(BA)\''],
+      ans: 1, exp: 'Reversal Rule: (AB)\' = B\'A\'. The transpose of a product reverses the order. Most tested property.' },
+    { q: 'A square matrix A is symmetric if:',
+      opts: ['A\' = -A','A\' = A','A^2 = A','A = A^-1'],
+      ans: 1, exp: 'Symmetric matrix: A\' = A, meaning aij = aji for all i and j.' },
+    { q: 'If A is m x n and B is n x p, then AB has order:',
+      opts: ['n x n','m x p','p x m','m x n'],
+      ans: 1, exp: 'A(m x n) * B(n x p) = C(m x p). Inner dimensions n must match; result takes outer dimensions m x p.' },
+    { q: 'A diagonal matrix where all principal diagonal elements are equal is called:',
+      opts: ['Identity Matrix','Null Matrix','Scalar Matrix','Symmetric Matrix'],
+      ans: 2, exp: 'Scalar Matrix: a diagonal matrix where d1 = d2 = ... = dn = a (constant). Identity is a special scalar with a = 1.' },
+    { q: 'Any square matrix A can be expressed as a sum of:',
+      opts: ['Two symmetric matrices','A symmetric and a skew-symmetric matrix','Two skew-symmetric matrices','A diagonal and an identity matrix'],
+      ans: 1, exp: 'A = 1/2(A+A\') + 1/2(A-A\'). First part is symmetric (P\'=P), second is skew-symmetric (Q\'=-Q).' },
+    { q: 'If A and B are invertible matrices of same order, then (AB)^-1 = ?',
+      opts: ['A^-1 B^-1','B^-1 A^-1','AB','(BA)^-1'],
+      ans: 1, exp: 'Inverse of product reverses order: (AB)^-1 = B^-1 A^-1. Same reversal rule as transpose.' },
+    { q: 'Determinant of a matrix is defined only for:',
+      opts: ['Row matrices','Any matrix','Square matrices','Symmetric matrices'],
+      ans: 2, exp: 'Determinant is ONLY defined for square matrices. For non-square matrices it is undefined.' },
+    { q: 'For any identity matrix I of order n, det(I) = ?',
+      opts: ['0','n','1','-1'],
+      ans: 2, exp: 'The determinant of any identity matrix equals 1, regardless of order. This is also why AI = IA = A.' }
+  ];
+
+  var qIdx = 0, qScore = 0, qCorrect = 0, qWrong = 0, qAnswered = false;
+
+  function qUpdateStats() {
+    document.getElementById('qScore').textContent   = qScore;
+    document.getElementById('qCorrect').textContent = qCorrect;
+    document.getElementById('qWrong').textContent   = qWrong;
+    document.getElementById('qTotal').textContent   = qIdx + '/' + quizData.length;
+    document.getElementById('qFill').style.width    = (qIdx / quizData.length * 100) + '%';
+  }
+
+  function qRender() {
+    document.getElementById('qNext').style.display = 'none';
+    if (qIdx >= quizData.length) {
+      var pct = Math.round(qScore / quizData.length * 100);
+      var emoji = pct >= 80 ? '&#x1F389;' : pct >= 50 ? '&#x1F4AA;' : '&#x1F4DA;';
+      var msg = pct >= 80 ? 'Excellent! Matrices mastered! &#x1F680;' : pct >= 50 ? 'Good start! Review weak areas. &#x1F4AA;' : 'Keep studying - revisit the concepts tab! &#x1F4DA;';
+      document.getElementById('qArea').innerHTML =
+        '<div style="text-align:center;padding:2rem">'
+        + '<div style="font-size:3rem">' + emoji + '</div>'
+        + '<div style="font-family:Syne,sans-serif;font-size:1.5rem;font-weight:800;color:var(--gold);margin:12px 0">Quiz Complete!</div>'
+        + '<div style="color:var(--teal)">Score: ' + qScore + '/' + quizData.length + ' (' + pct + '%)</div>'
+        + '<div style="font-size:.85rem;color:var(--text2);margin-top:8px">' + msg + '</div></div>';
+      return;
+    }
+    qAnswered = false;
+    var q = quizData[qIdx];
+    var html = '<div class="quiz-q">Q' + (qIdx+1) + '. ' + q.q + '</div><div class="opts">';
+    q.opts.forEach(function(o, i) {
+      html += '<button class="opt" onclick="qAnswer(' + i + ')">' + String.fromCharCode(65+i) + '. ' + o + '</button>';
+    });
+    html += '</div><div class="exp-box" id="qExp">' + q.exp + '</div>';
+    document.getElementById('qArea').innerHTML = html;
+  }
+
+  function qAnswer(i) {
+    if (qAnswered) return;
+    qAnswered = true;
+    var q = quizData[qIdx];
+    document.querySelectorAll('#qArea .opt').forEach(function(btn, idx) {
+      if (idx === q.ans) btn.classList.add('correct');
+      else if (idx === i && i !== q.ans) btn.classList.add('wrong');
+      btn.style.pointerEvents = 'none';
+    });
+    if (i === q.ans) { qScore++; qCorrect++; } else { qWrong++; }
+    qIdx++;
+    qUpdateStats();
+    document.getElementById('qExp').classList.add('show');
+    document.getElementById('qNext').style.display = 'inline-flex';
+  }
+
+  function qNext() { qRender(); }
+  function qInit() { qIdx=0; qScore=0; qCorrect=0; qWrong=0; qAnswered=false; qUpdateStats(); qRender(); }
+
+  (function(){
+    var colors = ['var(--accent2)','var(--teal)','var(--gold)','var(--green)','var(--purple)','var(--pink)'];
+    document.addEventListener('click', function(e) {
+      for (var i=0; i<6; i++) {
+        (function(i){
+          setTimeout(function(){
+            var el = document.createElement('div');
+            var color = colors[Math.floor(Math.random()*colors.length)];
+            var angle = Math.random()*360, dist = 40+Math.random()*60;
+            var dx = Math.cos(angle*Math.PI/180)*dist, dy = Math.sin(angle*Math.PI/180)*dist;
+            el.style.cssText = 'position:fixed;left:'+e.clientX+'px;top:'+e.clientY+'px;width:6px;height:6px;border-radius:50%;background:'+color+';pointer-events:none;z-index:99999;transform:translate(-50%,-50%);transition:transform 600ms ease,opacity 600ms ease;box-shadow:0 0 8px '+color+';';
+            document.body.appendChild(el);
+            requestAnimationFrame(function(){ requestAnimationFrame(function(){
+              el.style.transform = 'translate(calc(-50% + '+dx+'px),calc(-50% + '+dy+'px)) scale(0)';
+              el.style.opacity = '0';
+            }); });
+            setTimeout(function(){ el.remove(); }, 650);
+          }, i*40);
+        })(i);
+      }
+    });
+  })();
+
+  qInit();
+  </script>
+
+  <!-- ============================================================
+       SECURITY LAYER — Content Protection
+       ============================================================ -->
+  <style>
+    /* Disable text selection across the page */
+    * {
+      -webkit-user-select: none !important;
+      -moz-user-select: none !important;
+      -ms-user-select: none !important;
+      user-select: none !important;
+    }
+    /* Disable image drag */
+    img { -webkit-user-drag: none; user-drag: none; pointer-events: none; }
+  </style>
+
+  <script>
+  (function() {
+
+    /* 1. Disable Right-Click */
+    document.addEventListener('contextmenu', function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      return false;
+    }, true);
+
+    /* 2. Disable Text Selection via mouse */
+    document.addEventListener('selectstart', function(e) {
+      e.preventDefault();
+      return false;
+    }, true);
+
+    /* 3. Disable drag */
+    document.addEventListener('dragstart', function(e) {
+      e.preventDefault();
+      return false;
+    }, true);
+
+    /* 4. Block dangerous keyboard shortcuts */
+    document.addEventListener('keydown', function(e) {
+      var key = e.key ? e.key.toLowerCase() : '';
+      var code = e.keyCode || e.which;
+
+      // Ctrl/Cmd + U (View Source)
+      if ((e.ctrlKey || e.metaKey) && key === 'u') { e.preventDefault(); return false; }
+      // Ctrl/Cmd + S (Save)
+      if ((e.ctrlKey || e.metaKey) && key === 's') { e.preventDefault(); return false; }
+      // Ctrl/Cmd + A (Select All)
+      if ((e.ctrlKey || e.metaKey) && key === 'a') { e.preventDefault(); return false; }
+      // Ctrl/Cmd + C (Copy)
+      if ((e.ctrlKey || e.metaKey) && key === 'c') { e.preventDefault(); return false; }
+      // Ctrl/Cmd + P (Print)
+      if ((e.ctrlKey || e.metaKey) && key === 'p') { e.preventDefault(); return false; }
+      // Ctrl/Cmd + Shift + I (DevTools)
+      if ((e.ctrlKey || e.metaKey) && e.shiftKey && key === 'i') { e.preventDefault(); return false; }
+      // Ctrl/Cmd + Shift + J (Console)
+      if ((e.ctrlKey || e.metaKey) && e.shiftKey && key === 'j') { e.preventDefault(); return false; }
+      // Ctrl/Cmd + Shift + C (Inspect Element)
+      if ((e.ctrlKey || e.metaKey) && e.shiftKey && key === 'c') { e.preventDefault(); return false; }
+      // F12 (DevTools)
+      if (code === 123) { e.preventDefault(); return false; }
+      // F11 (Fullscreen, sometimes used)
+      // Ctrl+Shift+K (Firefox console)
+      if ((e.ctrlKey || e.metaKey) && e.shiftKey && key === 'k') { e.preventDefault(); return false; }
+    }, true);
+
+    /* 5. Block Print via beforeprint event */
+    window.addEventListener('beforeprint', function(e) {
+      e.stopImmediatePropagation();
+      // Temporarily hide body
+      document.body.style.display = 'none';
+      setTimeout(function() { document.body.style.display = ''; }, 100);
+    });
+
+    /* 6. DevTools detection — window size gap trick */
+    var devToolsOpen = false;
+    var threshold = 160;
+    function detectDevTools() {
+      if (
+        window.outerWidth - window.innerWidth > threshold ||
+        window.outerHeight - window.innerHeight > threshold
+      ) {
+        if (!devToolsOpen) {
+          devToolsOpen = true;
+          document.body.innerHTML =
+            '<div style="display:flex;align-items:center;justify-content:center;height:100vh;background:#050810;color:#ec4899;font-family:Space Grotesk,sans-serif;font-size:1.2rem;text-align:center;padding:2rem;">'
+            + '&#x1F6AB; Access Denied.<br><span style="font-size:.9rem;color:#64748b;margin-top:.5rem;display:block;">Developer tools are not permitted on this page.</span>'
+            + '</div>';
+        }
+      } else {
+        devToolsOpen = false;
+      }
+    }
+    setInterval(detectDevTools, 1000);
+
+    /* 7. Disable copy event */
+    document.addEventListener('copy', function(e) {
+      e.preventDefault();
+      e.clipboardData && e.clipboardData.setData('text/plain', '');
+      return false;
+    }, true);
+
+    /* 8. Disable cut event */
+    document.addEventListener('cut', function(e) {
+      e.preventDefault();
+      return false;
+    }, true);
+
+  })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,903 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Class 12 — Relations and Functions</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&family=Syne:wght@700;800&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#030a08;--surface:#081510;--surface2:#0c1c14;--border:#163024;
+  --accent:#059669;--accent2:#34d399;--gold:#fbbf24;--blue:#3b82f6;
+  --pink:#f43f5e;--purple:#8b5cf6;--teal:#06b6d4;--orange:#f97316;
+  --text:#d1fae5;--text2:#86efac;--text3:#4ade80;--textg:#6b7280;
+}
+body{font-family:'Space Grotesk',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden}
+body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
+  background:radial-gradient(ellipse 70% 50% at 15% 5%,rgba(5,150,105,0.08) 0%,transparent 60%),
+  radial-gradient(ellipse 50% 40% at 85% 95%,rgba(59,130,246,0.05) 0%,transparent 60%)}
+
+.site-header{position:relative;z-index:10;padding:1.25rem 2rem;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border)}
+.home-btn{background:rgba(5,150,105,.12);border:1px solid rgba(5,150,105,.3);color:var(--accent2);font-family:'Space Grotesk',sans-serif;font-size:13px;font-weight:600;padding:8px 16px;border-radius:8px;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:6px;transition:all .2s}
+.home-btn:hover{background:rgba(5,150,105,.22);transform:translateX(-2px)}
+.class-badge{font-family:'Syne',sans-serif;font-size:13px;font-weight:700;letter-spacing:2px;color:var(--textg)}
+
+.hero{position:relative;z-index:1;text-align:center;padding:3rem 2rem 2.5rem;max-width:800px;margin:0 auto}
+.hero-label{font-family:'DM Mono',monospace;font-size:11px;color:var(--accent2);letter-spacing:3px;text-transform:uppercase;margin-bottom:1rem;display:flex;align-items:center;justify-content:center;gap:12px}
+.hero-label::before,.hero-label::after{content:'';flex:0 0 40px;height:1px;background:var(--accent2);opacity:.4}
+.hero h1{font-family:'Syne',sans-serif;font-size:clamp(2rem,5vw,3.2rem);font-weight:800;line-height:1.1;margin-bottom:.8rem;background:linear-gradient(135deg,#d1fae5 0%,#34d399 40%,#3b82f6 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero p{font-size:.95rem;color:var(--text2);line-height:1.7;max-width:600px;margin:0 auto 1.5rem}
+.hero-pills{display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
+.pill{font-size:11px;font-weight:600;padding:4px 13px;border-radius:20px}
+.pill.g{background:rgba(5,150,105,.1);border:1px solid rgba(5,150,105,.3);color:var(--accent2)}
+.pill.b{background:rgba(59,130,246,.1);border:1px solid rgba(59,130,246,.3);color:var(--blue)}
+.pill.gold{background:rgba(251,191,36,.1);border:1px solid rgba(251,191,36,.3);color:var(--gold)}
+.pill.p{background:rgba(139,92,246,.1);border:1px solid rgba(139,92,246,.3);color:var(--purple)}
+.pill.pk{background:rgba(244,63,94,.1);border:1px solid rgba(244,63,94,.3);color:var(--pink)}
+
+.main{max-width:1040px;margin:0 auto;padding:1.5rem 1.5rem 5rem;position:relative;z-index:1}
+
+.tabs{display:flex;gap:4px;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:5px;margin-bottom:1.5rem;flex-wrap:wrap}
+.tab-btn{flex:1;min-width:85px;padding:9px 10px;border-radius:8px;border:none;background:transparent;cursor:pointer;font-family:'Space Grotesk',sans-serif;font-size:12px;font-weight:600;color:var(--text2);transition:all .2s;white-space:nowrap}
+.tab-btn:hover{color:var(--text);background:rgba(5,150,105,.1)}
+.tab-btn.active{background:linear-gradient(135deg,rgba(5,150,105,.28),rgba(59,130,246,.1));color:var(--accent2);box-shadow:0 0 16px rgba(5,150,105,.2)}
+
+.section{display:none;animation:fadeUp .3s ease}
+.section.active{display:block}
+@keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+
+.card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:1.5rem;margin-bottom:1rem;position:relative;overflow:hidden}
+.card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--accent),transparent);opacity:.3}
+.card-title{font-family:'Syne',sans-serif;font-size:1.05rem;font-weight:700;color:var(--text);margin-bottom:1.1rem;display:flex;align-items:center;gap:8px}
+
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:.85rem;margin:.85rem 0}
+.grid3{display:grid;grid-template-columns:repeat(auto-fit,minmax(175px,1fr));gap:.85rem;margin:.85rem 0}
+
+.cbox{background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:1.1rem}
+.cbox h3{font-size:.7rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;margin-bottom:.7rem;color:var(--textg)}
+.cbox.g{border-color:rgba(5,150,105,.35)}.cbox.g h3{color:var(--accent2)}
+.cbox.b{border-color:rgba(59,130,246,.3)}.cbox.b h3{color:var(--blue)}
+.cbox.gold{border-color:rgba(251,191,36,.3)}.cbox.gold h3{color:var(--gold)}
+.cbox.p{border-color:rgba(139,92,246,.3)}.cbox.p h3{color:var(--purple)}
+.cbox.pk{border-color:rgba(244,63,94,.3)}.cbox.pk h3{color:var(--pink)}
+.cbox.t{border-color:rgba(6,182,212,.3)}.cbox.t h3{color:var(--teal)}
+.cbox.o{border-color:rgba(249,115,22,.3)}.cbox.o h3{color:var(--orange)}
+
+.frow{display:flex;align-items:flex-start;gap:7px;margin-bottom:.5rem;font-size:.84rem;line-height:1.6;color:var(--text2)}
+.frow:last-child{margin-bottom:0}
+.fm{display:inline-block;background:rgba(5,150,105,.1);border:1px solid rgba(5,150,105,.22);color:var(--accent2);font-family:'DM Mono',monospace;font-size:.78rem;padding:2px 8px;border-radius:5px}
+.fm.b{background:rgba(59,130,246,.1);border-color:rgba(59,130,246,.22);color:var(--blue)}
+.fm.g{background:rgba(251,191,36,.1);border-color:rgba(251,191,36,.22);color:var(--gold)}
+.fm.p{background:rgba(139,92,246,.1);border-color:rgba(139,92,246,.22);color:var(--purple)}
+.fm.pk{background:rgba(244,63,94,.1);border-color:rgba(244,63,94,.22);color:var(--pink)}
+.fm.t{background:rgba(6,182,212,.1);border-color:rgba(6,182,212,.22);color:var(--teal)}
+.fm.o{background:rgba(249,115,22,.1);border-color:rgba(249,115,22,.22);color:var(--orange)}
+
+.tw{overflow-x:auto;border-radius:10px;border:1px solid var(--border);margin:.75rem 0}
+table{width:100%;border-collapse:collapse;font-size:.79rem}
+th{background:rgba(5,150,105,.1);color:var(--accent2);font-weight:700;padding:8px 10px;text-align:center;border-bottom:1px solid var(--border);font-size:.74rem;letter-spacing:.5px}
+td{padding:7px 10px;text-align:center;border-bottom:1px solid rgba(22,48,36,.8);color:var(--text2)}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:rgba(5,150,105,.04)}
+td.left{text-align:left}
+
+.defbox{background:rgba(5,150,105,.05);border:1px solid rgba(5,150,105,.2);border-radius:12px;padding:1rem 1.2rem;margin:.6rem 0}
+.defbox-title{font-size:.72rem;font-weight:700;color:var(--accent2);letter-spacing:2px;text-transform:uppercase;margin-bottom:.5rem}
+.defbox p{font-size:.85rem;line-height:1.7;color:var(--text2)}
+
+.fact{background:rgba(251,191,36,.04);border:1px solid rgba(251,191,36,.18);border-radius:10px;padding:.85rem 1rem;margin:.55rem 0;display:flex;gap:8px;align-items:flex-start}
+.fact p{font-size:.83rem;line-height:1.6;color:var(--text2)}
+.fact strong{color:var(--gold)}
+.tip{background:rgba(5,150,105,.06);border:1px solid rgba(5,150,105,.22);border-radius:10px;padding:.85rem 1rem;margin:.55rem 0}
+.tip-title{font-size:.7rem;font-weight:700;color:var(--accent2);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:.35rem}
+.tip p{font-size:.83rem;color:var(--text2);line-height:1.6}
+
+.deriv{background:rgba(59,130,246,.04);border:1px solid rgba(59,130,246,.18);border-radius:12px;padding:1.2rem;margin:.75rem 0}
+.deriv-title{font-size:.7rem;font-weight:700;color:var(--blue);letter-spacing:2px;text-transform:uppercase;margin-bottom:.75rem}
+.step{display:flex;gap:10px;margin-bottom:.55rem;font-size:.83rem;color:var(--text2);line-height:1.6}
+.sn{background:rgba(59,130,246,.15);color:var(--blue);font-weight:700;font-size:.68rem;width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px}
+
+/* function visual boxes */
+.fn-visual{display:flex;gap:12px;align-items:center;justify-content:center;flex-wrap:wrap;margin:1rem 0}
+.oval{border-radius:50%;border:2px solid;padding:1rem 1.5rem;min-width:80px;text-align:center;font-size:.82rem;line-height:1.8;position:relative}
+.oval.a{border-color:var(--accent2);color:var(--accent2)}
+.oval.b{border-color:var(--blue);color:var(--blue)}
+.oval-label{font-size:.65rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-top:.3rem;display:block}
+.arrow-label{font-family:'DM Mono',monospace;font-size:.8rem;color:var(--gold);display:flex;flex-direction:column;align-items:center;gap:2px}
+.arrow-line{font-size:1.4rem;color:var(--textg)}
+
+/* quiz */
+.quiz-meta{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:1rem}
+.quiz-stat{background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:.65rem .85rem;min-width:60px;text-align:center}
+.quiz-num{font-family:'Syne',sans-serif;font-size:1.35rem;font-weight:800;color:var(--gold);display:block}
+.quiz-lbl{font-size:.64rem;color:var(--textg);letter-spacing:.5px;text-transform:uppercase}
+.prog-bar{height:4px;background:var(--border);border-radius:4px;margin-bottom:.9rem;overflow:hidden}
+.prog-fill{height:4px;border-radius:4px;background:linear-gradient(90deg,var(--accent),var(--blue));transition:width .4s}
+.quiz-q{font-size:.92rem;font-weight:600;color:var(--text);margin-bottom:.85rem;line-height:1.6}
+.opts{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+.opt{background:var(--surface2);border:1px solid var(--border);border-radius:9px;padding:9px 11px;cursor:pointer;font-family:'Space Grotesk',sans-serif;font-size:.8rem;color:var(--text2);transition:all .18s;text-align:left;width:100%}
+.opt:hover{border-color:var(--accent);background:rgba(5,150,105,.08);color:var(--text)}
+.opt.correct{background:rgba(52,211,153,.12)!important;border-color:var(--accent2)!important;color:var(--accent2)!important}
+.opt.wrong{background:rgba(244,63,94,.1)!important;border-color:var(--pink)!important;color:var(--pink)!important}
+.exp-box{background:rgba(59,130,246,.05);border:1px solid rgba(59,130,246,.18);border-radius:8px;padding:.8rem;margin-top:.8rem;font-size:.8rem;line-height:1.6;color:var(--blue);display:none}
+.exp-box.show{display:block;animation:fadeUp .2s ease}
+.btn{background:linear-gradient(135deg,rgba(5,150,105,.22),rgba(59,130,246,.1));border:1px solid rgba(5,150,105,.3);color:var(--accent2);font-family:'Space Grotesk',sans-serif;font-size:.8rem;font-weight:600;padding:9px 20px;border-radius:8px;cursor:pointer;transition:all .2s;display:inline-flex;align-items:center;gap:5px}
+.btn:hover{box-shadow:0 0 16px rgba(5,150,105,.25)}
+.btn-row{display:flex;gap:8px;margin-top:.85rem;flex-wrap:wrap}
+
+.iq{background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:1rem 1.1rem;margin:.5rem 0}
+.iq-q{font-size:.85rem;font-weight:600;color:var(--text);margin-bottom:.4rem}
+.iq-hint{font-size:.78rem;color:var(--text2);line-height:1.5}
+.iq-ans{font-family:'DM Mono',monospace;font-size:.78rem;color:var(--accent2);margin-top:.4rem}
+
+@media(max-width:600px){.opts{grid-template-columns:1fr}.main{padding:1rem 1rem 4rem}}
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <a href="index.html" class="home-btn">← Home</a>
+  <span class="class-badge">CBSE · CLASS 12</span>
+</header>
+
+<div class="hero">
+  <div class="hero-label">Chapter 1</div>
+  <h1>Relations &<br>Functions</h1>
+  <p>Complete CBSE Class 12 chapter — Relations, Types of Relations, Functions, Types of Functions, Composition, Inverse, and Board-level Questions.</p>
+  <div class="hero-pills">
+    <span class="pill g">🔗 8 Types of Relations</span>
+    <span class="pill b">📐 6 Types of Functions</span>
+    <span class="pill gold">⭐ Board Questions</span>
+    <span class="pill p">🔄 Composite & Inverse</span>
+    <span class="pill pk">🏆 Quiz</span>
+  </div>
+</div>
+
+<div class="main">
+  <div class="tabs">
+    <button class="tab-btn active" onclick="showSec('relations',this)">🔗 Relations</button>
+    <button class="tab-btn" onclick="showSec('functions',this)">📐 Functions</button>
+    <button class="tab-btn" onclick="showSec('types',this)">🗂️ Types</button>
+    <button class="tab-btn" onclick="showSec('composite',this)">🔄 Composite</button>
+    <button class="tab-btn" onclick="showSec('binary',this)">⊕ Binary Ops</button>
+    <button class="tab-btn" onclick="showSec('board',this)">⭐ Board Qs</button>
+    <button class="tab-btn" onclick="showSec('quiz',this)">🏆 Quiz</button>
+  </div>
+
+  <!-- ===== RELATIONS ===== -->
+  <div class="section active" id="sec-relations">
+
+    <div class="card">
+      <div class="card-title">🔗 What is a Relation?</div>
+      <div class="defbox">
+        <div class="defbox-title">Definition</div>
+        <p>If A and B are two non-empty sets, then any subset R of A×B is called a <strong style="color:var(--accent2)">Relation</strong> from set A to set B.</p>
+      </div>
+      <div class="grid2">
+        <div class="cbox g"><h3>Notation</h3>
+          <div class="frow"><span class="fm">R : A → B</span> &nbsp;means&nbsp; <span class="fm">R ⊆ A×B</span></div>
+          <div class="frow">If (x,y) ∈ R → write <span class="fm">xRy</span> (x is R-related to y)</div>
+          <div class="frow">If (x,y) ∉ R → write <span class="fm pk">x R̸ y</span> (x is NOT R-related to y)</div>
+        </div>
+        <div class="cbox b"><h3>Domain & Range</h3>
+          <div class="frow"><strong style="color:var(--blue)">Domain</strong> — set of all first coordinates of R</div>
+          <div class="frow"><span class="fm b">Dom(R) = {a : (a,b) ∈ R for some b ∈ B}</span></div>
+          <div class="frow"><strong style="color:var(--gold)">Range</strong> — set of all second coordinates of R</div>
+          <div class="frow"><span class="fm g">Range(R) = {b : (a,b) ∈ R for some a ∈ A}</span></div>
+        </div>
+      </div>
+      <div class="tip"><div class="tip-title">💡 Key Note</div>
+        <p>A relation R on set A means the relation from A to A itself, i.e. <span style="color:var(--accent2);font-family:'DM Mono',monospace">R ⊆ A×A</span>. The co-domain is the full set B, but Range ⊆ Co-domain.</p>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">🗂️ Types of Relations</div>
+
+      <div class="grid2">
+        <div class="cbox pk"><h3>Empty Relation</h3>
+          <div class="frow">R in set A is empty if no element of A is related to any element of A.</div>
+          <div class="frow"><span class="fm pk">R = φ ⊂ A×A</span></div>
+        </div>
+        <div class="cbox g"><h3>Universal Relation</h3>
+          <div class="frow">R in set A where each element is related to every element of A.</div>
+          <div class="frow"><span class="fm">R = A×A</span></div>
+        </div>
+        <div class="cbox b"><h3>Identity Relation</h3>
+          <div class="frow"><span class="fm b">R = {(x,y) : x∈A, y∈A, x=y}</span></div>
+          <div class="frow">OR &nbsp;<span class="fm b">R = {(x,x) : x∈A}</span></div>
+          <div class="frow" style="font-size:.78rem">Every element maps only to itself.</div>
+        </div>
+        <div class="cbox gold"><h3>Reflexive Relation</h3>
+          <div class="frow">If <span class="fm g">(a,a) ∈ R</span> for every a∈A</div>
+          <div class="frow" style="font-size:.78rem">Every element is related to itself.</div>
+          <div class="frow" style="font-size:.78rem;color:var(--pink)">Note: Identity ⊆ Reflexive (Identity is a special reflexive relation)</div>
+        </div>
+        <div class="cbox p"><h3>Symmetric Relation</h3>
+          <div class="frow">If (a₁,a₂) ∈ R <span style="color:var(--accent2)">⟹</span> (a₂,a₁) ∈ R</div>
+          <div class="frow">for all a₁,a₂ ∈ A</div>
+          <div class="frow"><span class="fm p">aRb ⟹ bRa</span></div>
+        </div>
+        <div class="cbox t"><h3>Transitive Relation</h3>
+          <div class="frow">If (a₁,a₂)∈R and (a₂,a₃)∈R</div>
+          <div class="frow"><span style="color:var(--accent2)">⟹</span> (a₁,a₃) ∈ R &nbsp;for all a₁,a₂,a₃∈A</div>
+          <div class="frow"><span class="fm t">aRb and bRc ⟹ aRc</span></div>
+        </div>
+        <div class="cbox g"><h3>Equivalence Relation</h3>
+          <div class="frow">R is equivalence if it is:</div>
+          <div class="frow">✅ Reflexive &nbsp;✅ Symmetric &nbsp;✅ Transitive</div>
+          <div class="frow" style="font-size:.78rem">Example: "is equal to" (=) on ℤ is an equivalence relation.</div>
+        </div>
+        <div class="cbox o"><h3>Antisymmetric Relation</h3>
+          <div class="frow">R is antisymmetric if:</div>
+          <div class="frow"><span class="fm o">(a,b)∈R and (b,a)∈R ⟹ a=b</span></div>
+          <div class="frow">∀ a,b ∈ R</div>
+          <div class="frow" style="font-size:.78rem">Example: "≤" on ℝ is antisymmetric.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">🔁 Inverse Relation</div>
+      <div class="defbox">
+        <div class="defbox-title">Definition</div>
+        <p>If A and B are two non-empty sets and R be a relation from A to B such that <span style="color:var(--accent2);font-family:'DM Mono',monospace">R = {(a,b) : a∈A, b∈B}</span>, then the <strong style="color:var(--gold)">inverse of R</strong>, denoted by R⁻¹, is a relation from B to A defined by:</p>
+      </div>
+      <div style="text-align:center;margin:.8rem 0">
+        <span class="fm" style="font-size:.95rem;padding:8px 18px">R⁻¹ = {(b,a) : (a,b) ∈ R}</span>
+      </div>
+      <div class="grid3">
+        <div class="cbox g"><h3>Property 1</h3>
+          <div class="frow"><span class="fm">(R⁻¹)⁻¹ = R</span></div>
+        </div>
+        <div class="cbox b"><h3>Property 2</h3>
+          <div class="frow"><span class="fm b">Dom(R⁻¹) = Range(R)</span></div>
+        </div>
+        <div class="cbox gold"><h3>Property 3</h3>
+          <div class="frow"><span class="fm g">Range(R⁻¹) = Dom(R)</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">🎯 Equivalence Class</div>
+      <div class="defbox">
+        <div class="defbox-title">Definition</div>
+        <p>Let R be an equivalence relation on a non-empty set A. For all a∈A, the <strong style="color:var(--gold)">equivalence class of 'a'</strong> is defined as the set of all such elements of A which are related to 'a' under R. It is denoted by <span style="color:var(--accent2);font-family:'DM Mono',monospace">[a]</span>.</p>
+      </div>
+      <div style="text-align:center;margin:.8rem 0">
+        <span class="fm" style="font-size:.9rem;padding:7px 16px">[a] = {x∈A : (x,a) ∈ R}</span>
+      </div>
+      <div class="fact"><span>💡</span><p>Two equivalence classes are either <strong>identical</strong> or <strong>disjoint</strong>. The collection of all equivalence classes forms a <strong>partition</strong> of the set A.</p></div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">📊 Quick Reference — Relation Types</div>
+      <div class="tw">
+        <table>
+          <thead><tr><th>Type</th><th>Condition</th><th>Example on ℤ</th></tr></thead>
+          <tbody>
+            <tr><td style="color:var(--pink);font-weight:700">Empty</td><td class="left">R = φ; no element related to any</td><td class="left">R = {} (no pairs)</td></tr>
+            <tr><td style="color:var(--accent2);font-weight:700">Universal</td><td class="left">R = A×A; everything related to everything</td><td class="left">R = ℤ×ℤ</td></tr>
+            <tr><td style="color:var(--blue);font-weight:700">Identity</td><td class="left">(a,b) ∈ R ⟺ a = b</td><td class="left">R = {(1,1),(2,2),...}</td></tr>
+            <tr><td style="color:var(--gold);font-weight:700">Reflexive</td><td class="left">(a,a) ∈ R ∀ a∈A</td><td class="left">"a divides a" on ℤ⁺</td></tr>
+            <tr><td style="color:var(--purple);font-weight:700">Symmetric</td><td class="left">(a,b)∈R ⟹ (b,a)∈R</td><td class="left">"a−b is even"</td></tr>
+            <tr><td style="color:var(--teal);font-weight:700">Transitive</td><td class="left">(a,b),(b,c)∈R ⟹ (a,c)∈R</td><td class="left">"a ≤ b" on ℝ</td></tr>
+            <tr><td style="color:var(--orange);font-weight:700">Antisymmetric</td><td class="left">(a,b),(b,a)∈R ⟹ a=b</td><td class="left">"a ≤ b" on ℝ</td></tr>
+            <tr><td style="color:var(--accent2);font-weight:700">Equivalence</td><td class="left">Reflexive + Symmetric + Transitive</td><td class="left">"a−b divisible by n"</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ===== FUNCTIONS ===== -->
+  <div class="section" id="sec-functions">
+
+    <div class="card">
+      <div class="card-title">📐 What is a Function?</div>
+      <div class="defbox">
+        <div class="defbox-title">Definition</div>
+        <p>Let X and Y be two non-empty sets. Then a rule <strong style="color:var(--gold)">f</strong> which associates to each element x∈X, a <strong style="color:var(--accent2)">unique</strong> element, denoted by <strong style="color:var(--accent2)">f(x)</strong> of Y, is called a <strong style="color:var(--gold)">function from X to Y</strong>, written as <span style="font-family:'DM Mono',monospace;color:var(--teal)">f : X → Y</span></p>
+      </div>
+      <div class="grid3">
+        <div class="cbox g"><h3>Image</h3>
+          <div class="frow">f(x) is called the <strong style="color:var(--accent2)">image</strong> of x under f</div>
+        </div>
+        <div class="cbox b"><h3>Pre-image</h3>
+          <div class="frow">x is called the <strong style="color:var(--blue)">pre-image</strong> of f(x)</div>
+        </div>
+        <div class="cbox gold"><h3>Range</h3>
+          <div class="frow"><span class="fm g">f(X) = {f(x) : x∈X}</span></div>
+          <div class="frow">Range ⊆ Co-domain (Y)</div>
+        </div>
+      </div>
+      <div class="tip"><div class="tip-title">⚡ Critical Condition for a Function</div>
+        <p>Every element of the domain must have <strong>exactly one image</strong> in the co-domain. If any element maps to two values, it is NOT a function. If any domain element has no image, it is NOT a function.</p>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">🗂️ Equal Functions</div>
+      <div class="defbox">
+        <div class="defbox-title">Definition</div>
+        <p>Two functions f and g are called <strong style="color:var(--gold)">equal functions</strong> if they are defined on the same domain A and <span style="font-family:'DM Mono',monospace;color:var(--accent2)">f(a) = g(a)</span> for every a∈A. Then f = g.</p>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">📊 Number of Functions — Counting</div>
+      <div class="tw">
+        <table>
+          <thead><tr><th>Type</th><th>Formula</th><th>Condition</th></tr></thead>
+          <tbody>
+            <tr><td style="color:var(--accent2);font-weight:700">Total Functions</td><td style="font-family:'DM Mono',monospace;color:var(--gold)">n(B)^n(A)</td><td class="left">Any function from A to B</td></tr>
+            <tr><td style="color:var(--blue);font-weight:700">One-One (Injective)</td><td style="font-family:'DM Mono',monospace;color:var(--gold)">ⁿ⁽ᴮ⁾Pₙ₍ₐ₎</td><td class="left">n(B) ≥ n(A)</td></tr>
+            <tr><td style="color:var(--purple);font-weight:700">Onto (Surjective)</td><td style="font-family:'DM Mono',monospace;color:var(--gold)">Stirling numbers</td><td class="left">n(A) ≥ n(B)</td></tr>
+            <tr><td style="color:var(--teal);font-weight:700">Bijective</td><td style="font-family:'DM Mono',monospace;color:var(--gold)">n(A)!</td><td class="left">n(A) = n(B)</td></tr>
+            <tr><td style="color:var(--orange);font-weight:700">Into Functions</td><td style="font-family:'DM Mono',monospace;color:var(--gold)">n(B)^n(A) − onto</td><td class="left">Range ≠ Co-domain</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="fact"><span>💡</span><p><strong>One-One + Many-One = Total functions.</strong> If n(A) = m, n(B) = n: total = nᵐ. If n(A) > n(B), one-one function is <strong>impossible</strong>. If n(A) < n(B), onto function is <strong>impossible</strong>.</p></div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">🧠 Important Functional Equations</div>
+      <div class="defbox">
+        <div class="defbox-title">If x, y are independent variables</div>
+        <p style="color:var(--textg);font-size:.78rem">These help identify the type of function from its equation alone.</p>
+      </div>
+      <div class="grid2">
+        <div class="cbox g"><h3>f(xy) = f(x) + f(y)</h3>
+          <div class="frow">⟹ <span class="fm">f(x) = k·ln x</span> &nbsp;OR&nbsp; <span class="fm">f(x) = 0</span></div>
+          <div class="frow" style="font-size:.78rem">This is the logarithmic functional equation.</div>
+        </div>
+        <div class="cbox b"><h3>f(xy) = f(x)·f(y)</h3>
+          <div class="frow">⟹ <span class="fm b">f(x) = xⁿ, n∈ℝ</span></div>
+          <div class="frow" style="font-size:.78rem">Power function form.</div>
+        </div>
+        <div class="cbox p"><h3>f(x+y) = f(x)·f(y)</h3>
+          <div class="frow">⟹ <span class="fm p">f(x) = aᵏˣ = Aˣ, A>0</span></div>
+          <div class="frow" style="font-size:.78rem">Exponential functional equation.</div>
+        </div>
+        <div class="cbox gold"><h3>f(x+y) = f(x) + f(y)</h3>
+          <div class="frow">⟹ <span class="fm g">f(x) = kx</span>, where k is constant</div>
+          <div class="frow" style="font-size:.78rem">Linear/Cauchy functional equation.</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ===== TYPES OF FUNCTIONS ===== -->
+  <div class="section" id="sec-types">
+
+    <div class="card">
+      <div class="card-title">1️⃣ One-One (Injective) Function</div>
+      <div class="defbox">
+        <div class="defbox-title">Definition</div>
+        <p>A function f: X→Y is <strong style="color:var(--accent2)">one-one (injective)</strong> if distinct elements of X have distinct images in Y.</p>
+      </div>
+      <div style="text-align:center;margin:.6rem 0">
+        <span class="fm" style="font-size:.9rem;padding:7px 16px">x₁,x₂∈X : f(x₁)=f(x₂) ⟹ x₁=x₂</span>
+      </div>
+      <div class="grid2">
+        <div class="cbox g"><h3>Equivalently (Contrapositive)</h3>
+          <div class="frow"><span class="fm">x₁ ≠ x₂ ⟹ f(x₁) ≠ f(x₂)</span></div>
+        </div>
+        <div class="cbox b"><h3>Graphical Test</h3>
+          <div class="frow">Any <strong style="color:var(--blue)">horizontal line</strong> cuts the graph <strong style="color:var(--blue)">at most once</strong> ⟹ one-one.</div>
+        </div>
+      </div>
+      <div class="tip"><div class="tip-title">💡 Tips</div>
+        <p>A strictly increasing OR strictly decreasing function is always one-one. If f'(x) > 0 or f'(x) < 0 for all x in domain, it's one-one.</p>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">🔢 Many-One Function</div>
+      <div class="defbox">
+        <div class="defbox-title">Definition</div>
+        <p>f: A→B is <strong style="color:var(--pink)">many-one</strong> if two or more elements of A have the same f-image in B. i.e., x₁,x₂∈A, x₁≠x₂ but <span style="font-family:'DM Mono',monospace;color:var(--pink)">f(x₁) = f(x₂)</span>.</p>
+      </div>
+      <div class="fact"><span>📌</span><p>Any continuous function which has <strong>at least one local maximum or minimum</strong> is many-one. If a horizontal line cuts the graph at two or more points, f is many-one.</p></div>
+      <div class="fact"><span>⚡</span><p><strong>One-One + Many-One = Total number of mappings.</strong> If a function is one-one, it cannot be many-one and vice versa.</p></div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">2️⃣ Onto (Surjective) Function</div>
+      <div class="defbox">
+        <div class="defbox-title">Definition</div>
+        <p>f: A→B is <strong style="color:var(--blue)">onto (surjective)</strong> if every element of B (co-domain) is the image of at least one element of A. i.e., <strong>Range = Co-domain</strong>.</p>
+      </div>
+      <div style="text-align:center;margin:.6rem 0">
+        <span class="fm b" style="font-size:.9rem;padding:7px 16px">∀ b∈B, ∃ a∈A such that f(a) = b</span>
+      </div>
+
+      <!-- Visual -->
+      <div class="fn-visual">
+        <div style="text-align:center">
+          <div style="font-size:.72rem;color:var(--accent2);font-weight:700;letter-spacing:1px;margin-bottom:.5rem">ONTO ✅</div>
+          <div style="display:flex;gap:20px;align-items:center">
+            <div class="oval a" style="font-size:.75rem;padding:.7rem 1rem">x<br>y<br>z<br>w</div>
+            <div style="font-size:1.2rem;color:var(--textg)">→</div>
+            <div class="oval b" style="font-size:.75rem;padding:.7rem 1rem">a<br>b<br>c</div>
+          </div>
+          <div style="font-size:.65rem;color:var(--textg);margin-top:.3rem">All of B is covered</div>
+        </div>
+        <div style="text-align:center">
+          <div style="font-size:.72rem;color:var(--pink);font-weight:700;letter-spacing:1px;margin-bottom:.5rem">NOT ONTO ❌</div>
+          <div style="display:flex;gap:20px;align-items:center">
+            <div class="oval a" style="font-size:.75rem;padding:.7rem 1rem">x<br>y<br>z</div>
+            <div style="font-size:1.2rem;color:var(--textg)">→</div>
+            <div class="oval b" style="font-size:.75rem;padding:.7rem 1rem">a<br>b<br>c</div>
+          </div>
+          <div style="font-size:.65rem;color:var(--textg);margin-top:.3rem">b not hit by any element</div>
+        </div>
+      </div>
+
+      <div class="tip"><div class="tip-title">💡 Key Notes</div>
+        <p>If range = co-domain, f(x) is onto. Any polynomial of <strong>odd degree</strong>, f: ℝ→ℝ, is onto. Polynomial of <strong>even degree</strong> defined from ℝ→ℝ is always into (not onto).</p>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">📦 Into Function</div>
+      <div class="defbox">
+        <div class="defbox-title">Definition</div>
+        <p>f: A→B is <strong style="color:var(--orange)">into</strong> if there exists at least one element in the co-domain B which is <strong>not</strong> the image of any element in the domain. i.e., <span style="font-family:'DM Mono',monospace;color:var(--orange)">Range ⊊ Co-domain</span>.</p>
+      </div>
+      <div class="fact"><span>📌</span><p>A function is either onto OR into — never both. <strong>If a function is onto, it cannot be into and vice versa.</strong></p></div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">🏆 Bijective Function (One-One + Onto)</div>
+      <div class="defbox">
+        <div class="defbox-title">Definition</div>
+        <p>f: A→B is <strong style="color:var(--gold)">bijective</strong> if it is both <strong style="color:var(--accent2)">injective (one-one)</strong> and <strong style="color:var(--blue)">surjective (onto)</strong>. Bijective functions are also called <em>invertible, non-singular, or biuniform</em> functions.</p>
+      </div>
+      <div class="grid2">
+        <div class="cbox gold"><h3>Condition</h3>
+          <div class="frow">n(A) = n(B) is <strong style="color:var(--gold)">necessary</strong> for bijection between finite sets.</div>
+          <div class="frow">Number of bijections = <span class="fm g">n!</span> where n = n(A) = n(B)</div>
+        </div>
+        <div class="cbox g"><h3>Why Important?</h3>
+          <div class="frow">A function f: A→B has an <strong style="color:var(--accent2)">inverse function</strong> f⁻¹: B→A <strong>if and only if</strong> f is bijective.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">📊 Summary Table — All Function Types</div>
+      <div class="tw">
+        <table>
+          <thead><tr><th>Type</th><th>One-One?</th><th>Onto?</th><th>Range vs Co-domain</th><th>Inverse Exists?</th></tr></thead>
+          <tbody>
+            <tr><td style="color:var(--accent2);font-weight:700">One-One (Injective)</td><td style="color:var(--accent2)">✅ Yes</td><td style="color:var(--pink)">Not necessarily</td><td class="left">Range ⊆ Co-domain</td><td style="color:var(--pink)">Only if also onto</td></tr>
+            <tr><td style="color:var(--pink);font-weight:700">Many-One</td><td style="color:var(--pink)">❌ No</td><td style="color:var(--textg)">Maybe</td><td class="left">Range ⊆ Co-domain</td><td style="color:var(--pink)">❌ No</td></tr>
+            <tr><td style="color:var(--blue);font-weight:700">Onto (Surjective)</td><td style="color:var(--textg)">Maybe</td><td style="color:var(--accent2)">✅ Yes</td><td class="left">Range = Co-domain</td><td style="color:var(--pink)">Only if also one-one</td></tr>
+            <tr><td style="color:var(--orange);font-weight:700">Into</td><td style="color:var(--textg)">Maybe</td><td style="color:var(--pink)">❌ No</td><td class="left">Range ⊊ Co-domain</td><td style="color:var(--pink)">❌ No</td></tr>
+            <tr><td style="color:var(--gold);font-weight:700">Bijective</td><td style="color:var(--accent2)">✅ Yes</td><td style="color:var(--accent2)">✅ Yes</td><td class="left">Range = Co-domain</td><td style="color:var(--accent2)">✅ Yes</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ===== COMPOSITE & INVERSE ===== -->
+  <div class="section" id="sec-composite">
+
+    <div class="card">
+      <div class="card-title">🔄 Composition of Functions</div>
+      <div class="defbox">
+        <div class="defbox-title">Definition</div>
+        <p>Let f: A→B and g: B→C be two functions. Then the function <strong style="color:var(--gold)">gof: A→C</strong> defined by <span style="font-family:'DM Mono',monospace;color:var(--accent2)">(gof)(x) = g(f(x)) ∀ x∈A</span> is called the <strong style="color:var(--gold)">composite of the two functions f and g</strong>.</p>
+      </div>
+
+      <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;justify-content:center;margin:1rem 0;font-family:'DM Mono',monospace;font-size:.82rem;color:var(--text2)">
+        <span style="background:rgba(5,150,105,.12);border:1px solid rgba(5,150,105,.3);padding:5px 10px;border-radius:6px;color:var(--accent2)">x</span>
+        <span style="color:var(--gold)">─f→</span>
+        <span style="background:rgba(59,130,246,.12);border:1px solid rgba(59,130,246,.3);padding:5px 10px;border-radius:6px;color:var(--blue)">f(x)</span>
+        <span style="color:var(--gold)">─g→</span>
+        <span style="background:rgba(139,92,246,.12);border:1px solid rgba(139,92,246,.3);padding:5px 10px;border-radius:6px;color:var(--purple)">g(f(x))</span>
+        <span style="color:var(--textg);font-size:.7rem">= (gof)(x)</span>
+      </div>
+
+      <div class="grid2">
+        <div class="cbox pk"><h3>NOT Commutative</h3>
+          <div class="frow"><span class="fm pk">gof ≠ fog</span> &nbsp;in general</div>
+          <div class="frow" style="font-size:.78rem">Order matters! g(f(x)) ≠ f(g(x)) in general.</div>
+        </div>
+        <div class="cbox g"><h3>IS Associative</h3>
+          <div class="frow"><span class="fm">fo(goh) = (fog)oh</span></div>
+          <div class="frow" style="font-size:.78rem">If f,g,h are three functions such that both fo(goh) and (fog)oh are defined.</div>
+        </div>
+      </div>
+
+      <div class="card" style="margin-top:.8rem;padding:1rem;background:var(--surface2)">
+        <div class="card-title" style="font-size:.9rem">🧩 Properties of Composite Functions</div>
+        <div class="frow">① The composite of two one-one functions is <strong style="color:var(--accent2)">one-one</strong>.</div>
+        <div class="frow">② The composite of two onto functions is <strong style="color:var(--blue)">onto</strong>.</div>
+        <div class="frow">③ The composite of two bijections is a <strong style="color:var(--gold)">bijection</strong>.</div>
+        <div class="frow">④ If gof is one-one then f is one-one (but g need not be).</div>
+        <div class="frow">⑤ If gof is onto then g is onto (but f need not be).</div>
+        <div class="frow">⑥ If gof is bijective, f is injective and g is surjective.</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">🔙 Inverse of a Function</div>
+      <div class="defbox">
+        <div class="defbox-title">Definition</div>
+        <p>Let f: A→B be a bijective function. Then the function <strong style="color:var(--gold)">f⁻¹: B→A</strong> defined by <span style="font-family:'DM Mono',monospace;color:var(--accent2)">f⁻¹(b) = a ⟺ f(a) = b</span> is called the <strong style="color:var(--gold)">inverse function of f</strong>.</p>
+      </div>
+      <div class="grid2">
+        <div class="cbox g"><h3>Key Result</h3>
+          <div class="frow"><span class="fm">fof⁻¹ = I_B</span></div>
+          <div class="frow"><span class="fm">f⁻¹of = I_A</span></div>
+          <div class="frow" style="font-size:.78rem">Where I is the identity function.</div>
+        </div>
+        <div class="cbox b"><h3>Properties</h3>
+          <div class="frow"><span class="fm b">(f⁻¹)⁻¹ = f</span></div>
+          <div class="frow"><span class="fm b">(gof)⁻¹ = f⁻¹og⁻¹</span></div>
+          <div class="frow" style="font-size:.78rem">Note: Inverse exists only for bijective functions!</div>
+        </div>
+      </div>
+      <div class="tip"><div class="tip-title">📐 How to Find f⁻¹(x)</div>
+        <p>Step 1: Let y = f(x). &nbsp; Step 2: Express x in terms of y. &nbsp; Step 3: Replace y with x to get f⁻¹(x). &nbsp; Step 4: Verify that f⁻¹(f(x)) = x.</p>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">📐 Composition of Relations</div>
+      <div class="defbox">
+        <div class="defbox-title">Definition</div>
+        <p>Let R ⊆ A×B and S ⊆ B×C be two relations. Then the <strong style="color:var(--gold)">composition SoR ⊆ A×C</strong> is defined by: <span style="font-family:'DM Mono',monospace;color:var(--accent2)">(a,c) ∈ SoR if ∃ b∈B such that (a,b)∈R and (b,c)∈S</span></div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ===== BINARY OPERATIONS ===== -->
+  <div class="section" id="sec-binary">
+
+    <div class="card">
+      <div class="card-title">⊕ Binary Operations</div>
+      <div class="defbox">
+        <div class="defbox-title">Definition</div>
+        <p>A <strong style="color:var(--gold)">binary operation *</strong> on a set A is a function *: A×A → A. So * associates each ordered pair (a,b) of elements of A to a unique element a*b in A. This is called <strong>closure property</strong>.</p>
+      </div>
+      <div class="grid2">
+        <div class="cbox g"><h3>Commutative</h3>
+          <div class="frow">* is commutative if <span class="fm">a*b = b*a</span> ∀ a,b∈A</div>
+          <div class="frow" style="font-size:.78rem">Example: + and × on ℝ are commutative. − is not.</div>
+        </div>
+        <div class="cbox b"><h3>Associative</h3>
+          <div class="frow">* is associative if <span class="fm b">(a*b)*c = a*(b*c)</span> ∀ a,b,c∈A</div>
+          <div class="frow" style="font-size:.78rem">Example: + and × are associative. − and ÷ are not.</div>
+        </div>
+        <div class="cbox gold"><h3>Identity Element</h3>
+          <div class="frow">e is identity if <span class="fm g">a*e = e*a = a</span> ∀ a∈A</div>
+          <div class="frow" style="font-size:.78rem">Identity for +: 0. Identity for ×: 1.</div>
+          <div class="frow" style="font-size:.78rem">Identity element is <strong>unique</strong> if it exists.</div>
+        </div>
+        <div class="cbox p"><h3>Inverse Element</h3>
+          <div class="frow">b is inverse of a if <span class="fm p">a*b = b*a = e</span></div>
+          <div class="frow" style="font-size:.78rem">Inverse of a under +: −a. Under ×: 1/a (a≠0).</div>
+          <div class="frow" style="font-size:.78rem">Inverse is unique for each element.</div>
+        </div>
+        <div class="cbox t"><h3>Distributive</h3>
+          <div class="frow">* distributes over # if:</div>
+          <div class="frow"><span class="fm t">a*(b#c) = (a*b)#(a*c)</span></div>
+          <div class="frow" style="font-size:.78rem">Example: × distributes over + on ℝ.</div>
+        </div>
+        <div class="cbox o"><h3>Closure Property</h3>
+          <div class="frow">* is closed on A if <span class="fm o">a*b ∈ A</span> ∀ a,b∈A</div>
+          <div class="frow" style="font-size:.78rem">Example: ℤ is closed under + but not under ÷.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">📊 Common Binary Operations — Quick Reference</div>
+      <div class="tw">
+        <table>
+          <thead><tr><th>Operation</th><th>Set</th><th>Closed?</th><th>Commutative?</th><th>Associative?</th><th>Identity</th></tr></thead>
+          <tbody>
+            <tr><td style="color:var(--accent2)">+</td><td>ℝ</td><td style="color:var(--accent2)">✅</td><td style="color:var(--accent2)">✅</td><td style="color:var(--accent2)">✅</td><td>0</td></tr>
+            <tr><td style="color:var(--blue)">×</td><td>ℝ</td><td style="color:var(--accent2)">✅</td><td style="color:var(--accent2)">✅</td><td style="color:var(--accent2)">✅</td><td>1</td></tr>
+            <tr><td style="color:var(--gold)">−</td><td>ℝ</td><td style="color:var(--accent2)">✅</td><td style="color:var(--pink)">❌</td><td style="color:var(--pink)">❌</td><td style="color:var(--textg)">—</td></tr>
+            <tr><td style="color:var(--purple)">÷</td><td>ℝ\{0}</td><td style="color:var(--pink)">❌</td><td style="color:var(--pink)">❌</td><td style="color:var(--pink)">❌</td><td style="color:var(--textg)">—</td></tr>
+            <tr><td style="color:var(--teal)">+</td><td>ℕ</td><td style="color:var(--accent2)">✅</td><td style="color:var(--accent2)">✅</td><td style="color:var(--accent2)">✅</td><td style="color:var(--pink)">0∉ℕ</td></tr>
+            <tr><td style="color:var(--orange)">−</td><td>ℕ</td><td style="color:var(--pink)">❌</td><td style="color:var(--pink)">❌</td><td style="color:var(--pink)">❌</td><td style="color:var(--textg)">—</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ===== BOARD QUESTIONS ===== -->
+  <div class="section" id="sec-board">
+    <div class="card">
+      <div class="card-title">⭐ CBSE Board-Level Questions</div>
+
+      <div class="iq">
+        <div class="iq-q">Q1. If A = {1,2,3,4,5}, write the relation R = {(a,b): |a−b| is even} and check if it's an equivalence relation.</div>
+        <div class="iq-hint">Hint: R = {(1,3),(1,5),(3,5),(2,4),(1,1),(2,2),...}. Check reflexive (a−a=0, even ✅), symmetric (|a−b|=|b−a| ✅), transitive (|a−b| even, |b−c| even ⟹ |a−c| even ✅).</div>
+        <div class="iq-ans">Yes, it is an equivalence relation. Equivalence classes: [1]={1,3,5}, [2]={2,4}.</div>
+      </div>
+
+      <div class="iq">
+        <div class="iq-q">Q2. Show that f: ℝ→ℝ defined by f(x) = 2x−1 is a bijection and find f⁻¹(x).</div>
+        <div class="iq-hint">One-one: f(x₁)=f(x₂) ⟹ 2x₁−1=2x₂−1 ⟹ x₁=x₂ ✅. Onto: for any y∈ℝ, x=(y+1)/2 ∈ℝ ✅.</div>
+        <div class="iq-ans">f⁻¹(x) = (x+1)/2</div>
+      </div>
+
+      <div class="iq">
+        <div class="iq-q">Q3. If f: {1,3} → {1,2,5} and g: {1,2,5} → {1,2,3,4} be given by f = {(1,2),(3,5)} and g = {(1,3),(2,3),(5,1)}. Write down gof.</div>
+        <div class="iq-hint">gof(1) = g(f(1)) = g(2) = 3. gof(3) = g(f(3)) = g(5) = 1.</div>
+        <div class="iq-ans">gof = {(1,3),(3,1)}</div>
+      </div>
+
+      <div class="iq">
+        <div class="iq-q">Q4. Let g, f: ℝ→ℝ be defined by g(x) = (x+2)/3 and f(x) = 3x−2. Write fog.</div>
+        <div class="iq-hint">fog(x) = f(g(x)) = f((x+2)/3) = 3·((x+2)/3) − 2.</div>
+        <div class="iq-ans">fog(x) = (x+2) − 2 = x. So fog = Iᴿ (identity function).</div>
+      </div>
+
+      <div class="iq">
+        <div class="iq-q">Q5. If f: ℝ→ℝ defined by f(x) = (2x−1)/5 is invertible, find f⁻¹(x).</div>
+        <div class="iq-hint">Let y = (2x−1)/5 ⟹ 5y = 2x−1 ⟹ x = (5y+1)/2.</div>
+        <div class="iq-ans">f⁻¹(x) = (5x+1)/2</div>
+      </div>
+
+      <div class="iq">
+        <div class="iq-q">Q6. If f(x) = x/(x+1), x≠−1. Find fof(x).</div>
+        <div class="iq-hint">fof(x) = f(f(x)) = f(x/(x+1)). Substitute into the formula.</div>
+        <div class="iq-ans">fof(x) = [x/(x+1)] / [x/(x+1)+1] = x/(2x+1), x≠−½</div>
+      </div>
+
+      <div class="iq">
+        <div class="iq-q">Q7. Let * be a binary operation on R defined by a*b = a+b+ab. Find 3*4. Is * commutative and associative?</div>
+        <div class="iq-hint">3*4 = 3+4+(3)(4) = 7+12 = 19. For commutative: a*b = a+b+ab = b+a+ba = b*a ✅. For associative: (a*b)*c = (a+b+ab)*c = a+b+ab+c+(a+b+ab)c.</div>
+        <div class="iq-ans">3*4 = 19. Yes, * is both commutative and associative.</div>
+      </div>
+
+      <div class="iq">
+        <div class="iq-q">Q8. Is the relation R = {(1,1),(2,2),(3,3),(1,2),(2,1),(2,3),(1,3)} on A={1,2,3} an equivalence relation?</div>
+        <div class="iq-hint">Check reflexive: (1,1),(2,2),(3,3) all present ✅. Symmetric: (1,2)∈R and (2,1)∈R ✅, (2,3)∈R but check (3,2) — NOT present ❌.</div>
+        <div class="iq-ans">Not an equivalence relation. It is NOT symmetric (since (2,3)∈R but (3,2)∉R). Also not transitive.</div>
+      </div>
+
+      <div class="iq">
+        <div class="iq-q">Q9. (2 mark) Check if R on ℕ defined by R = {(a,b): a = b²} is reflexive, symmetric or transitive.</div>
+        <div class="iq-hint">Reflexive: (a,a)∈R requires a=a², i.e. a=0 or a=1 only, not all a∈ℕ. Symmetric: (4,2)∈R but (2,4)∉R since 2≠16. Transitive: (16,4)∈R and (4,2)∈R but (16,2)∉R since 16≠4.</div>
+        <div class="iq-ans">R is neither reflexive, nor symmetric, nor transitive.</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ===== QUIZ ===== -->
+  <div class="section" id="sec-quiz">
+    <div class="card">
+      <div class="card-title">🏆 Relations & Functions Quiz — Board Level</div>
+      <div class="quiz-meta">
+        <div class="quiz-stat"><span class="quiz-num" id="rfScore">0</span><span class="quiz-lbl">Score</span></div>
+        <div class="quiz-stat"><span class="quiz-num" id="rfCorrect" style="color:var(--accent2)">0</span><span class="quiz-lbl">Correct</span></div>
+        <div class="quiz-stat"><span class="quiz-num" id="rfWrong" style="color:var(--pink)">0</span><span class="quiz-lbl">Wrong</span></div>
+        <div class="quiz-stat"><span class="quiz-num" id="rfTotal" style="color:var(--text2)">0/15</span><span class="quiz-lbl">Progress</span></div>
+      </div>
+      <div class="prog-bar"><div class="prog-fill" id="rfFill" style="width:0%"></div></div>
+      <div id="rfArea"></div>
+      <div class="btn-row">
+        <button class="btn" id="rfNext" style="display:none" onclick="rfNext()">Next →</button>
+        <button class="btn" onclick="rfInit()" style="background:rgba(251,191,36,.1);border-color:rgba(251,191,36,.3);color:var(--gold)">↺ Restart</button>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+function showSec(id,btn){
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('sec-'+id).classList.add('active');
+  btn.classList.add('active');
+}
+
+// QUIZ DATA
+var rfData=[
+  {q:'A relation R on set A is called reflexive if:',opts:['(a,b)∈R ⟹ (b,a)∈R','(a,a)∈R for every a∈A','(a,b)∈R and (b,c)∈R ⟹ (a,c)∈R','R = φ'],ans:1,exp:'Reflexive means every element is related to itself: (a,a)∈R for every a∈A.'},
+  {q:'A function f: X→Y is one-one (injective) if:',opts:['f(x₁)=f(x₂) ⟹ x₁=x₂','x₁=x₂ ⟹ f(x₁)≠f(x₂)','Range = Co-domain','Every y∈Y has a pre-image'],ans:0,exp:'f is injective if distinct inputs give distinct outputs: f(x₁)=f(x₂) ⟹ x₁=x₂.'},
+  {q:'A function f: A→B is onto (surjective) if:',opts:['f(x₁)=f(x₂) ⟹ x₁=x₂','Range ⊊ Co-domain','Range = Co-domain','n(A) = n(B)'],ans:2,exp:'Onto means every element of co-domain has at least one pre-image, so Range = Co-domain.'},
+  {q:'If n(A) = 3 and n(B) = 2, how many functions exist from A to B?',opts:['6','8','9','3'],ans:1,exp:'Total functions = n(B)^n(A) = 2³ = 8.'},
+  {q:'Empty relation in a set A is:',opts:['R = A×A','R = φ','R = {(a,a): a∈A}','R is symmetric only'],ans:1,exp:'Empty relation R = φ means no element of A is related to any element.'},
+  {q:'Which of the following is an equivalence relation on ℤ?',opts:['"a > b"','"a divides b"','"a − b is divisible by 5"','"a ≤ b"'],ans:2,exp:'"a−b divisible by 5" is reflexive (a−a=0 ✅), symmetric (if 5|a−b then 5|b−a ✅), and transitive (if 5|a−b and 5|b−c then 5|a−c ✅). It is an equivalence relation.'},
+  {q:'gof(x) means:',opts:['f(g(x))','g(f(x))','f(x)·g(x)','f(x)+g(x)'],ans:1,exp:'Composite gof means first apply f, then apply g: gof(x) = g(f(x)).'},
+  {q:'Composition of functions is:',opts:['Commutative but not associative','Associative but not commutative','Both commutative and associative','Neither commutative nor associative'],ans:1,exp:'gof ≠ fog in general (not commutative), but fo(goh) = (fog)oh (associative).'},
+  {q:'A function f: A→B has an inverse if and only if f is:',opts:['One-one','Onto','Bijective (one-one + onto)','Many-one'],ans:2,exp:'Inverse function exists if and only if f is bijective (both one-one and onto).'},
+  {q:'Identity element for binary operation * defined as a*b = a+b+ab on ℝ is:',opts:['1','−1','0','2'],ans:2,exp:'a*e = a ⟹ a+e+ae = a ⟹ e(1+a)=0 ⟹ e=0. Check: a*0 = a+0+0 = a ✅. Identity element = 0.'},
+  {q:'If f(x) = x² and g(x) = √x, then fog(x) = ?',opts:['x²','√x','x','x⁴'],ans:2,exp:'fog(x) = f(g(x)) = f(√x) = (√x)² = x.'},
+  {q:'The number of bijections from A = {1,2,3} to B = {a,b,c} is:',opts:['9','6','3','27'],ans:1,exp:'Number of bijections = n! = 3! = 6.'},
+  {q:'R = {(1,2),(2,1),(1,1),(2,2)} on A = {1,2}. R is:',opts:['Only reflexive','Only symmetric','Reflexive and symmetric only','Equivalence relation'],ans:3,exp:'(1,1),(2,2)∈R ✅ reflexive. (1,2)&(2,1)∈R ✅ symmetric. Transitivity: (1,2)&(2,1)∈R ⟹(1,1)∈R ✅. So it is an equivalence relation.'},
+  {q:'If f: ℝ→ℝ, f(x) = 2x+3, then f⁻¹(x) = ?',opts:['(x+3)/2','(x−3)/2','2x−3','(x−3)/3'],ans:1,exp:'y=2x+3 ⟹ 2x=y−3 ⟹ x=(y−3)/2. So f⁻¹(x) = (x−3)/2.'},
+  {q:'A relation R is antisymmetric if:',opts:['(a,b)∈R ⟹ (b,a)∉R','(a,b)∈R and (b,a)∈R ⟹ a=b','(a,a)∈R for all a','(a,b)∈R ⟹ (b,a)∈R'],ans:1,exp:'R is antisymmetric if (a,b)∈R and (b,a)∈R together imply a=b. i.e. if aRb and bRa then a=b.'},
+];
+
+var rfIdx=0,rfScore=0,rfCorrect=0,rfWrong=0,rfAnswered=false;
+function rfInit(){rfIdx=0;rfScore=0;rfCorrect=0;rfWrong=0;rfAnswered=false;rfUpdateStats();rfRender();}
+function rfNext(){rfRender();}
+function rfUpdateStats(){
+  document.getElementById('rfScore').textContent=rfScore;
+  document.getElementById('rfCorrect').textContent=rfCorrect;
+  document.getElementById('rfWrong').textContent=rfWrong;
+  document.getElementById('rfTotal').textContent=rfIdx+'/'+rfData.length;
+  document.getElementById('rfFill').style.width=(rfIdx/rfData.length*100)+'%';
+}
+function rfRender(){
+  document.getElementById('rfNext').style.display='none';
+  if(rfIdx>=rfData.length){
+    var pct=Math.round(rfScore/rfData.length*100);
+    document.getElementById('rfArea').innerHTML='<div style="text-align:center;padding:2rem"><div style="font-size:3rem">'+(pct>=80?'🎉':pct>=50?'💪':'📚')+'</div><div style="font-size:1.5rem;font-weight:800;color:var(--gold);margin:12px 0">Quiz Complete!</div><div style="color:var(--accent2)">Score: '+rfScore+'/'+rfData.length+' ('+pct+'%)</div><div style="color:var(--text2);font-size:.85rem;margin-top:8px">'+(pct>=80?'Board exam ready! 🚀':pct>=50?'Review the weak areas. 💪':'Go through the concepts section again! 📚')+'</div></div>';
+    return;
+  }
+  rfAnswered=false;
+  var q=rfData[rfIdx];
+  var html='<div class="quiz-q">Q'+(rfIdx+1)+'. '+q.q+'</div><div class="opts">';
+  q.opts.forEach(function(o,i){html+='<button class="opt" onclick="rfAnswer('+i+')">'+String.fromCharCode(65+i)+'. '+o+'</button>';});
+  html+='</div><div class="exp-box" id="rfExp">'+q.exp+'</div>';
+  document.getElementById('rfArea').innerHTML=html;
+}
+function rfAnswer(i){
+  if(rfAnswered)return;rfAnswered=true;
+  var q=rfData[rfIdx];
+  document.querySelectorAll('#rfArea .opt').forEach(function(o,idx){
+    if(idx===q.ans)o.classList.add('correct');
+    else if(idx===i&&i!==q.ans)o.classList.add('wrong');
+    o.style.pointerEvents='none';
+  });
+  if(i===q.ans){rfScore++;rfCorrect++;}else{rfWrong++;}
+  rfIdx++;rfUpdateStats();
+  document.getElementById('rfExp').classList.add('show');
+  document.getElementById('rfNext').style.display='inline-flex';
+}
+
+// Particle effect on click
+(function(){
+  var colors=['#34d399','#3b82f6','#fbbf24','#8b5cf6','#f43f5e','#06b6d4'];
+  document.addEventListener('click',function(e){
+    for(var i=0;i<6;i++){(function(i){setTimeout(function(){
+      var el=document.createElement('div');
+      var color=colors[Math.floor(Math.random()*colors.length)];
+      var angle=Math.random()*360,dist=40+Math.random()*60;
+      var dx=Math.cos(angle*Math.PI/180)*dist,dy=Math.sin(angle*Math.PI/180)*dist;
+      el.style.cssText='position:fixed;left:'+e.clientX+'px;top:'+e.clientY+'px;width:5px;height:5px;border-radius:50%;background:'+color+';pointer-events:none;z-index:99999;transform:translate(-50%,-50%);transition:transform 600ms ease,opacity 600ms ease;box-shadow:0 0 7px '+color;
+      document.body.appendChild(el);
+      requestAnimationFrame(function(){requestAnimationFrame(function(){
+        el.style.transform='translate(calc(-50% + '+dx+'px),calc(-50% + '+dy+'px)) scale(0)';
+        el.style.opacity='0';
+      });});
+      setTimeout(function(){el.remove();},650);
+    },i*35);})(i);}
+  });
+})();
+
+rfInit();
+</script>
+
+<!-- ============================================================
+     SECURITY LAYER — Content Protection
+     ============================================================ -->
+<style>
+  /* Disable text selection across the page */
+  * {
+    -webkit-user-select: none !important;
+    -moz-user-select: none !important;
+    -ms-user-select: none !important;
+    user-select: none !important;
+  }
+  /* Disable image drag */
+  img { -webkit-user-drag: none; user-drag: none; pointer-events: none; }
+</style>
+
+<script>
+(function() {
+
+  /* 1. Disable Right-Click */
+  document.addEventListener('contextmenu', function(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    return false;
+  }, true);
+
+  /* 2. Disable Text Selection via mouse */
+  document.addEventListener('selectstart', function(e) {
+    e.preventDefault();
+    return false;
+  }, true);
+
+  /* 3. Disable drag */
+  document.addEventListener('dragstart', function(e) {
+    e.preventDefault();
+    return false;
+  }, true);
+
+  /* 4. Block dangerous keyboard shortcuts */
+  document.addEventListener('keydown', function(e) {
+    var key = e.key ? e.key.toLowerCase() : '';
+    var code = e.keyCode || e.which;
+
+    // Ctrl/Cmd + U (View Source)
+    if ((e.ctrlKey || e.metaKey) && key === 'u') { e.preventDefault(); return false; }
+    // Ctrl/Cmd + S (Save)
+    if ((e.ctrlKey || e.metaKey) && key === 's') { e.preventDefault(); return false; }
+    // Ctrl/Cmd + A (Select All)
+    if ((e.ctrlKey || e.metaKey) && key === 'a') { e.preventDefault(); return false; }
+    // Ctrl/Cmd + C (Copy)
+    if ((e.ctrlKey || e.metaKey) && key === 'c') { e.preventDefault(); return false; }
+    // Ctrl/Cmd + P (Print)
+    if ((e.ctrlKey || e.metaKey) && key === 'p') { e.preventDefault(); return false; }
+    // Ctrl/Cmd + Shift + I (DevTools)
+    if ((e.ctrlKey || e.metaKey) && e.shiftKey && key === 'i') { e.preventDefault(); return false; }
+    // Ctrl/Cmd + Shift + J (Console)
+    if ((e.ctrlKey || e.metaKey) && e.shiftKey && key === 'j') { e.preventDefault(); return false; }
+    // Ctrl/Cmd + Shift + C (Inspect Element)
+    if ((e.ctrlKey || e.metaKey) && e.shiftKey && key === 'c') { e.preventDefault(); return false; }
+    // F12 (DevTools)
+    if (code === 123) { e.preventDefault(); return false; }
+    // Ctrl+Shift+K (Firefox console)
+    if ((e.ctrlKey || e.metaKey) && e.shiftKey && key === 'k') { e.preventDefault(); return false; }
+  }, true);
+
+  /* 5. Block Print via beforeprint event */
+  window.addEventListener('beforeprint', function(e) {
+    e.stopImmediatePropagation();
+    document.body.style.display = 'none';
+    setTimeout(function() { document.body.style.display = ''; }, 100);
+  });
+
+  /* 6. DevTools detection — window size gap trick */
+  var devToolsOpen = false;
+  var threshold = 160;
+  function detectDevTools() {
+    if (
+      window.outerWidth - window.innerWidth > threshold ||
+      window.outerHeight - window.innerHeight > threshold
+    ) {
+      if (!devToolsOpen) {
+        devToolsOpen = true;
+        document.body.innerHTML =
+          '<div style="display:flex;align-items:center;justify-content:center;height:100vh;background:#050810;color:#ec4899;font-family:Space Grotesk,sans-serif;font-size:1.2rem;text-align:center;padding:2rem;">'
+          + '&#x1F6AB; Access Denied.<br><span style="font-size:.9rem;color:#64748b;margin-top:.5rem;display:block;">Developer tools are not permitted on this page.</span>'
+          + '</div>';
+      }
+    } else {
+      devToolsOpen = false;
+    }
+  }
+  setInterval(detectDevTools, 1000);
+
+  /* 7. Disable copy event */
+  document.addEventListener('copy', function(e) {
+    e.preventDefault();
+    if (e.clipboardData) e.clipboardData.setData('text/plain', '');
+    return false;
+  }, true);
+
+  /* 8. Disable cut event */
+  document.addEventListener('cut', function(e) {
+    e.preventDefault();
+    return false;
+  }, true);
+
+})();
+</script>
+</body>
+</html>
