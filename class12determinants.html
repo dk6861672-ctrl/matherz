@@ -1,0 +1,1278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Class 12 — Determinants</title>
+  <meta name="robots" content="noindex, nofollow"/>
+  <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate"/>
+  <meta http-equiv="Pragma" content="no-cache"/>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&family=Syne:wght@700;800&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    /* ── SECURITY: Disable text selection & drag ── */
+    body, * {
+      -webkit-user-select: none !important;
+      -moz-user-select: none !important;
+      -ms-user-select: none !important;
+      user-select: none !important;
+      -webkit-user-drag: none !important;
+    }
+    /* Allow selection only inside quiz options for UX */
+    .opt { -webkit-user-select: none !important; }
+
+    /* ── SECURITY: Block print ── */
+    @media print {
+      body { display: none !important; }
+    }
+
+    /* ── SECURITY: Watermark overlay ── */
+    body::after {
+      content: '© Study Site — Unauthorised Copy Prohibited';
+      position: fixed;
+      bottom: 10px;
+      right: 14px;
+      font-size: 10px;
+      color: rgba(255,255,255,0.08);
+      font-family: 'DM Mono', monospace;
+      pointer-events: none;
+      z-index: 9999;
+      letter-spacing: 1px;
+    }
+
+    /* ── SECURITY: DevTools warning overlay (shown by JS) ── */
+    #devtools-warning {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: #050810;
+      z-index: 999999;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      gap: 1rem;
+    }
+    #devtools-warning h2 {
+      font-family: 'Syne', sans-serif;
+      font-size: 2rem;
+      color: #ec4899;
+    }
+    #devtools-warning p {
+      color: #94a3b8;
+      font-size: 1rem;
+      max-width: 400px;
+    }
+
+    :root {
+      /* Class 12 → Emerald theme */
+      --accent:     #059669;
+      --accent2:    #34d399;
+      --glow-rgb:   5, 150, 105;
+
+      --bg:         #050810;
+      --surface:    #0c1120;
+      --surface2:   #111827;
+      --border:     #1e2d45;
+
+      --gold:       #f59e0b;
+      --teal:       #14b8a6;
+      --green:      #22c55e;
+      --pink:       #ec4899;
+      --purple:     #a855f7;
+      --orange:     #f97316;
+      --text:       #e2e8f0;
+      --text2:      #94a3b8;
+      --text3:      #64748b;
+    }
+
+    body {
+      font-family: 'Space Grotesk', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      overflow-x: hidden;
+      line-height: 1.6;
+    }
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      background:
+        radial-gradient(ellipse 80% 60% at 15% 0%, rgba(var(--glow-rgb), 0.08) 0%, transparent 60%),
+        radial-gradient(ellipse 60% 40% at 85% 100%, rgba(20, 184, 166, 0.05) 0%, transparent 60%);
+    }
+
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      padding: 1.25rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--border);
+      backdrop-filter: blur(12px);
+      background: rgba(5, 8, 16, 0.6);
+    }
+    .home-btn {
+      background: rgba(var(--glow-rgb), 0.10);
+      border: 1px solid rgba(var(--glow-rgb), 0.28);
+      color: var(--accent2);
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 13px;
+      font-weight: 600;
+      padding: 8px 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s ease;
+    }
+    .home-btn:hover { background: rgba(var(--glow-rgb), 0.20); transform: translateX(-2px); box-shadow: 0 0 14px rgba(var(--glow-rgb), 0.2); }
+    .class-badge {
+      font-family: 'Syne', sans-serif;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--text3);
+    }
+
+    .hero {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      padding: 4rem 2rem 3rem;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    .hero-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--teal);
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      margin-bottom: 1.2rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+    }
+    .hero-label::before, .hero-label::after { content: ''; flex: 0 0 40px; height: 1px; background: var(--teal); opacity: 0.4; }
+    .hero h1 {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(2.2rem, 5vw, 3.5rem);
+      font-weight: 800;
+      line-height: 1.1;
+      margin-bottom: 1rem;
+      background: linear-gradient(135deg, #e2e8f0 0%, var(--accent2) 50%, var(--teal) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .hero p { font-size: 1.05rem; color: var(--text2); line-height: 1.7; max-width: 560px; margin: 0 auto 2rem; }
+    .hero-pills { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; }
+    .pill { font-size: 11px; font-weight: 600; padding: 5px 14px; border-radius: 20px; letter-spacing: 0.5px; }
+    .pill.accent { background: rgba(var(--glow-rgb), 0.12); border: 1px solid rgba(var(--glow-rgb), 0.3); color: var(--accent2); }
+    .pill.teal   { background: rgba(20,184,166, 0.10); border: 1px solid rgba(20,184,166, 0.3); color: var(--teal); }
+    .pill.gold   { background: rgba(245,158,11, 0.10); border: 1px solid rgba(245,158,11, 0.3); color: var(--gold); }
+    .pill.pink   { background: rgba(236,72,153, 0.10); border: 1px solid rgba(236,72,153, 0.3); color: var(--pink); }
+    .pill.purple { background: rgba(168,85,247, 0.10); border: 1px solid rgba(168,85,247, 0.3); color: var(--purple); }
+
+    .main { max-width: 1020px; margin: 0 auto; padding: 2rem 1.5rem 6rem; position: relative; z-index: 1; }
+
+    .tabs {
+      display: flex;
+      gap: 4px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 5px;
+      margin-bottom: 2rem;
+      flex-wrap: wrap;
+      position: sticky;
+      top: 65px;
+      z-index: 5;
+      backdrop-filter: blur(12px);
+    }
+    .tab-btn {
+      flex: 1;
+      min-width: 90px;
+      padding: 10px 12px;
+      border-radius: 8px;
+      border: none;
+      background: transparent;
+      cursor: pointer;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 12.5px;
+      font-weight: 600;
+      color: var(--text2);
+      transition: all 0.2s ease;
+      white-space: nowrap;
+    }
+    .tab-btn:hover { color: var(--text); background: rgba(255,255,255,0.04); }
+    .tab-btn.active {
+      background: linear-gradient(135deg, rgba(var(--glow-rgb), 0.25), rgba(20,184,166, 0.12));
+      color: var(--accent2);
+      box-shadow: 0 0 20px rgba(var(--glow-rgb), 0.18);
+    }
+
+    .section { display: none; }
+    .section.active { display: block; animation: fadeUp 0.3s ease; }
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--accent), var(--teal), transparent);
+    }
+    .card-title {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.05rem;
+      font-weight: 800;
+      color: var(--text);
+      margin-bottom: 1.2rem;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .icon { font-size: 1.1rem; }
+
+    .grid2 { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 10px; margin: 0.75rem 0; }
+    .grid3 { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 10px; margin: 0.75rem 0; }
+
+    .cbox {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1rem;
+    }
+    .cbox h3 { font-size: 0.85rem; font-weight: 700; margin-bottom: 0.5rem; }
+    .cbox.accent { border-color: rgba(var(--glow-rgb), 0.30); }
+    .cbox.accent h3 { color: var(--accent2); }
+    .cbox.teal   { border-color: rgba(20,184,166, 0.30); }
+    .cbox.teal h3{ color: var(--teal); }
+    .cbox.gold   { border-color: rgba(245,158,11, 0.30); }
+    .cbox.gold h3{ color: var(--gold); }
+    .cbox.green  { border-color: rgba(34,197,94, 0.30); }
+    .cbox.green h3{ color: var(--green); }
+    .cbox.pink   { border-color: rgba(236,72,153, 0.30); }
+    .cbox.pink h3{ color: var(--pink); }
+    .cbox.purple { border-color: rgba(168,85,247, 0.30); }
+    .cbox.purple h3{ color: var(--purple); }
+
+    .frow { font-size: 0.87rem; color: var(--text2); margin-bottom: 0.4rem; line-height: 1.6; display: flex; align-items: flex-start; gap: 8px; flex-wrap: wrap; }
+    .fm {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.82rem;
+      background: rgba(var(--glow-rgb), 0.10);
+      border: 1px solid rgba(var(--glow-rgb), 0.22);
+      color: var(--accent2);
+      padding: 2px 8px;
+      border-radius: 5px;
+      white-space: nowrap;
+    }
+    .fm.teal   { background: rgba(20,184,166,0.10); border-color: rgba(20,184,166,0.25); color: var(--teal); }
+    .fm.gold   { background: rgba(245,158,11,0.10); border-color: rgba(245,158,11,0.25); color: var(--gold); }
+    .fm.pink   { background: rgba(236,72,153,0.10); border-color: rgba(236,72,153,0.25); color: var(--pink); }
+    .fm.purple { background: rgba(168,85,247,0.10); border-color: rgba(168,85,247,0.25); color: var(--purple); }
+
+    .tw { overflow-x: auto; margin: 0.75rem 0; border-radius: 10px; border: 1px solid var(--border); }
+    table { width: 100%; border-collapse: collapse; font-size: 0.83rem; }
+    th { background: rgba(var(--glow-rgb), 0.08); color: var(--accent2); font-weight: 700; padding: 10px 12px; text-align: center; border-bottom: 1px solid var(--border); font-size: 0.78rem; letter-spacing: 0.5px; }
+    td { padding: 9px 12px; text-align: center; border-bottom: 1px solid rgba(30,45,69,0.6); color: var(--text2); }
+    tr:last-child td { border-bottom: none; }
+    tr:hover td { background: rgba(var(--glow-rgb), 0.04); }
+    .ud { color: var(--pink); font-weight: 700; font-size: 0.75rem; }
+
+    .deriv { background: rgba(20,184,166,0.05); border: 1px solid rgba(20,184,166,0.20); border-radius: 12px; padding: 1.2rem; margin: 0.75rem 0; }
+    .deriv-title { font-size: 0.72rem; font-weight: 700; color: var(--teal); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 0.75rem; }
+    .step { display: flex; gap: 10px; margin-bottom: 0.6rem; font-size: 0.85rem; color: var(--text2); line-height: 1.6; }
+    .step:last-child { margin-bottom: 0; }
+    .sn { background: rgba(20,184,166,0.15); color: var(--teal); font-weight: 700; font-size: 0.70rem; width: 22px; height: 22px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 2px; }
+
+    .fact { background: linear-gradient(135deg, rgba(245,158,11,0.06), rgba(20,184,166,0.04)); border: 1px solid rgba(245,158,11,0.22); border-radius: 10px; padding: 1rem 1.2rem; margin: 0.6rem 0; display: flex; gap: 10px; align-items: flex-start; }
+    .fact-icon { font-size: 1.15rem; flex-shrink: 0; margin-top: 1px; }
+    .fact p { font-size: 0.87rem; line-height: 1.6; color: var(--text2); }
+    .fact strong { color: var(--gold); }
+
+    .tip { background: rgba(168,85,247,0.07); border: 1px solid rgba(168,85,247,0.25); border-radius: 10px; padding: 1rem 1.2rem; margin: 0.6rem 0; }
+    .tip-title { font-size: 0.72rem; font-weight: 700; color: var(--purple); letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 0.4rem; }
+    .tip p { font-size: 0.87rem; color: var(--text2); line-height: 1.6; }
+
+    .iq { background: var(--surface2); border: 1px solid var(--border); border-radius: 10px; padding: 1rem 1.2rem; margin: 0.5rem 0; transition: border-color 0.2s; }
+    .iq:hover { border-color: rgba(var(--glow-rgb), 0.35); }
+    .iq-q    { font-size: 0.87rem; font-weight: 600; color: var(--text); margin-bottom: 0.35rem; }
+    .iq-hint { font-size: 0.80rem; color: var(--text2); line-height: 1.5; }
+    .iq-ans  { font-family: 'DM Mono', monospace; font-size: 0.80rem; color: var(--accent2); margin-top: 0.4rem; }
+
+    /* Cramer's flowchart */
+    .flow-box { display: flex; flex-direction: column; align-items: center; gap: 4px; margin: 1rem 0; }
+    .flow-row { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; width: 100%; }
+    .flow-node { background: var(--surface2); border: 1px solid var(--border); border-radius: 10px; padding: 8px 16px; font-size: 0.82rem; text-align: center; min-width: 120px; }
+    .flow-node.green-n { border-color: rgba(34,197,94,0.4); color: var(--green); }
+    .flow-node.pink-n  { border-color: rgba(236,72,153,0.4); color: var(--pink); }
+    .flow-node.gold-n  { border-color: rgba(245,158,11,0.4); color: var(--gold); background: rgba(245,158,11,0.06); font-weight:700; }
+    .flow-node.accent-n{ border-color: rgba(var(--glow-rgb),0.4); color: var(--accent2); }
+    .flow-arrow { color: var(--text3); font-size: 1.1rem; }
+
+    .quiz-meta { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 1.2rem; }
+    .quiz-stat { background: var(--surface2); border: 1px solid var(--border); border-radius: 10px; padding: 0.75rem 1rem; min-width: 70px; text-align: center; }
+    .quiz-num { font-family: 'Syne', sans-serif; font-size: 1.5rem; font-weight: 800; color: var(--gold); display: block; }
+    .quiz-lbl { font-size: 0.68rem; color: var(--text3); letter-spacing: 0.5px; text-transform: uppercase; }
+    .prog-bar { height: 4px; background: var(--border); border-radius: 4px; margin-bottom: 1.2rem; overflow: hidden; }
+    .prog-fill { height: 4px; border-radius: 4px; background: linear-gradient(90deg, var(--accent), var(--teal)); transition: width 0.4s ease; box-shadow: 0 0 8px rgba(var(--glow-rgb), 0.5); }
+    .quiz-q { font-size: 1rem; font-weight: 600; color: var(--text); margin-bottom: 1rem; line-height: 1.6; }
+    .opts { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    .opt { background: var(--surface2); border: 1px solid var(--border); border-radius: 10px; padding: 12px 14px; cursor: pointer; font-family: 'Space Grotesk', sans-serif; font-size: 0.85rem; color: var(--text2); transition: all 0.18s ease; text-align: left; width: 100%; }
+    .opt:hover { border-color: var(--accent); background: rgba(var(--glow-rgb), 0.07); color: var(--text); }
+    .opt.correct { background: rgba(34,197,94,0.12) !important; border-color: var(--green) !important; color: var(--green) !important; }
+    .opt.wrong   { background: rgba(236,72,153,0.10) !important; border-color: var(--pink) !important; color: var(--pink) !important; }
+    .exp-box { background: rgba(20,184,166,0.07); border: 1px solid rgba(20,184,166,0.22); border-radius: 8px; padding: 0.9rem; margin-top: 0.9rem; font-size: 0.84rem; line-height: 1.6; color: var(--teal); display: none; }
+    .exp-box.show { display: block; animation: fadeUp 0.2s ease; }
+    .btn { background: linear-gradient(135deg, rgba(var(--glow-rgb),0.22), rgba(20,184,166,0.12)); border: 1px solid rgba(var(--glow-rgb),0.30); color: var(--accent2); font-family: 'Space Grotesk', sans-serif; font-size: 0.85rem; font-weight: 600; padding: 10px 22px; border-radius: 8px; cursor: pointer; transition: all 0.2s ease; display: inline-flex; align-items: center; gap: 6px; }
+    .btn:hover { background: linear-gradient(135deg, rgba(var(--glow-rgb),0.35), rgba(20,184,166,0.22)); box-shadow: 0 0 16px rgba(var(--glow-rgb),0.25); }
+    .btn.restart { background: rgba(245,158,11,0.12); border-color: rgba(245,158,11,0.30); color: var(--gold); }
+    .btn-row { display: flex; gap: 10px; margin-top: 1rem; flex-wrap: wrap; }
+
+    .det-box {
+      display: inline-block;
+      border-left: 2px solid var(--accent2);
+      border-right: 2px solid var(--accent2);
+      padding: 4px 10px;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.85rem;
+      color: var(--text2);
+      line-height: 1.8;
+      margin: 4px 0;
+    }
+
+    @media (max-width: 600px) {
+      .hero { padding: 2.5rem 1rem 2rem; }
+      .hero h1 { font-size: 2rem; }
+      .opts { grid-template-columns: 1fr; }
+      .main { padding: 1.5rem 1rem 4rem; }
+      .tabs { top: 58px; }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="site-header">
+    <a href="index.html" class="home-btn">← Home</a>
+    <span class="class-badge">CBSE · CLASS 12 · CHAPTER 4</span>
+  </header>
+
+  <div class="hero">
+    <div class="hero-label">Matrices & Linear Algebra</div>
+    <h1>Determinants</h1>
+    <p>Master the scalar value of square matrices — from 2×2 expansions to Cramer's Rule for solving systems of linear equations.</p>
+    <div class="hero-pills">
+      <span class="pill accent">🔢 Expansion Methods</span>
+      <span class="pill teal">⚙️ 8 Properties</span>
+      <span class="pill gold">📐 Cramer's Rule</span>
+      <span class="pill pink">🧮 Minors & Cofactors</span>
+      <span class="pill purple">🏆 15-Q Quiz</span>
+    </div>
+  </div>
+
+  <div class="main">
+    <div class="tabs">
+      <button class="tab-btn active" onclick="showSec('concepts', this)">📐 Concepts</button>
+      <button class="tab-btn"        onclick="showSec('formulas', this)">🔢 Formulas</button>
+      <button class="tab-btn"        onclick="showSec('properties', this)">⚙️ Properties</button>
+      <button class="tab-btn"        onclick="showSec('deriv',    this)">🔍 Proofs</button>
+      <button class="tab-btn"        onclick="showSec('cramers',  this)">📊 Cramer's Rule</button>
+      <button class="tab-btn"        onclick="showSec('iq',       this)">⭐ Imp. Questions</button>
+      <button class="tab-btn"        onclick="showSec('tips',     this)">💡 Tips & Facts</button>
+      <button class="tab-btn"        onclick="showSec('quiz',     this)">🏆 Quiz</button>
+    </div>
+
+
+    <!-- ═══ TAB: CONCEPTS ═══ -->
+    <div class="section active" id="sec-concepts">
+
+      <div class="card">
+        <div class="card-title"><span class="icon">📐</span> What is a Determinant?</div>
+        <div class="frow">A determinant is a particular type of expression written in a special concise form of equal rows and columns. It is defined only for <strong style="color:var(--accent2)">square matrices</strong>.</div>
+        <div class="grid2">
+          <div class="cbox accent">
+            <h3>2nd Order (2×2)</h3>
+            <div class="frow">For matrix A = [a, b; c, d]</div>
+            <div class="frow"><span class="fm">|A| = ad − bc</span></div>
+            <div class="frow" style="font-size:0.78rem">Example: |2, 4; −1, 2| = 4 + 4 = <strong style="color:var(--accent2)">8</strong></div>
+          </div>
+          <div class="cbox teal">
+            <h3>3rd Order (3×3)</h3>
+            <div class="frow">Expand along any row or column using cofactors.</div>
+            <div class="frow"><span class="fm teal">Δ = a₁(b₂c₃−b₃c₂) − b₁(a₂c₃−a₃c₂) + c₁(a₂b₃−a₃b₂)</span></div>
+          </div>
+          <div class="cbox gold">
+            <h3>Order of Determinant</h3>
+            <div class="frow">The number of rows (= number of columns) is called the <strong style="color:var(--gold)">order</strong> of the determinant.</div>
+          </div>
+          <div class="cbox green">
+            <h3>Key Note</h3>
+            <div class="frow">Only <strong style="color:var(--green)">square matrices</strong> have determinants. Determinant is a scalar — a single number, not a matrix.</div>
+          </div>
+        </div>
+        <div class="fact">
+          <span class="fact-icon">💡</span>
+          <p><strong>Important:</strong> A determinant is a special case of a matrix. While a matrix is just an array, a determinant evaluates to a <strong>single scalar value</strong>. Notation: det(A) or |A|.</p>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title"><span class="icon">🧮</span> Minors and Cofactors</div>
+        <div class="grid2">
+          <div class="cbox teal">
+            <h3>Minor (Mᵢⱼ)</h3>
+            <div class="frow">The determinant obtained by <strong style="color:var(--teal)">deleting the i-th row and j-th column</strong> of a determinant is called the Minor of element aᵢⱼ.</div>
+            <div class="frow"><span class="fm teal">Minor of aᵢⱼ = Mᵢⱼ</span></div>
+            <div class="frow" style="font-size:0.78rem">M₁₁ = a₂₂a₃₃ − a₂₃a₃₂</div>
+            <div class="frow" style="font-size:0.78rem">M₁₂ = a₂₁a₃₃ − a₂₃a₃₁</div>
+          </div>
+          <div class="cbox pink">
+            <h3>Cofactor (Cᵢⱼ)</h3>
+            <div class="frow">Cofactor of element aᵢⱼ is defined as:</div>
+            <div class="frow"><span class="fm pink">Cᵢⱼ = (−1)^(i+j) × Mᵢⱼ</span></div>
+            <div class="frow" style="font-size:0.78rem">If i+j = even → Cᵢⱼ = Mᵢⱼ</div>
+            <div class="frow" style="font-size:0.78rem">If i+j = odd  → Cᵢⱼ = −Mᵢⱼ</div>
+          </div>
+        </div>
+        <div class="fact">
+          <span class="fact-icon">⚠️</span>
+          <p>Sign pattern for cofactors: <strong>+ − +  /  − + −  /  + − +</strong>. The top-left (1,1) is always +ve.</p>
+        </div>
+        <div class="frow" style="margin-top:0.75rem; font-weight:600; color:var(--text)">Value of Determinant (using cofactor expansion):</div>
+        <div class="frow"><span class="fm">Δ = a₁₁A₁₁ + a₁₂A₁₂ + a₁₃A₁₃</span> (along R₁)</div>
+        <div class="frow"><span class="fm">Δ = a₁₁A₁₁ + a₂₁A₂₁ + a₃₁A₃₁</span> (along C₁)</div>
+        <div class="tip">
+          <div class="tip-title">💜 Key Fact — Cross-Row/Column Rule</div>
+          <p>If elements of a row (or column) are multiplied with cofactors of <em>any other</em> row (or column), then their sum is <strong>always zero</strong>. This is frequently used in proofs.</p>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title"><span class="icon">📋</span> Types of Square Matrices (Revision)</div>
+        <div class="tw">
+          <table>
+            <thead><tr><th>Type</th><th>Definition</th><th>Example Condition</th></tr></thead>
+            <tbody>
+              <tr><td style="color:var(--accent2)">Zero / Null Matrix</td><td>All elements = 0</td><td>aᵢⱼ = 0 for all i, j</td></tr>
+              <tr><td style="color:var(--teal)">Diagonal Matrix</td><td>All non-diagonal elements = 0</td><td>aᵢⱼ = 0 for i ≠ j</td></tr>
+              <tr><td style="color:var(--gold)">Unit / Identity (I)</td><td>Diagonal = 1, rest = 0</td><td>A = diag[1,1,...,1]</td></tr>
+              <tr><td style="color:var(--green)">Symmetric</td><td>A = Aᵀ</td><td>aᵢⱼ = aⱼᵢ</td></tr>
+              <tr><td style="color:var(--pink)">Skew-Symmetric</td><td>Aᵀ = −A</td><td>aᵢⱼ = −aⱼᵢ, diagonal = 0</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title"><span class="icon">🔗</span> Special Determinants</div>
+        <div class="grid3">
+          <div class="cbox accent">
+            <h3>Symmetric Det.</h3>
+            <div class="frow"><span class="fm" style="font-size:0.75rem">|a h g; h b f; g f c| = abc + 2fgh − af² − bg² − ch²</span></div>
+          </div>
+          <div class="cbox teal">
+            <h3>Skew-Symmetric</h3>
+            <div class="frow">Determinant of odd-order skew-symmetric matrix is always <strong style="color:var(--teal)">zero</strong>.</div>
+            <div class="frow"><span class="fm teal">|0 a b; −a 0 c; −b −c 0| = 0</span></div>
+          </div>
+          <div class="cbox gold">
+            <h3>Cyclic Det. (Vandermonde)</h3>
+            <div class="frow"><span class="fm gold">|1 1 1; a b c; a² b² c²| = (a−b)(b−c)(c−a)</span></div>
+          </div>
+          <div class="cbox purple">
+            <h3>Max Value</h3>
+            <div class="frow">For 3×3 matrix with entries ∈ {−1, 0, 1}, maximum |det| = <strong style="color:var(--purple)">4</strong></div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /sec-concepts -->
+
+
+    <!-- ═══ TAB: FORMULAS ═══ -->
+    <div class="section" id="sec-formulas">
+
+      <div class="card">
+        <div class="card-title"><span class="icon">🔢</span> Expansion of Determinants</div>
+        <div class="grid2">
+          <div class="cbox accent">
+            <h3>2×2 Determinant</h3>
+            <div class="frow"><span class="fm">|a b; c d| = ad − bc</span></div>
+            <div class="frow" style="font-size:0.78rem; color:var(--text3)">Multiply main diagonal, subtract anti-diagonal</div>
+          </div>
+          <div class="cbox teal">
+            <h3>3×3 Expansion (R₁)</h3>
+            <div class="frow"><span class="fm teal" style="font-size:0.72rem">= a₁(b₂c₃−b₃c₂) − b₁(a₂c₃−a₃c₂) + c₁(a₂b₃−a₃b₂)</span></div>
+          </div>
+          <div class="cbox gold">
+            <h3>Sarrus' Rule (3×3)</h3>
+            <div class="frow"><span class="fm gold" style="font-size:0.72rem">a₁b₂c₃ + b₁c₂a₃ + c₁a₂b₃ − a₃b₂c₁ − b₃c₂a₁ − c₃a₂b₁</span></div>
+          </div>
+          <div class="cbox green">
+            <h3>Cofactor Expansion (Any Row/Col)</h3>
+            <div class="frow"><span class="fm">Δ = Σ aᵢⱼ · Cᵢⱼ</span> (sum over any row or col)</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title"><span class="icon">📐</span> Cyclic / Vandermonde Determinants</div>
+        <div class="grid2">
+          <div class="cbox accent">
+            <h3>Type A</h3>
+            <div class="frow"><span class="fm" style="font-size:0.72rem">|1 1 1; a b c; a² b² c²| = (a−b)(b−c)(c−a)</span></div>
+          </div>
+          <div class="cbox teal">
+            <h3>Type B</h3>
+            <div class="frow"><span class="fm teal" style="font-size:0.72rem">|1 1 1; a b c; a³ b³ c³| = (a−b)(b−c)(c−a)(a+b+c)</span></div>
+          </div>
+          <div class="cbox gold">
+            <h3>Type C</h3>
+            <div class="frow"><span class="fm gold" style="font-size:0.72rem">|1 1 1; a² b² c²; a³ b³ c³| = (a−b)(b−c)(c−a)(ab+bc+ca)</span></div>
+          </div>
+          <div class="cbox purple">
+            <h3>Cyclic Pattern (a,b,c)</h3>
+            <div class="frow"><span class="fm purple" style="font-size:0.72rem">|a b c; b c a; c a b| = −(a³+b³+c³−3abc)</span></div>
+            <div class="frow" style="font-size:0.78rem">= −(a+b+c)(a²+b²+c²−ab−bc−ca) ≤ 0 for positive a,b,c</div>
+          </div>
+        </div>
+        <div class="fact">
+          <span class="fact-icon">🎯</span>
+          <p><strong>Cyclic Trick:</strong> When you see (a−b), (b−c), (c−a) as factors, use the cyclic determinant identities above. These appear in 80% of board proof questions.</p>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title"><span class="icon">🔗</span> Product of Two Determinants</div>
+        <div class="frow" style="font-weight:600; color:var(--text)">Three Multiplication Methods:</div>
+        <div class="grid3">
+          <div class="cbox accent">
+            <h3>Row × Column</h3>
+            <div class="frow" style="font-size:0.78rem">Element (i,j) of product = dot product of i-th row of Δ₁ with j-th column of Δ₂</div>
+          </div>
+          <div class="cbox teal">
+            <h3>Row × Row</h3>
+            <div class="frow" style="font-size:0.78rem">Element (i,j) of product = dot product of i-th row of Δ₁ with j-th row of Δ₂</div>
+          </div>
+          <div class="cbox gold">
+            <h3>Column × Column</h3>
+            <div class="frow" style="font-size:0.78rem">Element (i,j) of product = dot product of i-th column of Δ₁ with j-th column of Δ₂</div>
+          </div>
+        </div>
+        <div class="fact">
+          <span class="fact-icon">💡</span>
+          <p><strong>Key Result:</strong> If Aᵢⱼ are cofactors of aᵢⱼ in Δ ≠ 0, then <span style="color:var(--accent2); font-family:'DM Mono',monospace">|Cofactor matrix| = Δ²</span></p>
+        </div>
+      </div>
+
+    </div><!-- /sec-formulas -->
+
+
+    <!-- ═══ TAB: PROPERTIES ═══ -->
+    <div class="section" id="sec-properties">
+
+      <div class="card">
+        <div class="card-title"><span class="icon">⚙️</span> 8 Properties of Determinants</div>
+
+        <div class="cbox accent" style="margin-bottom:10px">
+          <h3>Property 1 — Transpose</h3>
+          <div class="frow">Value of determinant remains <strong style="color:var(--accent2)">unchanged</strong> if rows and columns are interchanged.</div>
+          <div class="frow"><span class="fm">|A| = |Aᵀ|</span></div>
+          <div class="frow" style="font-size:0.78rem">Note: If D' = −D → Skew Symmetric. Skew symmetric det. of odd order = 0.</div>
+        </div>
+
+        <div class="cbox teal" style="margin-bottom:10px">
+          <h3>Property 2 — Row/Column Interchange</h3>
+          <div class="frow">If any two rows (or columns) are interchanged, the determinant <strong style="color:var(--teal)">changes sign only</strong>.</div>
+          <div class="frow"><span class="fm teal">R₁ ↔ R₂ → Δ becomes −Δ</span></div>
+        </div>
+
+        <div class="cbox gold" style="margin-bottom:10px">
+          <h3>Property 3 — Identical Rows/Columns</h3>
+          <div class="frow">If any two rows (or columns) are <strong style="color:var(--gold)">identical</strong>, then the value of determinant is <strong style="color:var(--gold)">zero</strong>.</div>
+        </div>
+
+        <div class="cbox green" style="margin-bottom:10px">
+          <h3>Property 4 — Scalar Multiple</h3>
+          <div class="frow">If each element of a row (or column) is multiplied by constant k, the determinant gets multiplied by k.</div>
+          <div class="frow"><span class="fm">kR₁ → Δ' = kΔ</span></div>
+          <div class="frow" style="font-size:0.78rem; color:var(--pink)">⚠️ For an n×n matrix: |kA| = kⁿ|A|</div>
+        </div>
+
+        <div class="cbox pink" style="margin-bottom:10px">
+          <h3>Property 5 — Sum of Elements</h3>
+          <div class="frow">If elements of a row (or column) can be expressed as sum of two terms, the determinant splits into <strong style="color:var(--pink)">sum of two determinants</strong>.</div>
+          <div class="frow"><span class="fm pink" style="font-size:0.72rem">|a₁+x b₁+y c₁+z; ...| = |a₁ b₁ c₁; ...| + |x y z; ...|</span></div>
+        </div>
+
+        <div class="cbox purple" style="margin-bottom:10px">
+          <h3>Property 6 — Row Operation</h3>
+          <div class="frow">Value remains <strong style="color:var(--purple)">same</strong> if we add equimultiples of another row/column.</div>
+          <div class="frow"><span class="fm purple">Rᵢ → Rᵢ + kRⱼ  (i ≠ j)</span></div>
+          <div class="frow"><span class="fm purple">Cᵢ → Cᵢ + kCⱼ  (i ≠ j)</span></div>
+          <div class="frow" style="font-size:0.78rem">At least one row/column must remain unchanged!</div>
+        </div>
+
+        <div class="cbox teal" style="margin-bottom:10px">
+          <h3>Property 7 — Summation / Integration</h3>
+          <div class="frow">If one row has function entries f₁(r), f₂(r), f₃(r) and rest are constants, then:</div>
+          <div class="frow"><span class="fm teal" style="font-size:0.72rem">Σ Δᵣ = |Σf₁(r)  Σf₂(r)  Σf₃(r); constants; constants|</span></div>
+        </div>
+
+        <div class="cbox gold" style="margin-bottom:0">
+          <h3>Property 8 — Factor Theorem</h3>
+          <div class="frow">If substituting x = a makes Δ = 0, then <strong style="color:var(--gold)">(x − a) is a factor</strong> of Δ.</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title"><span class="icon">🧮</span> Quick Application Examples</div>
+        <div class="tw">
+          <table>
+            <thead><tr><th>Operation</th><th>Effect on Δ</th><th>Notation</th></tr></thead>
+            <tbody>
+              <tr><td>Interchange two rows</td><td style="color:var(--pink)">Δ → −Δ</td><td style="font-family:'DM Mono',monospace">R₁ ↔ R₂</td></tr>
+              <tr><td>Multiply row by k</td><td style="color:var(--gold)">Δ → kΔ</td><td style="font-family:'DM Mono',monospace">kR₁</td></tr>
+              <tr><td>Add multiple of row to row</td><td style="color:var(--green)">Δ unchanged</td><td style="font-family:'DM Mono',monospace">R₁ → R₁ + kR₂</td></tr>
+              <tr><td>Two identical rows</td><td style="color:var(--pink)">Δ = 0</td><td>—</td></tr>
+              <tr><td>Zero row or column</td><td style="color:var(--pink)">Δ = 0</td><td>—</td></tr>
+              <tr><td>Multiply full matrix by k (n×n)</td><td style="color:var(--gold)">Δ → kⁿΔ</td><td style="font-family:'DM Mono',monospace">|kA| = kⁿ|A|</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div><!-- /sec-properties -->
+
+
+    <!-- ═══ TAB: PROOFS / DERIVATIONS ═══ -->
+    <div class="section" id="sec-deriv">
+
+      <div class="card">
+        <div class="card-title"><span class="icon">🔍</span> Proof: Vandermonde Determinant (Type A)</div>
+        <div class="frow" style="font-weight:600">Prove: |1 1 1; a b c; a² b² c²| = (a−b)(b−c)(c−a)</div>
+        <div class="deriv">
+          <div class="deriv-title">Step-by-Step Proof</div>
+          <div class="step"><div class="sn">1</div><div>Apply C₁ → C₁ − C₂ and C₂ → C₂ − C₃ to get zeros in row 1.</div></div>
+          <div class="step"><div class="sn">2</div><div>Factor (a−b) from C₁ and (b−c) from C₂.</div></div>
+          <div class="step"><div class="sn">3</div><div>Expand along R₁ (top row has zeros except last entry).</div></div>
+          <div class="step"><div class="sn">4</div><div>Result: (a−b)(b−c){b+c − a−b} = <span class="fm teal">(a−b)(b−c)(c−a) ✓</span></div></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title"><span class="icon">🔍</span> Proof: (a+b+c)³ Determinant</div>
+        <div class="frow" style="font-weight:600">Prove: |a−b−c 2a 2a; 2b b−c−a 2b; 2c 2c c−a−b| = (a+b+c)³</div>
+        <div class="deriv">
+          <div class="deriv-title">Step-by-Step Proof</div>
+          <div class="step"><div class="sn">1</div><div>Apply C₁ → C₁ − C₂, C₂ → C₂ − C₃. Factor out −(a+b+c) from C₁ and (a+b+c) from C₂.</div></div>
+          <div class="step"><div class="sn">2</div><div>This gives (a+b+c)² × a 3×3 determinant with first row [−1, 0, 2a].</div></div>
+          <div class="step"><div class="sn">3</div><div>Expand along R₁: (a+b+c)²[−1(−c+a+b−2b) + 2a(1)]</div></div>
+          <div class="step"><div class="sn">4</div><div>Simplify: (a+b+c)² × (a+b+c) = <span class="fm teal">(a+b+c)³ ✓</span></div></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title"><span class="icon">🔍</span> Proof: Cyclic Determinant = 0</div>
+        <div class="frow" style="font-weight:600">Prove: |a b c; b c a; c a b| = −(a³+b³+c³−3abc) ≤ 0</div>
+        <div class="deriv">
+          <div class="deriv-title">Step-by-Step Proof</div>
+          <div class="step"><div class="sn">1</div><div>Apply C₁ → C₁ + C₂ + C₃ to get (a+b+c) in every entry of C₁.</div></div>
+          <div class="step"><div class="sn">2</div><div>Factor out (a+b+c) from C₁: get (a+b+c) × |1 b c; 1 c a; 1 a b|</div></div>
+          <div class="step"><div class="sn">3</div><div>Expand about C₁: (a+b+c){(cb−a²)−(b²−ac)+(ab−c²)}</div></div>
+          <div class="step"><div class="sn">4</div><div>= −(a+b+c)(a²+b²+c²−ab−bc−ca) = <span class="fm teal">−(a³+b³+c³−3abc) ✓</span></div></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title"><span class="icon">🔍</span> Proof: 2abc(a+b+c)³</div>
+        <div class="frow" style="font-weight:600">Prove: |(b+c)² ba ac; ba (c+a)² cb; ca cb (a+b)²| = 2abc(a+b+c)³</div>
+        <div class="deriv">
+          <div class="deriv-title">Key Steps</div>
+          <div class="step"><div class="sn">1</div><div>Apply C₁ → C₁/a, C₂ → C₂/b, C₃ → C₃/c (multiply abc outside).</div></div>
+          <div class="step"><div class="sn">2</div><div>Then R₁ → aR₁, R₂ → bR₂, R₃ → cR₃ to restore elements.</div></div>
+          <div class="step"><div class="sn">3</div><div>Apply C₁ → C₁−C₂ and C₂ → C₂−C₃ to create zeros.</div></div>
+          <div class="step"><div class="sn">4</div><div>Factor (a+b+c)² from C₁, C₂; then apply C₁ → aC₁+C₃, C₂ → bC₂+C₃.</div></div>
+          <div class="step"><div class="sn">5</div><div>Expand about R₃: gives 2abc(a+b+c)³ <span class="fm teal">✓</span></div></div>
+        </div>
+      </div>
+
+    </div><!-- /sec-deriv -->
+
+
+    <!-- ═══ TAB: CRAMER'S RULE ═══ -->
+    <div class="section" id="sec-cramers">
+
+      <div class="card">
+        <div class="card-title"><span class="icon">📊</span> System of Linear Equations</div>
+        <div class="frow">For a system: <span class="fm">a₁x + b₁y + c₁z = d₁ , a₂x + b₂y + c₂z = d₂ , a₃x + b₃y + c₃z = d₃</span></div>
+        <div class="frow" style="margin-top:0.75rem; font-weight:600; color:var(--text)">Cramer's Rule Solution:</div>
+        <div class="frow"><span class="fm" style="font-size:0.9rem">x = D₁/D , y = D₂/D , z = D₃/D</span> &nbsp; (provided D ≠ 0)</div>
+        <div class="frow" style="margin-top:0.75rem; color:var(--text2); font-size:0.84rem">Where:</div>
+        <div class="tw">
+          <table>
+            <thead><tr><th>D (Coefficient Matrix)</th><th>D₁ (Replace col 1 with constants)</th><th>D₂ (Replace col 2)</th><th>D₃ (Replace col 3)</th></tr></thead>
+            <tbody>
+              <tr>
+                <td style="font-family:'DM Mono',monospace; font-size:0.75rem">|a₁ b₁ c₁; a₂ b₂ c₂; a₃ b₃ c₃|</td>
+                <td style="font-family:'DM Mono',monospace; font-size:0.75rem">|d₁ b₁ c₁; d₂ b₂ c₂; d₃ b₃ c₃|</td>
+                <td style="font-family:'DM Mono',monospace; font-size:0.75rem">|a₁ d₁ c₁; a₂ d₂ c₂; a₃ d₃ c₃|</td>
+                <td style="font-family:'DM Mono',monospace; font-size:0.75rem">|a₁ b₁ d₁; a₂ b₂ d₂; a₃ b₃ d₃|</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title"><span class="icon">🗺️</span> Nature of Solutions — Complete Flowchart</div>
+        <div class="flow-box">
+          <div class="flow-node gold-n">System of Linear Equations</div>
+          <div class="flow-arrow">↓</div>
+          <div class="flow-row">
+            <div style="display:flex;flex-direction:column;align-items:center;gap:4px">
+              <div class="flow-node accent-n">D ≠ 0</div>
+              <div class="flow-arrow">↓</div>
+              <div class="flow-node green-n">✓ Unique Solution<br><small>x=D₁/D, y=D₂/D, z=D₃/D</small></div>
+            </div>
+            <div style="display:flex;flex-direction:column;align-items:center;gap:4px">
+              <div class="flow-node accent-n">D = 0</div>
+              <div class="flow-arrow">↓</div>
+              <div class="flow-row">
+                <div style="display:flex;flex-direction:column;align-items:center;gap:4px">
+                  <div class="flow-node teal" style="border-color:rgba(20,184,166,0.4); color:var(--teal)">D₁=D₂=D₃=0</div>
+                  <div class="flow-arrow">↓</div>
+                  <div class="flow-node green-n">∞ Solutions<br><small>(coincident planes)</small></div>
+                </div>
+                <div style="display:flex;flex-direction:column;align-items:center;gap:4px">
+                  <div class="flow-node pink" style="border-color:rgba(236,72,153,0.4); color:var(--pink)">At least one Dᵢ ≠ 0</div>
+                  <div class="flow-arrow">↓</div>
+                  <div class="flow-node pink-n">✗ No Solution<br><small>(inconsistent)</small></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="fact" style="margin-top:1rem">
+          <span class="fact-icon">📌</span>
+          <p><strong>Geometric Interpretation (2 variables):</strong> Unique solution = intersecting lines; No solution = parallel lines; Infinite solutions = identical (coincident) lines.</p>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title"><span class="icon">🏠</span> Homogeneous System</div>
+        <div class="frow">When d₁ = d₂ = d₃ = 0 (all RHS = 0):</div>
+        <div class="grid2">
+          <div class="cbox teal">
+            <h3>D ≠ 0</h3>
+            <div class="frow">System has <strong style="color:var(--teal)">only trivial solution</strong>: x = y = z = 0. Exactly 1 solution.</div>
+          </div>
+          <div class="cbox gold">
+            <h3>D = 0</h3>
+            <div class="frow">System has <strong style="color:var(--gold)">non-trivial solutions</strong> (in addition to trivial). Infinite solutions exist.</div>
+          </div>
+        </div>
+        <div class="tip">
+          <div class="tip-title">💜 Trivial Solution Definition</div>
+          <p>A system is said to have a trivial solution when all variables = 0 (i.e., x = y = z = 0). Non-trivial means at least one variable ≠ 0.</p>
+        </div>
+      </div>
+
+    </div><!-- /sec-cramers -->
+
+
+    <!-- ═══ TAB: IMPORTANT QUESTIONS ═══ -->
+    <div class="section" id="sec-iq">
+
+      <div class="card">
+        <div class="card-title"><span class="icon">⭐</span> Standard Board & JEE Questions</div>
+
+        <div class="iq">
+          <div class="iq-q">Q1. Evaluate |x  x+1; x−1  x|</div>
+          <div class="iq-hint">Hint: Expand as x(x) − (x−1)(x+1) = x² − (x²−1)</div>
+          <div class="iq-ans">Answer: 1 (constant, independent of x)</div>
+        </div>
+
+        <div class="iq">
+          <div class="iq-q">Q2. Without expanding, prove: |0 b −c; −b 0 a; c −a 0| = 0</div>
+          <div class="iq-hint">Hint: The matrix is skew-symmetric of odd order (3). Property: det of odd-order skew-symmetric = 0.</div>
+          <div class="iq-ans">Answer: D' = −D (by transposing) → D = −D → D = 0 ✓</div>
+        </div>
+
+        <div class="iq">
+          <div class="iq-q">Q3. Find x if |3 x; x 1| = |3 2; 4 1|</div>
+          <div class="iq-hint">Hint: 3 − x² = 3 − 8, so x² = 8</div>
+          <div class="iq-ans">Answer: x = ±2√2</div>
+        </div>
+
+        <div class="iq">
+          <div class="iq-q">Q4. Solve by Cramer's Rule: x+y+z=6, x−y+z=2, 3x+2y−4z=−5</div>
+          <div class="iq-hint">Hint: Compute D=14, D₁=14, D₂=28, D₃=42</div>
+          <div class="iq-ans">Answer: x = D₁/D = 1,  y = D₂/D = 2,  z = D₃/D = 3</div>
+        </div>
+
+        <div class="iq">
+          <div class="iq-q">Q5. For what values of α does the system αx+y+z=α−1, x+αy+z=α−1, x+y+αz=α−1 have infinite solutions?</div>
+          <div class="iq-hint">Hint: D = (α−1)²(α+2). For infinite solutions, need D=0 AND equations consistent.</div>
+          <div class="iq-ans">Answer: α = 1 only (α=−2 leads to no solution — contradictory equations)</div>
+        </div>
+
+        <div class="iq">
+          <div class="iq-q">Q6. If |A²| = 25 for A = |5 5α α; 0 α 5α; 0 0 5|, find |α|.</div>
+          <div class="iq-hint">Hint: |A| = 25α (triangular matrix product of diagonals). |A²| = |A|² = 25.</div>
+          <div class="iq-ans">Answer: (25α)² = 25 → 25α² = 1 → |α| = 1/5</div>
+        </div>
+
+        <div class="iq">
+          <div class="iq-q">Q7. Number of values of k for which 4x+ky+2z=0, kx+4y+z=0, 2x+2y+z=0 has non-zero solution.</div>
+          <div class="iq-hint">Hint: For non-trivial: D=0 → k²−6k+8=0 → (k−2)(k−4)=0</div>
+          <div class="iq-ans">Answer: 2 values (k = 2 and k = 4)</div>
+        </div>
+
+        <div class="iq">
+          <div class="iq-q">Q8. If a,b,c are real and x=cy+bz, y=az+cx, z=bx+ay (not all zero), find a²+b²+c²+2abc.</div>
+          <div class="iq-hint">Hint: Non-trivial solution → D=0 → 1(1−a²)+c(−c−ab)−b(ac+b)=0</div>
+          <div class="iq-ans">Answer: 1</div>
+        </div>
+
+        <div class="iq">
+          <div class="iq-q">Q9. Prove that |a−b−c 2a 2a; 2b b−c−a 2b; 2c 2c c−a−b| = (a+b+c)³</div>
+          <div class="iq-hint">Hint: Apply C₁−C₂, C₂−C₃, factor (a+b+c)², then expand about R₁.</div>
+          <div class="iq-ans">Answer: Proof completes to (a+b+c)² × (a+b+c) = (a+b+c)³ ✓</div>
+        </div>
+
+        <div class="iq">
+          <div class="iq-q">Q10. Find λ, μ for which x+y+z=6, x+2y+3z=10, x+2y+λz=μ has infinite solutions.</div>
+          <div class="iq-hint">Hint: D=(λ−3). For D=0: λ=3. Then check D₁=0 requires μ=10.</div>
+          <div class="iq-ans">Answer: λ = 5 and μ = 8 (unique infinite solution case)</div>
+        </div>
+
+      </div>
+
+    </div><!-- /sec-iq -->
+
+
+    <!-- ═══ TAB: TIPS & FACTS ═══ -->
+    <div class="section" id="sec-tips">
+
+      <div class="card">
+        <div class="card-title"><span class="icon">💡</span> Key Facts to Remember</div>
+        <div class="fact"><span class="fact-icon">💡</span><p><strong>Only square matrices</strong> have determinants. A 3×4 matrix has no determinant.</p></div>
+        <div class="fact"><span class="fact-icon">⚠️</span><p><strong>|kA| ≠ k|A|</strong> for an n×n matrix. Correct: <strong>|kA| = kⁿ|A|</strong>. This is a very common exam trap!</p></div>
+        <div class="fact"><span class="fact-icon">🎯</span><p><strong>Cramer's Rule only works when D ≠ 0.</strong> If D=0, you need to check each Dᵢ to classify no-solution vs. infinite solutions.</p></div>
+        <div class="fact"><span class="fact-icon">💡</span><p>For a <strong>skew-symmetric matrix of odd order</strong>, determinant is always 0. This is provable using D = D' = −D → D = 0.</p></div>
+        <div class="fact"><span class="fact-icon">🔢</span><p>The <strong>cofactor matrix determinant</strong> equals Δ² (for a 3×3): |cofactor matrix| = Δ². Useful in competition problems.</p></div>
+        <div class="fact"><span class="fact-icon">📐</span><p>Area of triangle with vertices (x₁,y₁), (x₂,y₂), (x₃,y₃) = <strong>½|x₁(y₂−y₃) + x₂(y₃−y₁) + x₃(y₁−y₂)|</strong> = ½ × determinant form.</p></div>
+        <div class="fact"><span class="fact-icon">🎯</span><p>Maximum determinant of a 3×3 matrix with entries from {−1, 0, 1} is <strong>4</strong> (not 6 — 6 is impossible by contradiction).</p></div>
+      </div>
+
+      <div class="card">
+        <div class="card-title"><span class="icon">🧠</span> Exam Strategy Tips</div>
+        <div class="tip">
+          <div class="tip-title">💜 Tip 1 — Expand Along the Sparsest Row/Column</div>
+          <p>Always expand along the row or column with the most <strong>zeros</strong>. This minimizes calculations. Use R₁ operation first to create zeros.</p>
+        </div>
+        <div class="tip">
+          <div class="tip-title">💜 Tip 2 — R₁+R₂+R₃ Trick</div>
+          <p>If all rows have the same sum, apply R₁ → R₁+R₂+R₃ first. This often creates a common factor (a+b+c) you can pull out.</p>
+        </div>
+        <div class="tip">
+          <div class="tip-title">💜 Tip 3 — Cramer's Rule Shortcut</div>
+          <p>For 2×2 systems: |a b; c d| → x = (d·b₁ − b·b₂)/D, y = (a·b₂ − c·b₁)/D where D = ad−bc. Memorize this pattern!</p>
+        </div>
+        <div class="tip">
+          <div class="tip-title">💜 Tip 4 — Cyclic Determinant Recognition</div>
+          <p>When you see symmetric patterns in a determinant (like a,b,c cycling), immediately think of Vandermonde identities. Check if (a−b)(b−c)(c−a) is a factor.</p>
+        </div>
+        <div class="tip">
+          <div class="tip-title">💜 Tip 5 — Consistency Check Order</div>
+          <p>For system analysis: First compute D. If D≠0 → unique solution (stop). If D=0 → compute D₁, D₂, D₃. All zero = infinite; any nonzero = no solution.</p>
+        </div>
+        <div class="tip">
+          <div class="tip-title">💜 Tip 6 — "Without Expanding" Questions</div>
+          <p>These always require using Property 6 (row operations) to simplify to a known pattern or create a zero row/column. Never actually expand — use properties!</p>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title"><span class="icon">📋</span> Quick Formula Reference Card</div>
+        <div class="tw">
+          <table>
+            <thead><tr><th>What</th><th>Formula</th></tr></thead>
+            <tbody>
+              <tr><td>Cofactor</td><td style="font-family:'DM Mono',monospace">Cᵢⱼ = (−1)^(i+j) × Mᵢⱼ</td></tr>
+              <tr><td>2×2 determinant</td><td style="font-family:'DM Mono',monospace">ad − bc</td></tr>
+              <tr><td>Cramer's Rule</td><td style="font-family:'DM Mono',monospace">x=D₁/D, y=D₂/D, z=D₃/D</td></tr>
+              <tr><td>|kA| for n×n</td><td style="font-family:'DM Mono',monospace">kⁿ × |A|</td></tr>
+              <tr><td>Cofactor matrix det</td><td style="font-family:'DM Mono',monospace">|adj A| = |A|^(n−1)</td></tr>
+              <tr><td>Skew-sym odd order</td><td style="font-family:'DM Mono',monospace">|A| = 0 always</td></tr>
+              <tr><td>Vandermonde (a,b,c)</td><td style="font-family:'DM Mono',monospace">(a−b)(b−c)(c−a)</td></tr>
+              <tr><td>Cross-product rule</td><td style="font-family:'DM Mono',monospace">Σ aᵢⱼ·Cₖⱼ = 0 (i≠k)</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div><!-- /sec-tips -->
+
+
+    <!-- ═══ TAB: QUIZ ═══ -->
+    <div class="section" id="sec-quiz">
+      <div class="card">
+        <div class="card-title"><span class="icon">🏆</span> Class 12 Quiz — Determinants</div>
+
+        <div class="quiz-meta">
+          <div class="quiz-stat"><span class="quiz-num" id="qScore">0</span><span class="quiz-lbl">Score</span></div>
+          <div class="quiz-stat"><span class="quiz-num" id="qCorrect" style="color:var(--green)">0</span><span class="quiz-lbl">Correct</span></div>
+          <div class="quiz-stat"><span class="quiz-num" id="qWrong"   style="color:var(--pink)">0</span><span class="quiz-lbl">Wrong</span></div>
+          <div class="quiz-stat"><span class="quiz-num" id="qTotal"   style="color:var(--text2)">0/15</span><span class="quiz-lbl">Progress</span></div>
+        </div>
+
+        <div class="prog-bar"><div class="prog-fill" id="qFill" style="width:0%"></div></div>
+        <div id="qArea"></div>
+
+        <div class="btn-row">
+          <button class="btn"         id="qNext"  style="display:none" onclick="qNext()">Next Question →</button>
+          <button class="btn restart" id="qReset" onclick="qInit()">↺ Restart</button>
+        </div>
+      </div>
+    </div><!-- /sec-quiz -->
+
+  </div><!-- /main -->
+
+
+  <!-- DevTools Warning Screen -->
+  <div id="devtools-warning">
+    <h2>🚫 Access Denied</h2>
+    <p>Developer Tools detected. This content is protected. Please close DevTools to continue.</p>
+  </div>
+
+  <script>
+  /* ════════════════════════════════════════════════════════
+     SECURITY SYSTEM — Full Protection Suite
+  ════════════════════════════════════════════════════════ */
+
+  /* 1. Disable Right-Click */
+  document.addEventListener('contextmenu', function(e) {
+    e.preventDefault();
+    return false;
+  });
+
+  /* 2. Disable common keyboard shortcuts */
+  document.addEventListener('keydown', function(e) {
+    // Block F12
+    if (e.key === 'F12') { e.preventDefault(); return false; }
+    // Block Ctrl+U (view source), Ctrl+S (save), Ctrl+P (print)
+    // Block Ctrl+Shift+I / Ctrl+Shift+J / Ctrl+Shift+C (DevTools)
+    // Block Ctrl+A (select all), Ctrl+C (copy)
+    if (e.ctrlKey || e.metaKey) {
+      var blocked = ['u','s','p','a','c','i','j','k'];
+      if (blocked.indexOf(e.key.toLowerCase()) !== -1) {
+        e.preventDefault();
+        return false;
+      }
+      // Ctrl+Shift+I / J / C
+      if (e.shiftKey && ['i','j','c'].indexOf(e.key.toLowerCase()) !== -1) {
+        e.preventDefault();
+        return false;
+      }
+    }
+    // Block Alt+F4 style via Alt keys combos
+    if (e.altKey && e.key === 'F4') { e.preventDefault(); return false; }
+  });
+
+  /* 3. Disable text selection via mouse */
+  document.addEventListener('selectstart', function(e) {
+    e.preventDefault();
+    return false;
+  });
+
+  /* 4. Disable drag */
+  document.addEventListener('dragstart', function(e) {
+    e.preventDefault();
+    return false;
+  });
+
+  /* 5. DevTools Detection — size-based method */
+  (function devToolsDetect() {
+    var threshold = 160;
+    var warn = document.getElementById('devtools-warning');
+    function check() {
+      var widthDiff  = window.outerWidth  - window.innerWidth;
+      var heightDiff = window.outerHeight - window.innerHeight;
+      if (widthDiff > threshold || heightDiff > threshold) {
+        warn.style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+      } else {
+        warn.style.display = 'none';
+        document.body.style.overflow = '';
+      }
+    }
+    window.addEventListener('resize', check);
+    setInterval(check, 1000);
+  })();
+
+  /* 6. DevTools Detection — debugger trap method */
+  (function debuggerTrap() {
+    var start = new Date();
+    debugger;
+    var end = new Date();
+    if (end - start > 100) {
+      document.getElementById('devtools-warning').style.display = 'flex';
+    }
+  })();
+
+  /* 7. Console warning message */
+  (function consoleWarn() {
+    var style = 'color:#ec4899;font-size:20px;font-weight:bold;';
+    var style2 = 'color:#94a3b8;font-size:13px;';
+    console.log('%c⛔ STOP!', style);
+    console.log('%cThis is a protected study page. Copying or extracting content is prohibited.', style2);
+    console.log('%c© Study Site — All Rights Reserved', style2);
+    // Clear console repeatedly
+    setInterval(function() { console.clear(); }, 3000);
+  })();
+
+  /* 8. Disable middle-click / aux click (open in new tab trick) */
+  document.addEventListener('auxclick', function(e) {
+    e.preventDefault();
+    return false;
+  });
+
+  /* 9. Iframe embedding protection */
+  if (window.top !== window.self) {
+    window.top.location = window.self.location;
+  }
+
+  /* 10. Source obfuscation notice — overwrites view-source attempt */
+  Object.defineProperty(document, 'title', {
+    get: function() { return 'Class 12 — Determinants'; },
+    set: function() {}
+  });
+
+  </script>
+  function showSec(id, btn) {
+    document.querySelectorAll('.section').forEach(function(s) { s.classList.remove('active'); });
+    document.querySelectorAll('.tab-btn').forEach(function(b) { b.classList.remove('active'); });
+    document.getElementById('sec-' + id).classList.add('active');
+    btn.classList.add('active');
+  }
+
+  /* ══════════════════════════════════════════════════════
+     QUIZ SYSTEM
+  ══════════════════════════════════════════════════════ */
+  var quizData = [
+    {
+      q: 'What is the value of |2 4; -1 2|?',
+      opts: ['4', '6', '8', '10'],
+      ans: 2,
+      exp: '|2 4; -1 2| = 2×2 − 4×(−1) = 4 + 4 = 8. Remember: ad − bc.'
+    },
+    {
+      q: 'The cofactor C₁₂ of element a₁₂ is given by:',
+      opts: ['M₁₂', '−M₁₂', '2M₁₂', 'M₁₂ + 1'],
+      ans: 1,
+      exp: 'Cᵢⱼ = (−1)^(i+j) × Mᵢⱼ. For i=1, j=2: (−1)^3 = −1. So C₁₂ = −M₁₂.'
+    },
+    {
+      q: 'If two rows of a determinant are identical, then:',
+      opts: ['Δ = 1', 'Δ = 2', 'Δ = 0', 'Δ = −1'],
+      ans: 2,
+      exp: 'Property 3: If any two rows (or columns) are identical, the value of the determinant is zero.'
+    },
+    {
+      q: 'For a 3×3 matrix A, |3A| equals:',
+      opts: ['3|A|', '9|A|', '27|A|', '6|A|'],
+      ans: 2,
+      exp: 'For an n×n matrix: |kA| = kⁿ|A|. Here n=3, k=3 → |3A| = 3³|A| = 27|A|. Common exam trap!'
+    },
+    {
+      q: 'In Cramer\'s Rule, if D=0 and all D₁=D₂=D₃=0, the system has:',
+      opts: ['No solution', 'Unique solution', 'Infinitely many solutions', 'Two solutions'],
+      ans: 2,
+      exp: 'When D=0 and all Dᵢ=0, the equations are consistent with infinitely many solutions (coincident planes).'
+    },
+    {
+      q: 'The value of |x  x+1; x−1  x| is:',
+      opts: ['0', '1', 'x', '2x'],
+      ans: 1,
+      exp: '= x(x) − (x+1)(x−1) = x² − (x²−1) = 1. This is independent of x!'
+    },
+    {
+      q: 'If we apply operation Rᵢ → Rᵢ + kRⱼ (i≠j) to a determinant, its value:',
+      opts: ['Multiplies by k', 'Adds k', 'Remains unchanged', 'Becomes zero'],
+      ans: 2,
+      exp: 'Property 6: Adding a multiple of one row to another row does NOT change the value of the determinant.'
+    },
+    {
+      q: 'The determinant of a skew-symmetric matrix of odd order is:',
+      opts: ['1', '−1', '0', 'Cannot be determined'],
+      ans: 2,
+      exp: 'For skew-symmetric matrix A: Aᵀ = −A → |A| = |Aᵀ| = |−A| = (−1)ⁿ|A|. For odd n: |A| = −|A| → |A| = 0.'
+    },
+    {
+      q: '|1 1 1; a b c; a² b² c²| equals:',
+      opts: ['(a+b)(b+c)(c+a)', '(a−b)(b−c)(c−a)', '(a+b+c)²', 'abc'],
+      ans: 1,
+      exp: 'This is the Vandermonde determinant. Result = (a−b)(b−c)(c−a). Memorize this identity!'
+    },
+    {
+      q: 'Which operation does NOT change the value of a determinant?',
+      opts: ['Interchanging two rows', 'Multiplying a row by k', 'R₁ → R₁ + 2R₂', 'Swapping rows R₁ and R₃'],
+      ans: 2,
+      exp: 'Operation R₁ → R₁ + kR₂ (adding multiples of rows to other rows) keeps the determinant value unchanged. The others either negate or scale Δ.'
+    },
+    {
+      q: 'For the system x+y+z=2, x+2y+3z=5, x+3y+λz=μ to have infinite solutions:',
+      opts: ['λ=5, μ=8', 'λ=3, μ=5', 'λ=2, μ=6', 'λ=4, μ=7'],
+      ans: 0,
+      exp: 'D=(λ−3)... Setting D=0 gives λ=5. Then computing D₃=0 gives μ=8. Answer: λ=5, μ=8.'
+    },
+    {
+      q: 'If elements of row 1 are multiplied by cofactors of row 2 and added, the result is:',
+      opts: ['Δ', '2Δ', '0', 'Δ²'],
+      ans: 2,
+      exp: 'Cross-product rule: Elements of one row multiplied by cofactors of a DIFFERENT row always sum to zero. Only same-row gives Δ.'
+    },
+    {
+      q: 'Maximum value of |P| for 3×3 matrix with entries from {−1, 0, 1} is:',
+      opts: ['2', '3', '4', '6'],
+      ans: 2,
+      exp: 'If |P|=6, each term in expansion must be +1, giving contradiction. Next possible is 4, achieved when a₂=b₃=−1 and all others=1.'
+    },
+    {
+      q: 'For a homogeneous system with D≠0, the solution is:',
+      opts: ['Infinite solutions', 'No solution', 'Only trivial solution (x=y=z=0)', 'Two solutions'],
+      ans: 2,
+      exp: 'When D≠0 in a homogeneous system, Cramer\'s Rule gives x=0/D=0, y=0/D=0, z=0/D=0 — only the trivial solution exists.'
+    },
+    {
+      q: 'The value of |0 sinα −cosα; −sinα 0 sinβ; cosα −sinβ 0| is:',
+      opts: ['sinα·cosβ', '1', '0', 'sinα·sinβ'],
+      ans: 2,
+      exp: 'This is a skew-symmetric matrix of odd order (3), so its determinant = 0. Can also verify by expanding about R₁.'
+    }
+  ];
+
+  var qIdx = 0, qScore = 0, qCorrect = 0, qWrong = 0, qAnswered = false;
+
+  function qUpdateStats() {
+    document.getElementById('qScore').textContent   = qScore;
+    document.getElementById('qCorrect').textContent = qCorrect;
+    document.getElementById('qWrong').textContent   = qWrong;
+    document.getElementById('qTotal').textContent   = qIdx + '/' + quizData.length;
+    document.getElementById('qFill').style.width    = (qIdx / quizData.length * 100) + '%';
+  }
+
+  function qRender() {
+    document.getElementById('qNext').style.display = 'none';
+    if (qIdx >= quizData.length) {
+      var pct = Math.round(qScore / quizData.length * 100);
+      var emoji = pct >= 80 ? '🎉' : pct >= 50 ? '💪' : '📚';
+      var msg   = pct >= 80 ? 'Excellent! Determinants mastered! 🚀' : pct >= 50 ? 'Good progress! Review weak areas. 💪' : 'Keep studying — revisit concepts! 📚';
+      document.getElementById('qArea').innerHTML =
+        '<div style="text-align:center;padding:2rem">'
+        + '<div style="font-size:3rem">' + emoji + '</div>'
+        + '<div style="font-family:Syne,sans-serif;font-size:1.5rem;font-weight:800;color:var(--gold);margin:12px 0">Quiz Complete!</div>'
+        + '<div style="color:var(--teal)">Score: ' + qScore + '/' + quizData.length + ' (' + pct + '%)</div>'
+        + '<div style="font-size:.85rem;color:var(--text2);margin-top:8px">' + msg + '</div>'
+        + '</div>';
+      return;
+    }
+    qAnswered = false;
+    var q = quizData[qIdx];
+    var html = '<div class="quiz-q">Q' + (qIdx+1) + '. ' + q.q + '</div><div class="opts">';
+    q.opts.forEach(function(o, i) {
+      html += '<button class="opt" onclick="qAnswer(' + i + ')">' + String.fromCharCode(65+i) + '. ' + o + '</button>';
+    });
+    html += '</div><div class="exp-box" id="qExp">' + q.exp + '</div>';
+    document.getElementById('qArea').innerHTML = html;
+  }
+
+  function qAnswer(i) {
+    if (qAnswered) return;
+    qAnswered = true;
+    var q = quizData[qIdx];
+    document.querySelectorAll('#qArea .opt').forEach(function(btn, idx) {
+      if (idx === q.ans)          btn.classList.add('correct');
+      else if (idx === i && i !== q.ans) btn.classList.add('wrong');
+      btn.style.pointerEvents = 'none';
+    });
+    if (i === q.ans) { qScore++; qCorrect++; } else { qWrong++; }
+    qIdx++;
+    qUpdateStats();
+    document.getElementById('qExp').classList.add('show');
+    document.getElementById('qNext').style.display = 'inline-flex';
+  }
+
+  function qNext() { qRender(); }
+
+  function qInit() {
+    qIdx = 0; qScore = 0; qCorrect = 0; qWrong = 0; qAnswered = false;
+    qUpdateStats();
+    qRender();
+  }
+
+  qInit();
+
+  /* ══════════════════════════════════════════════════════
+     CLICK PARTICLE EFFECT
+  ══════════════════════════════════════════════════════ */
+  (function() {
+    var colors = ['var(--accent2)', 'var(--teal)', 'var(--gold)', 'var(--green)', 'var(--purple)', 'var(--pink)'];
+    document.addEventListener('click', function(e) {
+      for (var i = 0; i < 6; i++) {
+        (function(i) {
+          setTimeout(function() {
+            var el    = document.createElement('div');
+            var color = colors[Math.floor(Math.random() * colors.length)];
+            var angle = Math.random() * 360;
+            var dist  = 40 + Math.random() * 60;
+            var dx    = Math.cos(angle * Math.PI / 180) * dist;
+            var dy    = Math.sin(angle * Math.PI / 180) * dist;
+            el.style.cssText =
+              'position:fixed;left:' + e.clientX + 'px;top:' + e.clientY + 'px;'
+              + 'width:6px;height:6px;border-radius:50%;background:' + color + ';'
+              + 'pointer-events:none;z-index:99999;transform:translate(-50%,-50%);'
+              + 'transition:transform 600ms ease,opacity 600ms ease;box-shadow:0 0 8px ' + color + ';';
+            document.body.appendChild(el);
+            requestAnimationFrame(function() {
+              requestAnimationFrame(function() {
+                el.style.transform = 'translate(calc(-50% + ' + dx + 'px), calc(-50% + ' + dy + 'px)) scale(0)';
+                el.style.opacity = '0';
+              });
+            });
+            setTimeout(function() { el.remove(); }, 650);
+          }, i * 40);
+        })(i);
+      }
+    });
+  })();
+  </script>
+</body>
+</html>
